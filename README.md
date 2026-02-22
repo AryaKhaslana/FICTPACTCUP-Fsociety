@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🚀 XPLocalist (Backend Service)
+**Empowering Local UMKM Through Gamified Quests & Sustainable Innovation**
 
-## Getting Started
+XPLocalist adalah platform *Learning Management System* (LMS) berbasis gamifikasi yang menghubungkan siswa dengan UMKM lokal untuk menyelesaikan misi (Quest) dunia nyata.
 
-First, run the development server:
+Repository ini berisi *source code* untuk **Backend API**, sistem otentikasi, dan manajemen *database*.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🛠️ Tech Stack
+- **Framework:** Next.js (App Router)
+- **Database ORM:** Prisma
+- **Authentication:** JWT (JSON Web Tokens) via `jose`
+- **Security:** bcryptjs (Password Hashing)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔐 Core API Routes (Ready to Use)
+Berikut adalah daftar API yang sudah berjalan dengan sistem keamanan JWT (Bearer Token):
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+* **Auth & Security:**
+  * `POST /api/auth/register` : Mendaftarkan user baru (Siswa / UMKM).
+  * `POST /api/auth/login` : Autentikasi user dan *generate* JWT Token.
+  * `GET /api/auth/me` : Verifikasi JWT Token via *Cookies* atau *Bearer Header*.
+* **Quest & Submissions:**
+  * `POST /api/submissions` : Mengirimkan URL tugas dari siswa ke UMKM.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 How to Run (Untuk Tim Frontend)
+1. Clone repo ini: `git clone https://github.com/AryaKhaslana/FICTPACTCUP-Fsociety.git`
+2. Masuk ke folder project: `cd education-web`
+3. Install dependencies: `npm install`
+4. Copy file `.env.example` menjadi `.env` dan isi `JWT_SECRET` serta `DATABASE_URL`.
+5. Sinkronisasi Database: `npx prisma db push`
+6. Jalankan server: `npm run dev`
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Built with passion and lots of caffeine by Fsociety Team (Arya, Fatih, Naraya, Nawfal).*
