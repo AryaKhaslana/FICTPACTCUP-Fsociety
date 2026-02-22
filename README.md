@@ -1,7 +1,7 @@
-# 🚀 XPLocalist (Backend Service)
+# 🚀 XPact 
 **Empowering Local UMKM Through Gamified Quests & Sustainable Innovation**
 
-XPLocalist adalah platform *Learning Management System* (LMS) berbasis gamifikasi yang menghubungkan siswa dengan UMKM lokal untuk menyelesaikan misi (Quest) dunia nyata.
+XPact adalah platform *Learning Management System* (LMS) berbasis gamifikasi yang menghubungkan siswa dengan UMKM lokal untuk menyelesaikan misi (Quest) dunia nyata.
 
 Repository ini berisi *source code* untuk **Backend API**, sistem otentikasi, dan manajemen *database*.
 
