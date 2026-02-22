@@ -23,7 +23,7 @@ Berikut adalah daftar API yang sudah berjalan dengan sistem keamanan JWT (Bearer
 
 ## 🚀 How to Run (Untuk Tim Frontend)
 1. Clone repo ini: `git clone https://github.com/AryaKhaslana/FICTPACTCUP-Fsociety.git`
-2. Masuk ke folder project: `cd education-web`
+2. Masuk ke folder project: `cd FICTPACTCUP-Fsociety`
 3. Install dependencies: `npm install`
 4. Copy file `.env.example` menjadi `.env` dan isi `JWT_SECRET` serta `DATABASE_URL`.
 5. Sinkronisasi Database: `npx prisma db push`
