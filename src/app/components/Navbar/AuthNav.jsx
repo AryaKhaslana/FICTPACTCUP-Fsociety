@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 import React from "react";
 
 function AuthNav() {
@@ -23,3 +25,4 @@ function AuthNav() {
 };
 
 export default AuthNav;
+>>>>>>> b148a9adaafdcb679c4313a605f0e4b1c344cc18
