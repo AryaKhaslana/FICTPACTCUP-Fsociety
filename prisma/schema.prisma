@@ -34,6 +34,10 @@ model User {
   role      Role     @default(STUDENT)
   bio       String?  @db.Text
   avatarUrl String?
+
+  kategoriBisnis String?
+  lokasi         String?
+
   createdAt DateTime @default(now())
 
   questsCreated    Quest[]           @relation("QuestCreator")

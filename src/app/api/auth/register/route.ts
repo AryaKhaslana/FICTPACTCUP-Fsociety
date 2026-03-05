@@ -10,7 +10,7 @@ export async function POST(request: Request) {
         const { email, password, role, nama, namaBisnis, kategoriBisnis, lokasi } = body;
 
         const finalUsername = role === 'UMKM' ? namaBisnis : nama;
-        const finalRole = role === 'STUDENT' ? 'STUDENT' : 'UMKM';
+        const finalRole = role === 'SISWA' ? 'STUDENT' : 'UMKM';
 
         if (!finalUsername || !email || !password) {
             return NextResponse.json({ success: false, message: "data lu kurang lengkap bos"}, { status: 400 });
