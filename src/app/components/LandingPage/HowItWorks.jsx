@@ -5,32 +5,32 @@ const HowItWorks = () => {
   return (
     <div className="min-h-screen bg-[#070714] flex flex-col">
       <section className="flex flex-col items-center py-20 px-4 w-full">
-        <h1 className="text-2xl md:text-4xl text-white mb-12 tracking-wide text-center">
+        <h1 className="text-2xl md:text-[32px] text-white pb-8 md:pb-[50px] tracking-wide text-center">
           How it Works?
         </h1>
 
-        <div className="relative w-full max-w-5xl aspect-[4/3] md:aspect-[16/9] flex items-stretch p-10 md:p-16">
+        <div className="relative w-full max-w-[981px] aspect-[981/653] md:w-[981px] flex items-stretch p-10 md:p-16">
           <Image
             src="/buku-pixel.png"
             alt="Background buku"
             fill
-            className="object-contain -z-10"
+            className="object-contain z20"
             priority
           />
 
-          <div className="flex w-full text-[#1c2331] z-10">
-            <div className="flex-1 flex flex-col px-4 md:px-10">
+          <div className="flex flex-col md:flex-row w-full text-[#1c2331] z-10 gap-10 md:gap-[75px]">
+            <div className="flex-1 flex flex-col px-4 md:px-[15px]">
               <h2 className="text-center text-lg md:text-xl mb-10 mt-4 text-[#111827] font-bold">
                 UMKM
               </h2>
-              <ul className="space-y-8 flex-1 flex flex-col text-xs md:text-sm font-bold text-gray-700">
+              <ul className="space-y-6 flex-1 flex flex-col text-[17px] font-bold text-gray-700">
                 <li className="flex items-start gap-4">
                   <Image
                     src="/quest-simbol.png"
                     alt="Ikon quest UMKM"
-                    width={40}
-                    height={40}
-                    className="w-8 h-8 md:w-10 md:h-10"
+                    width={64}
+                    height={64}
+                    className="w-12 h-12 md:w-16 md:h-16"
                   />
                   <p>Langkah 1: UMKM mengirim Quest / masalah bisnisnya.</p>
                 </li>
@@ -38,21 +38,21 @@ const HowItWorks = () => {
                   <Image
                     src="/sword.png"
                     alt="Ikon solusi UMKM"
-                    width={40}
-                    height={40}
-                    className="w-8 h-8 md:w-10 md:h-10"
+                    width={64}
+                    height={64}
+                    className="w-12 h-12 md:w-16 md:h-16"
                   />
                   <p>Langkah 2: UMKM menerima solusi dari Siswa.</p>
                 </li>
-                <li className="flex items-start gap-4">
+                <li className="flex items-start gap-8 px-3 ">
                   <Image
                     src="/star.png"
                     alt="Ikon UMKM berkembang"
-                    width={40}
-                    height={40}
-                    className="w-8 h-8 md:w-10 md:h-10"
+                    width={32}
+                    height={32}
+                    className="w-12 h-12 md:w-10 md:h-10"
                   />
-                  <p>Langkah 3: Solusi diterapkan, UMKM berkembang!</p>
+                  <p className=''>Langkah 3: Solusi selesai, UMKM berkembang!</p>
                 </li>
               </ul>
             </div>
@@ -61,14 +61,14 @@ const HowItWorks = () => {
               <h2 className="text-center text-lg md:text-xl mb-10 mt-4 text-[#111827] font-bold">
                 SISWA
               </h2>
-              <ul className="space-y-8 flex-1 flex flex-col text-xs md:text-sm font-bold text-gray-700">
+              <ul className="space-y-8 flex-1 flex flex-col text-[17px] font-bold text-gray-700">
                 <li className="flex items-start gap-4">
                   <Image
                     src="/quest-simbol.png"
                     alt="Ikon quest siswa"
-                    width={40}
-                    height={40}
-                    className="w-8 h-8 md:w-10 md:h-10"
+                    width={64}
+                    height={64}
+                    className="w-12 h-12 md:w-16 md:h-16"
                   />
                   <p>Langkah 1: Siswa mencari dan Accept Quest.</p>
                 </li>
@@ -76,19 +76,19 @@ const HowItWorks = () => {
                   <Image
                     src="/sword.png"
                     alt="Ikon pengerjaan "
-                    width={40}
-                    height={40}
-                    className="w-8 h-8 md:w-10 md:h-10"
+                    width={64}
+                    height={64}
+                    className="w-12 h-12 md:w-16 md:h-16"
                   />
                   <p>Langkah 2: Siswa meracik dan mengerjakan solusi.</p>
                 </li>
-                <li className="flex items-start gap-4">
+                <li className="flex items-start gap-8 px-3">
                   <Image
                     src="/star.png"
                     alt="Ikon reward siswa"
-                    width={40}
-                    height={40}
-                    className="w-8 h-8 md:w-10 md:h-10"
+                    width={32}
+                    height={32}
+                    className="w-12 h-12 md:w-10 md:h-10"
                   />
                   <p>Langkah 3: Misi selesai, Siswa dapet XP & Reward!</p>
                 </li>
@@ -103,7 +103,7 @@ const HowItWorks = () => {
             src="/readybg.png"
             alt="Background ready"
             fill
-            className="object-cover -z-10"
+            className="object-cover z20"
             priority
           />
         <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#070714] to-transparent -z-10" />
