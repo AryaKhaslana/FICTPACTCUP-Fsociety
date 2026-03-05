@@ -11,7 +11,7 @@ const HeroSection = () => {
       <div 
         className="absolute inset-0 z-0 opacity-60"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1600')`, // Menggunakan aset retro teknologi serupa image_85577e.jpg
+          backgroundImage: `url('/flower.png')`, // Menggunakan aset retro teknologi serupa image_85577e.jpg
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -24,10 +24,10 @@ const HeroSection = () => {
       </style>
       
       <div className="relative z-10 max-w-4xl">
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight uppercase shadow-black" 
+        <h1 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight uppercase shadow-black" 
             style={{ fontFamily: "'Press Start 2P', cursive", lineHeight: '1.2', textShadow: '4px 4px 0px rgba(0,0,0,0.5)' }}>
           Posting Misi.<br />
-          <span className="text-[#f59e0b]">Dapat Hasil.</span>
+          <span className="text-[#f59e0b]">Dapat Hasil Nyata.</span>
         </h1>
         <p className="text-base text-gray-200 mb-8 max-w-2xl font-medium drop-shadow-md"
            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -45,10 +45,7 @@ const HeroSection = () => {
   );
 };
 
-/**
- * Komponen SuccessStory
- * Sesuai dengan referensi gambar image_85bc1f.png dan image_85bd17.png
- */
+
 const SuccessStory = () => {
   const stories = [
     { id: 1, title: 'Nasgor Mas Ambas', quest: '3 Quest selesai', img: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&q=80&w=600' },
@@ -127,7 +124,7 @@ export default function App() {
       </main>
 
       <footer className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
-        <p className="text-gray-800 text-[9px] font-bold uppercase tracking-[0.4em]">
+        <p className="text-white-800 text-[9px] font-bold uppercase tracking-[0.4em]">
           &copy; 2024 FICTPACT-F society
         </p>
       </footer>

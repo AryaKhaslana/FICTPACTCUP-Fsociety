@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Moon, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react'; // Moon dihapus dari import ini karena kita pakai gambar lu
+import Link from 'next/link';
 
 const GuestNav = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,33 +15,31 @@ const GuestNav = () => {
   ];
 
   return (
-    // Hapus px-120 siluman, ganti dengan px-6 atau px-12
-    <nav className="bg-[#1E1E1E] text-white px-6 md:px-12 py-4 sticky top-0 z-50 w-full">
-      {/* justify-between akan membagi 3 blok (Kiri, Tengah, Kanan) rata mentok ujung */}
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-80">
+    <nav className="bg-[#0F172A] text-white px-6 md:px-12 py-4 sticky top-0 z-50 w-full">
+      {/* gap-80 gue hapus karena justify-between udah cukup buat ngedorong ke ujung */}
+      <div className="max-w-7xl mx-auto flex items-center justify-between w-full">
         
         {/* BLOK 1 KIRI: Logo XPact */}
         <div className="flex items-center gap-3 cursor-pointer">
           <div className="w-8 h-8">
             <img 
-              src="https://api.dicebear.com/7.x/pixel-art/svg?seed=dragon&backgroundColor=transparent" 
+              src="/dragon.png" 
               alt="XPact Logo" 
               className="w-full h-full object-contain"
             />
           </div>
-          {/* Tinggal panggil class font-pixel yang udah di-setup di globals.css */}
           <span className="font-pixel text-xl tracking-wider text-white mt-1">
-            XPact
+            XPACT
           </span>
         </div>
 
-        {/* BLOK 2 TENGAH: Navigasi Desktop (Otomatis pakai font Poppins) */}
+        {/* BLOK 2 TENGAH: Navigasi Desktop */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-semibold hover:text-[#FFB800] transition-colors duration-200"
+              className="text-sm font-poppins font-semibold hover:text-[#FFB800] transition-colors duration-200"
             >
               {link.name}
             </a>
@@ -49,13 +48,14 @@ const GuestNav = () => {
 
         {/* BLOK 3 KANAN: Tombol Aksi */}
         <div className="hidden md:flex items-center gap-6">
-          <button className="text-gray-300 hover:text-white transition-colors" aria-label="Toggle Dark Mode">
-            <Moon size={20} />
+          <button className="hover:opacity-80 transition-opacity" aria-label="Toggle Dark Mode">
+            {/* GANTI NAMA FILE INI SESUAI YANG LU EXPORT KE FOLDER PUBLIC */}
+            <img src="/moon.png" alt="Dark Mode" className="w-7 h-7 object-contain" />
           </button>
           
-          <button className="bg-[#FFB800] hover:bg-[#E6A600] text-black text-sm font-bold py-2 px-6 rounded-md transition-all shadow-[0_4px_0_0_#996E00] hover:shadow-[0_2px_0_0_#996E00] hover:translate-y-1 active:translate-y-2 active:shadow-none">
+          <Link href="/register" className="bg-[#FFB800] hover:bg-[#E6A600] text-black text-sm font-bold py-2 px-6 rounded-md transition-all shadow-[0_4px_0_0_#996E00] hover:shadow-[0_2px_0_0_#996E00] hover:translate-y-1 active:translate-y-2 active:shadow-none">
             Sign Up
-          </button>
+          </Link>
         </div>
 
         {/* Hamburger Menu Mobile */}
@@ -79,12 +79,14 @@ const GuestNav = () => {
           ))}
           <div className="border-t border-gray-700 pt-4 flex flex-col gap-4">
             <button className="flex items-center gap-2 text-sm text-gray-300">
-              <Moon size={18} />
+              {/* Ini juga diganti buat versi HP-nya */}
+              <img src="/moon.png" alt="Dark Mode" className="w-5 h-5 object-contain" />
               <span>Dark Mode</span>
             </button>
-            <button className="bg-[#FFB800] text-black font-bold py-2 rounded-md w-full">
+            {/* GANTI INI JUGA (Gue tambahin text-center block biar tetep full lebar) */}
+            <Link href="/register" className="bg-[#FFB800] text-black text-center block font-bold py-2 rounded-md w-full">
               Sign Up
-            </button>
+            </Link>
           </div>
         </div>
       )}

@@ -3,6 +3,7 @@ import FeatureSection from './FeatureSection';
 import SuccessStory from './SuccessStory';
 import HowItWorks from './HowItWorks';
 import CtaSection from './CtaSection';
+import Footer from '../Navbar/footer';
 
 export default function LandingPage() {
   return (
@@ -10,6 +11,7 @@ export default function LandingPage() {
       <HeroSection />
       <FeatureSection />
       <HowItWorks />
+      <Footer />
     </main>
   );
 }

@@ -15,7 +15,7 @@ export default function FeatureSection() {
       categories: ["UI/UX", "Design"],
       xp: "500",
       stars: 3,
-      image: "https://images.unsplash.com/photo-1594212699903-ec8a3ecc50f6?auto=format&fit=crop&w=600&q=80"
+      image: "/ayam-geprek.jpg"
     },
     {
       title: "Bikin Web design Ayam geprek",
@@ -41,28 +41,32 @@ export default function FeatureSection() {
               style={{ fontFamily: "'Press Start 2P', cursive, system-ui" }}>
             Quest UMKM
           </h1>
-          <p className="text-gray-300 text-sm md:text-lg max-w-3xl mx-auto leading-relaxed">
+          <p className="text-gray-300 font-poppins text-sm md:text-lg max-w-3xl mx-auto leading-relaxed">
             Pilih misimu, pahlawan! Bantu selesaikan masalah UMKM lokal dan kumpulkan XP sebanyak-banyaknya
           </p>
         </div>
 
         {/* Search & Filter Section */}
-        <div className="flex flex-wrap justify-center items-center gap-4 mb-14">
+        <div className="flex flex-wrap justify-center items-center gap-4 mb-14 font-poppins">
           <div className="relative group">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-orange-500">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-[#F59E0B]">
               🔍
             </span>
             <input 
               type="text" 
               placeholder="Search..." 
-              className="bg-transparent border border-orange-500/60 rounded-full pl-11 pr-6 py-2.5 text-sm w-64 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              // Border diganti jadi solid #F59E0B
+              className="bg-transparent border border-[#F59E0B] rounded-full pl-11 pr-6 py-2.5 text-sm w-64 focus:outline-none focus:border-[#F59E0B] focus:ring-1 focus:ring-[#F59E0B] transition-all"
             />
           </div>
           
           <div className="hidden md:block w-[1.5px] h-8 bg-gray-700 mx-2"></div>
 
           {["Popular", "Design UI/UX", "Web Dev"].map((filter) => (
-            <button key={filter} className="px-7 py-2.5 rounded-full border border-orange-500/60 text-sm font-medium hover:bg-orange-500 hover:text-black transition-all duration-300">
+            <button key={filter} 
+              // Border diganti jadi solid #F59E0B
+              className="px-7 py-2.5 rounded-full border border-[#F59E0B] text-sm font-medium hover:bg-[#F59E0B] hover:text-[#020617] transition-all duration-300"
+            >
               {filter}
             </button>
           ))}
@@ -77,7 +81,7 @@ export default function FeatureSection() {
 
         {/* Footer Button */}
         <div className="flex justify-center">
-          <button className="bg-orange-500 hover:bg-orange-600 text-[#020617] font-bold py-3.5 px-10 rounded-xl flex items-center gap-3 transition-transform active:scale-95 shadow-lg shadow-orange-500/20">
+          <button className="bg-[#F59E0B] hover:bg-[#D97706] text-[#020617] font-bold py-3.5 px-10 rounded-xl flex items-center gap-3 transition-transform active:scale-95 shadow-lg shadow-[#F59E0B]/20">
             Jelajahi selengkapnya 
             <span className="text-xl">›</span>
           </button>

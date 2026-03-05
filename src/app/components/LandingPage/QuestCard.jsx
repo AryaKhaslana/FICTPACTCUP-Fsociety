@@ -1,53 +1,49 @@
 import React from 'react';
 
-const QuestCard = ({ title, description, company, categories, xp, stars, image }) => {
+export default function QuestCard({ title, description, company, categories, xp, stars, image }) {
   return (
-    <div className="bg-[#111827] rounded-xl overflow-hidden shadow-lg border border-transparent hover:border-orange-500 transition-all duration-300 group cursor-pointer">
+    // hover:border-[#F59E0B] biar pas disentuh mouse warnanya pas!
+    <div className="bg-[#0F172A] rounded-2xl overflow-hidden border border-gray-800 hover:border-[#F59E0B] transition-all duration-300 group cursor-pointer flex flex-col h-full">
+      
       {/* Bagian Gambar */}
-      <div className="relative h-44 w-full">
-        <img src={image} alt={title} className="w-full h-full object-cover" />
-        
-        {/* Overlay Badge Kiri (Nama Toko) */}
-        <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-sm border border-gray-700 px-3 py-1 rounded-full">
-          <p className="text-[10px] text-white font-medium leading-tight">
-            {company.split(',')[0]},<br />{company.split(',')[1]}
-          </p>
+      <div className="relative h-48 w-full overflow-hidden">
+        <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+
+        {/* Badge Company (Kiri Atas) */}
+        <div className="absolute top-3 left-3 bg-[#0F172A] backdrop-blur-sm px-3 py-1.5 rounded-full border border-gray-400">
+          <span className="text-[10px] font-bold text-white">{company}</span>
         </div>
 
-        {/* Overlay Badge Kanan (Tags) */}
-        <div className="absolute top-3 right-3 flex gap-1">
-          {categories.map((cat, i) => (
-            <span key={i} className="bg-[#0f172a]/90 border border-blue-400 text-blue-100 text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">
-              {cat}
-            </span>
+        {/* Badge Kategori (Kanan Atas) - OUTLINE BIRU UDAH DIHAPUS */}
+        <div className="absolute top-3 right-3 flex gap-2">
+          {categories.map((cat, idx) => (
+            <div key={idx} className="bg-[#0F172A] backdrop-blur-sm px-3 py-1.5 rounded-full border border-gray-400">
+              <span className="text-[10px] font-bold text-white uppercase">{cat}</span>
+            </div>
           ))}
         </div>
       </div>
 
       {/* Bagian Konten */}
-      <div className="p-5 flex flex-col h-full bg-[#111827]">
-        <h3 className="text-white font-bold text-base mb-2 group-hover:text-orange-400 transition-colors">
-          {title}
-        </h3>
-        <p className="text-gray-400 text-xs leading-relaxed mb-6 flex-grow">
-          {description}
-        </p>
-        
-        <div className="flex justify-between items-end">
-          <div className="flex gap-0.5">
-            {[...Array(4)].map((_, i) => (
-              <span key={i} className={`text-sm ${i < stars ? 'text-orange-400' : 'text-gray-600'}`}>
+      <div className="p-5 flex flex-col grow justify-between gap-4">
+        <div>
+          <h3 className="text-lg font-bold text-white mb-2 leading-tight group-hover:text-[#F59E0B] transition-colors">{title}</h3>
+          <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">{description}</p>
+        </div>
+
+        {/* Footer: Bintang & XP */}
+        <div className="flex items-center justify-between mt-auto">
+          <div className="flex gap-1">
+            {[...Array(5)].map((_, i) => (
+              <span key={i} className={`text-lg ${i < stars ? 'text-[#F59E0B]' : 'text-gray-600'}`}>
                 ★
               </span>
             ))}
           </div>
-          <p className="text-white font-bold text-[13px] tracking-wide">
-            + {xp} XP
-          </p>
+          <span className="text-sm font-bold text-white">+ {xp} XP</span>
         </div>
       </div>
+
     </div>
   );
-};
-
-export default QuestCard;
+}
