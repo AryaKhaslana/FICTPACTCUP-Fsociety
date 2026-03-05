@@ -2,11 +2,10 @@ import GuestNav from './GuestNav';
 import AuthNav from './AuthNav';
 
 export default function Navbar({ isAuthenticated }) {
+  // Langsung render aja komponennya sesuai status login
   return (
-    <nav className="w-full bg-[#1E1E1E] flex justify-center items-center">
-      <div>
-        {isAuthenticated ? <AuthNav /> : <GuestNav />}
-      </div>
-    </nav>
+    <>
+      {isAuthenticated ? <AuthNav /> : <GuestNav />}
+    </>
   );
 }
