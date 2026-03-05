@@ -8,6 +8,7 @@ export default function LandingPage() {
   return (
     <main className="bg-[#1E1E1E] min-h-screen">
       <HeroSection />
+      <CtaSection />
       <HowItWorks />
     </main>
   );
