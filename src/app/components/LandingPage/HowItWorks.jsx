@@ -113,7 +113,7 @@ const HowItWorks = () => {
           {/* IMPLEMENTASI EFEK MESIN TIK (TYPEWRITER) */}
           <h1 className="text-2xl md:text-4xl text-white mb-8 text-center drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] font-pixel flex items-center justify-center gap-x-3 min-h-[50px]">
             Ready To
-            <span className="text-[#f79e00] flex items-center">
+            <span className="text-[#f79e00] pl-8 flex items-center">
               {currentText}
               {/* Kursor kotak ala terminal game yang kedap-kedip */}
               <span className="animate-pulse ml-1 text-white opacity-80">_</span>
@@ -122,7 +122,7 @@ const HowItWorks = () => {
 
           <button
             type="button"
-            className="text-xs md:text-[14px] text-black bg-[#f79e00] hover:bg-[#d98b00] px-10 py-4 border-b-4 border-r-4 border-black rounded-xl active:translate-y-1 active:translate-x-1 active:border-b-0 active:border-r-0 transition-all cursor-pointer font-pixel"
+            className="text-xs md:text-[10px] text-black bg-[#f79e00] hover:bg-[#d98b00] px-10 py-4 border-b-4 border-r-4 border-black rounded-xl active:translate-y-1 active:translate-x-1 active:border-b-0 active:border-r-0 transition-all cursor-pointer font-pixel"
           >
             Start Adventure for Free
           </button>
