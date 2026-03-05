@@ -4,8 +4,9 @@ import Image from 'next/image';
 const HowItWorks = () => {
   return (
     <div className="min-h-screen bg-[#070714] flex flex-col">
-      <section className="flex flex-col items-center py-20 px-4 w-full">
-        <h1 className="text-2xl md:text-[32px] text-white pb-8 md:pb-[50px] tracking-wide text-center">
+      <section className="flex flex-col items-center pt-20
+       w-full">
+        <h1 className="text-2xl md:text-[48px] text-white pb-8 md:pb-[50px] tracking-wide text-center font-pixel">
           How it Works?
         </h1>
 
@@ -20,10 +21,10 @@ const HowItWorks = () => {
 
           <div className="flex flex-col md:flex-row w-full text-[#1c2331] z-10 gap-10 md:gap-[75px]">
             <div className="flex-1 flex flex-col px-4 md:px-[15px]">
-              <h2 className="text-center text-lg md:text-xl mb-10 mt-4 text-[#111827] font-bold">
+              <h2 className="text-center text-lg md:text-xl mb-10 mt-4 text-[#111827] font-pixel">
                 UMKM
               </h2>
-              <ul className="space-y-6 flex-1 flex flex-col text-[17px] font-bold text-gray-700">
+              <ul className="space-y-6 flex-1 flex flex-col text-[17px] font-poppins font-semibold text-gray-700">
                 <li className="flex items-start gap-4">
                   <Image
                     src="/quest-simbol.png"
@@ -58,10 +59,10 @@ const HowItWorks = () => {
             </div>
 
             <div className="flex-1 flex flex-col px-4 md:px-10">
-              <h2 className="text-center text-lg md:text-xl mb-10 mt-4 text-[#111827] font-bold">
+              <h2 className="text-center text-lg md:text-xl mb-10 mt-4 text-[#111827] font-pixel">
                 SISWA
               </h2>
-              <ul className="space-y-8 flex-1 flex flex-col text-[17px] font-bold text-gray-700">
+              <ul className="space-y-8 flex-1 flex flex-col text-[17px] font-semibold text-gray-700 font-poppins">
                 <li className="flex items-start gap-4">
                   <Image
                     src="/quest-simbol.png"
@@ -109,7 +110,7 @@ const HowItWorks = () => {
         <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#070714] to-transparent -z-10" />
 
         <div className="relative z-10 flex flex-col items-center mt-24">
-          <h1 className="text-2xl md:text-4xl text-white mb-8 text-center drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">
+          <h1 className="text-2xl md:text-4xl text-white mb-8 text-center font-pixel drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">
             Ready To Grow?
           </h1>
           <button
