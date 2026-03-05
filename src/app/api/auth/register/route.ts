@@ -7,28 +7,35 @@ const prisma = new PrismaClient();
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { username, email, password, role} = body;
+        const { email, password, role, nama, namaBisnis, kategoriBisnis, lokasi } = body;
 
-        if (!username || !email || !password) {
-            return NextResponse.json({ success: false, message: "data lu kurang lengkap bos"}, { status: 400 })
+        const finalUsername = role === 'UMKM' ? namaBisnis : nama;
+        const finalRole = role === 'SISWA' ? 'STUDENT' : 'UMKM';
+
+        if (!finalUsername || !email || !password) {
+            return NextResponse.json({ success: false, message: "data lu kurang lengkap bos"}, { status: 400 });
         }
 
         const existingUser = await prisma.user.findUnique({
-            where: {email: email}
+            where: { email: email }
         });
 
         if (existingUser) {
-            return NextResponse.json ({ success: false, message: "email udah kepake, pakai email yang lain"}, {status: 400});
+            return NextResponse.json({ success: false, message: "email udah kepake, pakai email yang lain"}, { status: 400 });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await prisma.user.create({
             data: {
-                username: username,
+                username: finalUsername,
                 email: email,
                 password: hashedPassword,
-                role: role || 'STUDENT',
+                role: finalRole,
+                ...(finalRole === 'UMKM' && {
+                    kategoriBisnis: kategoriBisnis,
+                    lokasi: lokasi
+                })
             }
         });
 
