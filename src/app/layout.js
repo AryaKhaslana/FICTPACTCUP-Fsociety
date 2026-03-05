@@ -22,9 +22,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    // 3. Masukkan variabel font ke dalam tag <html>
     <html lang="id" className={`${poppins.variable} ${pixelFont.variable}`}>
-      {/* 4. Jadikan Poppins sebagai font bawaan (default) di seluruh body */}
+      {/* Tambahin {children} di dalam body biar halaman lu muncul! */}
       <body className="font-poppins bg-[#1E1E1E] text-white antialiased">
         {children}
       </body>

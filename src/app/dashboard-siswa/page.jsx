@@ -27,7 +27,7 @@ export default function DashboardSiswaPage() {
 
             {/* Tempat tim lu ngerjain Feedback Card */}
             <div className="bg-[#060916] rounded-2xl p-6 min-h-[300px] border border-gray-800 flex items-center justify-center text-gray-500">
-              <FeedbackCard isEmpty={true} />
+              <FeedbackCard isEmpty={false} />
             </div>
           </div>
 
@@ -35,7 +35,7 @@ export default function DashboardSiswaPage() {
           <div className="lg:col-span-2 flex flex-col gap-8">
             {/* Tempat tim lu ngerjain Active Quest */}
             <div className="bg-transparent min-h-[250px] flex items-center justify-center text-gray-500  rounded-2xl">
-              <ActiveQuest isEmpty={true} />
+              <ActiveQuest isEmpty={false} />
             </div>
 
             {/* Tempat tim lu ngerjain Recommended Quests */}
