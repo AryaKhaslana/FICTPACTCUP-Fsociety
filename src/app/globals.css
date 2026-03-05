@@ -5,6 +5,16 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-poppins: var(--font-poppins);
+  --font-pixel: var(--font-pixel);
+}
+
+.poppins {
+  font-family: var(--font-poppins), cursive !important;
+}
+
+.font-pixel {
+  font-family: var(--font-pixel), cursive !important;
 }
 
 @media (prefers-color-scheme: dark) {
