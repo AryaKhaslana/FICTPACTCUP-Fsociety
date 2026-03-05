@@ -58,7 +58,6 @@ export default function AuthNav() {
           />
         </div>
       </div>
-
     </nav>
   );
 }
