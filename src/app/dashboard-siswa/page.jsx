@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import React from 'react';
 // 1. Panggil Prisma Client lu di sini (sesuaikan path-nya kalau file lu beda letaknya)
 import prisma from '../../lib/prisma'; 
@@ -33,6 +35,19 @@ export default async function DashboardSiswaPage() {
     // orderBy: { id: 'desc' } // Opsional: Biar yang baru ditambahin muncul duluan
   });
 
+  const activeSubmission = await prisma.submission.findFirst({
+    where: { 
+      // ⚠️ WAJIB PAKE studentId, KARENA DI TABEL LU NAMANYA ITU!
+      studentId: 3, 
+      status: 'PENDING' 
+    },
+    include: {
+      quest: true 
+    },
+    // (Opsional) Biar misi terbaru yang muncul
+    orderBy: { id: 'desc' } 
+  });
+
   return (
     <div className="min-h-screen bg-[#000010] text-white font-poppins">
       
@@ -56,7 +71,7 @@ export default async function DashboardSiswaPage() {
           {/* KOLOM KANAN */}
           <div className="lg:col-span-2 flex flex-col gap-8">
             <div className="bg-transparent min-h-[250px] flex items-center justify-center text-gray-500 rounded-2xl">
-              <ActiveQuest isEmpty={false} />
+              <ActiveQuest activeData={activeSubmission} />
             </div>
 
             <div className="bg-transparent min-h-[400px] flex items-center justify-center text-gray-500 rounded-2xl">

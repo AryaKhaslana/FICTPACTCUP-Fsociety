@@ -1,64 +1,40 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { jwtVerify } from 'jose';
 
-const prisma = new PrismaClient();
-
-const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'rahasia_dong');
+// JURUS SAKTI: Panggil Prisma langsung di sini, ga perlu pusing mikirin folder lib!
+const prisma = global.prisma || new PrismaClient();
+if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
 
 export async function POST(request) {
   try {
-
-   const tokenCookie = request.cookies.get('fictpact_token');
-   let token = tokenCookie?.value;
-
-    if (!token) {
-      const authHeader = request.headers.get('authorization');
-      if (authHeader && authHeader.startsWith('Bearer ')) {
-        token = authHeader.split(' ')[1];
-      }
-    }
-
-    if (!token) {
-      return NextResponse.json({ success: false, message: "Akses Ditolak! Mana KTP lu woy!" }, { status: 401 });
-    }
-
-    let payload;
-    try {
-      const verified = await jwtVerify(token, secret);
-      payload = verified.payload;
-    } catch (error) {
-      return NextResponse.json({ success: false, message: "KTP lu palsu atau udah basi Bro!" }, { status: 401 });
-    }
-
-    const studentIdDariToken = payload.id;
-
     const body = await request.json();
-    const { fileUrl, questId } = body;
+    const { fileUrl, submissionId, pesanUMKM } = body;
 
-    if (!fileUrl || !questId) {
-      return NextResponse.json({ success: false, message: "Link tugas, ID Misi, sama ID Lu mana woy!" }, { status: 400 });
+    // Cek kalau input kosong
+    if (!fileUrl || !submissionId) {
+      return NextResponse.json({ success: false, message: "Link tugas atau ID kosong woy!" }, { status: 400 });
     }
 
-    // 3. Masukin tugas ke Database
-    const newSubmission = await prisma.submission.create({
+    // UPDATE DATABASE (Ubah status jadi APPROVED sesuai database lu)
+    const updatedSubmission = await prisma.submission.update({
+      where: {
+        id: Number(submissionId)
+      },
       data: {
         fileUrl: fileUrl,
-        questId: questId, 
-        studentId: studentIdDariToken, 
-        status: 'PENDING' 
+        status: 'APPROVED', 
+        feedback: pesanUMKM
       }
     });
 
-    // 4. Kasih laporan sukses
     return NextResponse.json({
       success: true,
-      message: "tugas berhasil bro, tinggal nunggu acc nih",
-      data: newSubmission
-    }, { status: 201 });
+      message: "Tugas berhasil dikumpul bro, mantap!",
+      data: updatedSubmission
+    }, { status: 200 });
 
   } catch (error) {
-    console.error("waduh error woy, error pas ngumpulin tugas", error);
+    console.error("ALASAN SERVER MELEDAK:", error);
     return NextResponse.json({ success: false, message: "Server meledak pas ngumpulin tugas!" }, { status: 500 });
   }
 }
