@@ -1,7 +1,7 @@
 import React from 'react';
 import { Hexagon, Shield, Trophy, Flame } from 'lucide-react';
 
-export default function ProfileCard() {
+export default function ProfileCard({ nama, xp, level }) {
   return (
     // Wrapper Utama Kartu
     <div className="bg-[#0C1021] rounded-3xl p-6 border border-gray-800 w-full flex flex-col gap-6 shadow-lg">
@@ -17,8 +17,8 @@ export default function ProfileCard() {
           />
         </div>
         <div className="flex flex-col">
-          <h2 className="text-xl font-bold text-white tracking-wide">Kim Booyah</h2>
-          <p className="text-sm text-gray-400 font-medium">Level 87</p>
+          <h2 className="text-xl font-bold text-white tracking-wide">{nama}</h2>
+          <p className="text-sm text-gray-400 font-medium">Level {level}</p>
         </div>
       </div>
 
@@ -31,7 +31,7 @@ export default function ProfileCard() {
             <Hexagon size={28} fill="currentColor" className="text-blue-900" />
           </div>
           <div className="flex flex-col">
-            <span className="text-white font-bold text-sm">1990</span>
+            <span className="text-white font-bold text-sm">{ xp }</span>
             <span className="text-[11px] text-gray-500 font-medium">Total XP</span>
           </div>
         </div>
