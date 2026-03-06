@@ -29,8 +29,8 @@ export default function AuthNav() {
           </Link>
         </li>
         <li>
-          <Link href="/umkm" className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors">
-            UMKM
+          <Link href="/achievement" className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors">
+            Achievement
           </Link>
         </li>
         <li>

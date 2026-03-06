@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { SignJWT } from 'jose'; // <--- Mesin pencetak KTP
 
-const prisma = new PrismaClient();
+import prisma from '../../../../lib/prisma';
 // Ambil stempel rahasia dari .env
 const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'rahasia_dong');
 
