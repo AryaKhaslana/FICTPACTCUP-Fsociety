@@ -37,8 +37,8 @@ const HowItWorks = () => {
 
   return (
     <div className="min-h-screen bg-[#070714] flex flex-col">
-      <section className="flex flex-col items-center py-20 px-4 w-full">
-        <h1 className="text-2xl md:text-[32px] text-white pb-8 md:pb-[50px] tracking-wide text-center font-pixel">
+      <section className="flex flex-col items-center pt-20 px-4 w-full">
+        <h1 className="text-2xl md:text-[48px] text-white pb-8 md:pb-[50px] tracking-wide text-center font-pixel">
           How it Works?
         </h1>
 
@@ -54,10 +54,10 @@ const HowItWorks = () => {
           <div className="flex flex-col md:flex-row w-full text-[#1c2331] z-10 gap-10 md:gap-[75px]">
             {/* BAGIAN UMKM */}
             <div className="flex-1 flex flex-col px-4 md:px-[15px]">
-              <h2 className="text-center text-lg md:text-xl mb-10 mt-4 text-[#111827] font-pixel font-bold">
+              <h2 className="text-center text-lg md:text-xl mb-10 mt-4 text-[#111827] font-pixel">
                 UMKM
               </h2>
-              <ul className="space-y-20 flex-1 flex flex-col text-[17px] font-poppins font-semibold text-gray-700">
+              <ul className="space-y-6 flex-1 flex flex-col text-[17px] font-poppins font-semibold text-gray-700">
                 <li className="flex items-start gap-4">
                   <Image src="/quest-simbol.png" alt="Ikon quest UMKM" width={64} height={64} className="w-12 h-12 md:w-16 md:h-16 shrink-0" />
                   <p>Langkah 1: UMKM mengirim Quest / masalah bisnisnya.</p>
@@ -75,10 +75,10 @@ const HowItWorks = () => {
 
             {/* BAGIAN SISWA */}
             <div className="flex-1 flex flex-col px-4 md:px-10">
-              <h2 className="text-center text-lg md:text-xl mb-10 mt-4 text-[#111827] font-pixel font-bold">
+              <h2 className="text-center text-lg md:text-xl mb-10 mt-4 text-[#111827] font-pixel">
                 SISWA
               </h2>
-              <ul className="space-y-20 flex-1 flex flex-col text-[17px] font-poppins font-semibold text-gray-700">
+              <ul className="space-y-8 flex-1 flex flex-col text-[17px] font-semibold text-gray-700 font-poppins">
                 <li className="flex items-start gap-4">
                   <Image src="/quest-simbol.png" alt="Ikon quest siswa" width={64} height={64} className="w-12 h-12 md:w-16 md:h-16 shrink-0" />
                   <p>Langkah 1: Siswa mencari dan Accept Quest.</p>
@@ -98,7 +98,8 @@ const HowItWorks = () => {
       </section>
 
       {/* SECTION BAWAH */}
-      <section className="relative w-full min-h-[500px] flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative w-full flex flex-col items-center justify-center overflow-hidden">
+        <div className="relative w-full h-[500px] md:h-[700px]">
           <Image
             src="/readybg.png"
             alt="Background ready"
@@ -106,12 +107,12 @@ const HowItWorks = () => {
             className="object-cover z-0"
             priority
           />
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#070714] to-transparent z-1" />
+          <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#070714] to-transparent z-10" />
 
-        <div className="relative z-10 flex flex-col items-center mt-24">
+          <div className="relative z-20 flex flex-col items-center justify-center h-full">
           
           {/* IMPLEMENTASI EFEK MESIN TIK (TYPEWRITER) */}
-          <h1 className="text-2xl md:text-4xl text-white mb-8 text-center drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] font-pixel flex items-center justify-center gap-x-3 min-h-[50px]">
+          <h1 className="text-2xl md:text-[60px] text-white mb-8 text-center drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] font-pixellari flex items-center justify-center gap-x-3 min-h-[50px]">
             Ready To
             <span className="text-[#f79e00] pl-8 flex items-center">
               {currentText}
@@ -122,10 +123,11 @@ const HowItWorks = () => {
 
           <button
             type="button"
-            className="text-xs md:text-[10px] text-black bg-[#f79e00] hover:bg-[#d98b00] px-10 py-4 border-b-4 border-r-4 border-black rounded-xl active:translate-y-1 active:translate-x-1 active:border-b-0 active:border-r-0 transition-all cursor-pointer font-pixel"
+            className="mt-4 px-10 py-3 bg-[#FFB800] hover:bg-[#E6A600] text-black font-pixellari text-lg rounded-md transition-all duration-300 transform hover:scale-105 shadow-[0_4px_0_0_#996E00] hover:shadow-[0_2px_0_0_#996E00] hover:translate-y-1"
           >
             Start Adventure for Free
           </button>
+          </div>
         </div>
       </section>
     </div>

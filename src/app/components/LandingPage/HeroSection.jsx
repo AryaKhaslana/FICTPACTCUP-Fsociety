@@ -20,13 +20,15 @@ export default function HeroSection() {
       {/* 2. Content Layer (Teks & Tombol) */}
       <div className="relative z-10 flex flex-col items-center gap-6 max-w-3xl mx-auto mt-10">
         
-        {/* JUDUL UTAMA - Sesuai Figma (Pixellari + Gradient + Stroke Hitam + Shadow) */}
-        <h1 className="font-pixellari text-5xl md:text-[58px] tracking-wide leading-tight 
-                       text-transparent bg-clip-text bg-gradient-to-b from-[#FFE140] to-[#E6940B] 
-                       [-webkit-text-stroke:1px_black] md:[-webkit-text-stroke:2px_black] 
-                       drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">
-          Mulai Petualangan <br /> Nyatamu!
-        </h1>
+        {/* Judul utama - gambar text-hero.png */}
+        <Image
+          src="/text-hero.png"
+          alt="Mulai Petualangan Nyatamu!"
+          width={600}
+          height={200}
+          className="w-full max-w-xl md:max-w-2xl h-auto drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]"
+          priority
+        />
         
         {/* Sub-judul putih */}
         <p className="text-sm md:text-lg text-white font-poppins font-medium drop-shadow-md max-w-lg">
