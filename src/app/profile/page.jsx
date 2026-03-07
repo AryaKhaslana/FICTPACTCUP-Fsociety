@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import AuthNav from '../components/Navbar'; // Sesuaikan path-nya kalau beda
+import AuthNav from '../components/Navbar/AuthNav'; // Sesuaikan path-nya kalau beda
 import { Star, Download, Award, Shield, Image as ImageIcon } from 'lucide-react';
 
 export default function ProfilePage() {
