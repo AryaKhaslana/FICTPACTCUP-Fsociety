@@ -50,7 +50,7 @@ const testimonials = [
           {testimonials.map((item) => (
             <div
               key={item.id}
-              className="relative w-[406px] h-[541px] shadow-xl flex flex-col items-start pt-20 pb-8 pl-20 pr-24"
+              className="relative w-[406px] h-[541px] shadow-xl flex flex-col items-start pt-23 pb-1 pl-20 pr-24"
               style={{
                 backgroundImage: "url('/scrolls.png')",
                 backgroundSize: "100% 100%",
@@ -80,7 +80,7 @@ const testimonials = [
 
               {/* Title: max-w 225, h 37, size 32 */}
               <h2
-                className="text-[#3E2723]  uppercase tracking-wide overflow-hidden text-ellipsis font-pixellari"
+                className="text-[#3E2723]  uppercase tracking-wide overflow-hidden text-ellipsis font-pixellari mt-2"
                 style={{ maxWidth: 225, height: 37, fontSize: 29, lineHeight: "" }}
               >
                 {item.title}
@@ -88,7 +88,7 @@ const testimonials = [
 
               {/* Subtitle & Icon: subtitle w150 h16 size16, icon 13x13 */}
               <div
-                className="flex items-center gap-2 font-pixellari text-left text-[#5a3e26] overflow-hidden text- mb-2"
+                className="flex items-center gap-2 font-pixellari text-left text-[#5a3e26] overflow-hidden text- mb-3"
                 style={{ width: 150, height: 16, fontSize: 16 }}
               >
                 <Image src={item.icon} alt="" width={13} height={13} className="w-[13px] h-[13px] shrink-0 object-contain" />
