@@ -59,7 +59,7 @@ export default function ActiveQuest({ activeData }) {
         alert("Gagal: " + data.message);
       }
     } catch (error) {
-      alert("Waduh, koneksi ke server putus broskie!");
+      alert("Waduh, koneksi ke server putus");
     } finally {
       setIsSubmitting(false);
     }
