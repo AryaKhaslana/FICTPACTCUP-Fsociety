@@ -53,7 +53,7 @@ export default function AuthNav() {
           </Link>
         </li>
         <li>
-          <Link href="/achievement" className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors">
+          <Link href="/achievements" className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors">
             Achievement
           </Link>
         </li>

@@ -4,7 +4,7 @@ import { Award } from 'lucide-react';
 export default function AchievementBox() {
   return (
     <div className="bg-[#11131A] rounded-3xl border border-gray-800 p-8 shadow-lg">
-      <h3 className="text-[#F59E0B] font-bold text-lg mb-6 flex items-center gap-2">
+      <h3 className="text-[#F59E0B] font-bold font-pixellari text-lg mb-6 flex items-center gap-2">
         <Award size={20} /> Achievement
       </h3>
       

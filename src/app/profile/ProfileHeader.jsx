@@ -1,18 +1,18 @@
 import React from 'react';
 import { Star, Shield, Award, Hexagon, Download } from 'lucide-react';
 
-export default function ProfileHeader() {
+// 👇 Props-nya gue lengkapin biar dapet Rank sama Badge juga!
+export default function ProfileHeader({ nama, xp, level, rank = "Bronze", badge = 0 }) {
   return (
     <div className="w-full bg-[#11131A] rounded-2xl border border-gray-800 overflow-hidden shadow-xl mb-8">
       
       {/* 1. BANNER PIXEL ART */}
       <div className="w-full h-48 md:h-56 relative">
         <img 
-          src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80" 
+          src="/banner.png" 
           alt="Banner Profile" 
           className="w-full h-full object-cover"
         />
-        <h1 className="absolute top-6 left-8 font-pixel text-4xl text-white tracking-widest drop-shadow-md">Profil</h1>
       </div>
 
       {/* 2. KARTU PROFIL UTAMA (Bawah Banner) */}
@@ -21,23 +21,24 @@ export default function ProfileHeader() {
         {/* BAGIAN KIRI: Avatar & Identitas */}
         <div className="flex flex-col md:flex-row gap-4 md:gap-6 relative z-10 w-full lg:w-auto">
           
-          {/* JURUS ANTI TERBANG: Spacer buat Avatar */}
-          {/* Kita kasih kotak kosong tinggi 16, avatarnya kita absolute nembus ke atas */}
           <div className="w-32 h-16 shrink-0 relative mx-auto md:mx-0">
             <div className="w-32 h-32 rounded-full overflow-hidden border-[6px] border-[#11131A] bg-gray-800 absolute bottom-0 left-0 shadow-lg">
+              {/* 👇 FOTO RANDOM SESUAI NAMA LU */}
               <img 
-                src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Booyah" 
-                alt="Kim Booyah" 
+                src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${nama || 'Pahlawan'}`} 
+                alt="Avatar" 
                 className="w-full h-full object-cover"
               />
             </div>
           </div>
           
-          {/* Teks Identitas (Sekarang anteng di bawah banner!) */}
           <div className="text-center md:text-left pt-2 md:pt-0">
-            <h2 className="text-3xl font-bold text-white mb-0.5 tracking-wide">Kim booyah</h2>
+            {/* 👇 NAMA BERUBAH JADI DATA DARI DATABASE */}
+            <h2 className="text-3xl font-bold text-white mb-0.5 tracking-wide">
+              {nama || "Pahlawan Tanpa Nama"}
+            </h2>
             <p className="text-white font-semibold text-lg mb-3 flex items-center justify-center md:justify-start gap-1.5">
-              Web <span className="font-pixel text-[#A855F7] tracking-wider text-xl mt-1">Wizard</span>
+              Level <span className="font-pixel text-[#A855F7] tracking-wider ml-2 text-xl mt-1">{level || 1}</span>
             </p>
             
             <div className="flex items-center justify-center md:justify-start gap-2">
@@ -65,7 +66,8 @@ export default function ProfileHeader() {
                 <span className="font-pixel text-sm relative z-10 text-white drop-shadow-md">EXP</span>
               </div>
               <div>
-                <p className="text-2xl font-bold text-white leading-none">1990</p>
+                {/* 👇 XP JUGA JADI DATA ASLI DARI DATABASE */}
+                <p className="text-2xl font-bold text-white leading-none">{xp || 0}</p>
                 <p className="text-xs text-gray-400 font-semibold mt-1">Total XP</p>
               </div>
             </div>
@@ -76,7 +78,8 @@ export default function ProfileHeader() {
                 <Shield size={42} fill="#78350F" strokeWidth={1.5} />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white leading-none">Bronze</p>
+                {/* 👇 RANK DINAMIS */}
+                <p className="text-2xl font-bold text-white leading-none">{rank}</p>
                 <p className="text-xs text-gray-400 font-semibold mt-1">Rank</p>
               </div>
             </div>
@@ -87,7 +90,8 @@ export default function ProfileHeader() {
                 <Award size={40} fill="#B45309" strokeWidth={1.5} />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white leading-none">3</p>
+                {/* 👇 JUMLAH BADGE DINAMIS */}
+                <p className="text-2xl font-bold text-white leading-none">{badge}</p>
                 <p className="text-xs text-gray-400 font-semibold mt-1">Badge</p>
               </div>
             </div>
