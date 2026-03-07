@@ -37,8 +37,7 @@ const HowItWorks = () => {
 
   return (
     <div className="min-h-screen bg-[#070714] flex flex-col">
-      <section className="flex flex-col items-center pt-20
-       w-full">
+      <section className="flex flex-col items-center pt-20 px-4 w-full">
         <h1 className="text-2xl md:text-[48px] text-white pb-8 md:pb-[50px] tracking-wide text-center font-pixel">
           How it Works?
         </h1>
@@ -99,7 +98,8 @@ const HowItWorks = () => {
       </section>
 
       {/* SECTION BAWAH */}
-      <section className="relative w-full min-h-[500px] flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative w-full flex flex-col items-center justify-center overflow-hidden">
+        <div className="relative w-full h-[500px] md:h-[700px]">
           <Image
             src="/readybg.png"
             alt="Background ready"
@@ -107,12 +107,12 @@ const HowItWorks = () => {
             className="object-cover z-0"
             priority
           />
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#070714] to-transparent z-10" />
+          <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#070714] to-transparent z-10" />
 
-        <div className="relative z-20 flex flex-col items-center mt-24">
+          <div className="relative z-20 flex flex-col items-center justify-center h-full">
           
           {/* IMPLEMENTASI EFEK MESIN TIK (TYPEWRITER) */}
-          <h1 className="text-2xl md:text-4xl text-white mb-8 text-center drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] font-pixel flex items-center justify-center gap-x-3 min-h-[50px]">
+          <h1 className="text-2xl md:text-[60px] text-white mb-8 text-center drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] font-pixellari flex items-center justify-center gap-x-3 min-h-[50px]">
             Ready To
             <span className="text-[#f79e00] pl-8 flex items-center">
               {currentText}
@@ -123,10 +123,11 @@ const HowItWorks = () => {
 
           <button
             type="button"
-            className="text-xs md:text-[10px] text-black bg-[#f79e00] hover:bg-[#d98b00] px-10 py-4 border-b-4 border-r-4 border-black rounded-xl active:translate-y-1 active:translate-x-1 active:border-b-0 active:border-r-0 transition-all cursor-pointer font-pixel"
+            className="mt-4 px-10 py-3 bg-[#FFB800] hover:bg-[#E6A600] text-black font-pixellari text-lg rounded-md transition-all duration-300 transform hover:scale-105 shadow-[0_4px_0_0_#996E00] hover:shadow-[0_2px_0_0_#996E00] hover:translate-y-1"
           >
             Start Adventure for Free
           </button>
+          </div>
         </div>
       </section>
     </div>
