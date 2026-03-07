@@ -16,8 +16,15 @@ const pixelFont = Press_Start_2P({
 });
 
 export const metadata = {
-  title: 'XPact - Mulai Petualangan Nyatamu',
-  description: 'Platform penyedia quest untuk siswa SMK dan UMKM',
+  // 1. Ganti Teks Judul di Tab
+  title: 'XPACT - Petualangan UMKM Dimulai!', 
+  description: 'Platform Gamifikasi UMKM untuk Siswa Hebat',
+  
+  // 2. Ganti Ikon di Tab (Favicon)
+  icons: {
+    // Pastiin file 'dragon.png' beneran ada di folder public/ ya!
+    icon: '/dragon.png', 
+  },
 };
 
 export default function RootLayout({ children }) {
