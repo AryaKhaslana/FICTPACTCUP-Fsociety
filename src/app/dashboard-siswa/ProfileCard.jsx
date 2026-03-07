@@ -1,5 +1,6 @@
 import React from 'react';
 import { Hexagon, Shield, Trophy, Flame } from 'lucide-react';
+import Link from 'next/link';
 
 export default function ProfileCard({ nama, xp, level }) {
   return (
@@ -72,9 +73,11 @@ export default function ProfileCard({ nama, xp, level }) {
       </div>
 
       {/* BAGIAN BAWAH: Tombol */}
-      <button className="w-full py-3 mt-2 rounded-xl border border-gray-700 text-sm font-bold text-gray-300 hover:bg-white hover:text-black transition-all duration-300 active:scale-95">
-        Lihat Profil
-      </button>
+      <Link href="/profile" className="w-full mt-2">
+        <button className="w-full py-3 rounded-xl border border-gray-700 text-sm font-bold text-gray-300 hover:bg-white hover:text-black transition-all duration-300 active:scale-95">
+          Lihat Profil
+        </button>
+      </Link>
 
     </div>
   );
