@@ -1,19 +1,33 @@
 import React from 'react';
 import prisma from '../../lib/prisma'; 
-import Navbar from '../components/Navbar'; 
-// Panggil komponen Anak yang baru aja lu bikin!
+import AuthNav from '../components/Navbar/AuthNav'; 
 import QuestListClient from './QuestListClient'; 
 
 export default async function QuestBoardPage() {
   
-  // 1. TARIK SEMUA DATA MISI DARI DATABASE 🚀
-  const allQuests = await prisma.quest.findMany({
-    orderBy: { id: 'desc' } 
-  });
+  // 1. KITA JALANIN 2 QUERY BARENGAN BIAR NGEBUT! 🚀
+  const [userData, allQuests] = await Promise.all([
+    
+    // Tarik data user (sementara tembak ID 3 dulu kayak di dashboard)
+    prisma.user.findUnique({
+      where: { id: 3 }, 
+    }),
+
+    // Tarik semua data misi
+    prisma.quest.findMany({
+      orderBy: { id: 'desc' } 
+    })
+    
+  ]);
+
+  // 2. Bikin variabel namanya dari data user yang barusan ditarik
+  const namaSiswa = userData?.username || "Kim Booyah";
 
   return (
     <div className="min-h-screen bg-[#000010] text-white font-poppins pb-24">
-      <Navbar isAuthenticated={true} />
+      
+      {/* SEKARANG VARIABEL INI UDAH ADA ISINYA! */}
+      <AuthNav userName={namaSiswa} />
 
       <main className="max-w-6xl mx-auto px-6 pt-16">
         

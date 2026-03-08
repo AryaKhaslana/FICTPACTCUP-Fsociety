@@ -1,10 +1,13 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { Lock } from 'lucide-react';
+import AchievementModal from './AchievementModal';
 
 // Komponen mini buat tiap kotak skill (Node)
-const SkillNode = ({ title, isLocked, iconText, customIcon }) => {
+const SkillNode = ({ title, isLocked, iconText, customIcon, onClick }) => {
   return (
-    <div className="flex flex-col items-center gap-2 group cursor-pointer z-10">
+    <div onClick={onClick} className="flex flex-col items-center gap-2 group cursor-pointer z-10">
       <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center transition-all duration-300
         ${isLocked 
           ? 'bg-[#1a1d24] border-2 border-gray-600/50 opacity-70' 
@@ -31,6 +34,9 @@ const SkillNode = ({ title, isLocked, iconText, customIcon }) => {
 };
 
 export default function SkillTree() {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="w-full relative min-h-[900px] flex flex-col items-center rounded-3xl overflow-hidden border border-gray-800 bg-[#060916]">
       
@@ -74,7 +80,7 @@ export default function SkillTree() {
           
           {/* KOLOM KIRI: CODING */}
           <div className="flex flex-col items-center gap-10 md:gap-16">
-            <SkillNode title="Dasar HTML/CSS" iconText="HTML5" />
+            <SkillNode title="Dasar HTML/CSS" iconText="HTML5" onClick={() => setIsModalOpen(true)}/>
             <SkillNode title="JavaScript" iconText="JS" />
             <SkillNode title="Next.js Mastery" iconText="Next.js" />
           </div>
@@ -106,6 +112,11 @@ export default function SkillTree() {
         <button className="bg-[#F59E0B] hover:bg-[#D97706] text-[#000010] font-black text-lg md:text-xl px-12 py-3 md:py-4 rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all hover:scale-105 active:scale-95 border border-[#F59E0B]">
           CARI MISI
         </button>
+
+        <AchievementModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
 
       </div>
     </div>

@@ -1,21 +1,18 @@
 export const dynamic = 'force-dynamic';
 
 import React from 'react';
-// 1. Panggil Prisma Client lu di sini (sesuaikan path-nya kalau file lu beda letaknya)
 import prisma from '../../lib/prisma'; 
 
-import Navbar from '../components/Navbar'; 
+// 👇 1. INI YANG DIGANTI! Gusur Navbar lama, Panggil AuthNav Sakti kita!
+import AuthNav from '../components/Navbar/AuthNav'; // (Sesuaikan path-nya kalau beda folder ya)
+
 import ProfileCard from '../dashboard-siswa/ProfileCard';
 import FeedbackCard from './FeedbackCard';
 import ActiveQuest from './ActiveQuest';
 import RecommendedQuests from './ReccomendedQuests';
 
-// 2. Wajib kasih 'async' biar bisa nunggu data dari database
 export default async function DashboardSiswaPage() {
   
-  // 3. TARIK DATA DARI PRISMA
-  // (Peringatan: Pastikan di database lu ada user dengan id 1. 
-  // Nanti angka 1 ini kita ganti pakai session dari fitur Login)
   const userData = await prisma.user.findUnique({
     where: { 
       id: 3,
@@ -25,33 +22,30 @@ export default async function DashboardSiswaPage() {
     }
   });
 
-  // 4. Bikin fallback (cadangan) kalau database lagi kosong/error
   const namaSiswa = userData?.username || "Kim Booyah";
   const xpSiswa = userData?.studentProgress?.[0]?.currentXp || 0;
   const levelSiswa = userData?.studentProgress?.[0]?.level || 1;
 
   const allQuests = await prisma.quest.findMany({
     take: 6,
-    // orderBy: { id: 'desc' } // Opsional: Biar yang baru ditambahin muncul duluan
   });
 
   const activeSubmission = await prisma.submission.findFirst({
     where: { 
-      // ⚠️ WAJIB PAKE studentId, KARENA DI TABEL LU NAMANYA ITU!
       studentId: 3, 
       status: 'PENDING' 
     },
     include: {
       quest: true 
     },
-    // (Opsional) Biar misi terbaru yang muncul
     orderBy: { id: 'desc' } 
   });
 
   return (
     <div className="min-h-screen bg-[#000010] text-white font-poppins">
       
-      <Navbar isAuthenticated={true} />
+      {/* 👇 2. INI DIA SAKLAR AJAIBNYA! Kita oper namaSiswa ke AuthNav 👇 */}
+      <AuthNav userName={namaSiswa} />
 
       <main className="max-w-7xl mx-auto p-6 md:p-8">
         
@@ -59,8 +53,6 @@ export default async function DashboardSiswaPage() {
           
           {/* KOLOM KIRI */}
           <div className="lg:col-span-1 flex flex-col gap-8">
-            
-            {/* 5. Lempar data dari database ke komponen lu */}
             <ProfileCard nama={namaSiswa} xp={xpSiswa} level={levelSiswa} />
 
             <div className="bg-[#060916] rounded-2xl p-6 min-h-[300px] border border-gray-800 flex items-center justify-center text-gray-500">
