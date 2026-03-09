@@ -2,6 +2,7 @@
 
 import React from 'react';
 import QuestCard from './QuestCard';
+import Link from 'next/link';
 
 // Kamu bisa menambahkan font Pixel di index.html atau via CDN di CSS
 // @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
@@ -81,10 +82,13 @@ export default function FeatureSection() {
 
         {/* Footer Button */}
         <div className="flex justify-center">
-          <button className="bg-[#F59E0B] hover:bg-[#D97706] text-[#020617] font-bold py-3.5 px-10 rounded-xl flex items-center gap-3 transition-transform active:scale-95 shadow-lg shadow-[#F59E0B]/20">
+          <Link 
+            href="/login" 
+            className="bg-[#F59E0B] hover:bg-[#D97706] text-[#020617] font-bold py-3.5 px-10 rounded-xl flex items-center gap-3 transition-transform active:scale-95 shadow-lg shadow-[#F59E0B]/20"
+          >
             Jelajahi selengkapnya 
             <span className="text-xl">›</span>
-          </button>
+          </Link>
         </div>
         
       </div>

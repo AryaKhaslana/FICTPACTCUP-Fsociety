@@ -1,73 +1,56 @@
-'use client';
-
-
 import React from 'react';
 import Link from 'next/link';
-
-// Komponen Navbar biasa (kalau mau ditampilin, kalau ga mau hapus aja line ini)
-// import Navbar from './components/Navbar'; 
+import Image from 'next/image';
 
 export default function NotFound() {
   return (
-    // Wrapper Full Screen Dark
-    <div className="min-h-screen bg-[#000010] text-white font-poppins flex flex-col items-center justify-center p-6 text-center">
+    <main className="relative min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
       
-      {/* Kalau mau pake Navbar di 404, uncomment di bawah */}
-      {/* <div className="absolute top-0 left-0 w-full"><Navbar isAuthenticated={false} /></div> */}
+      {/* 1. BACKGROUND LANGIT MALAM (Sama kayak halaman login) */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/login-bg.png" // 👈 Pastiin nama file gambar awan malamnya sesuai di folder public lu!
+          alt="Dimensi Lain"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        {/* Overlay gelap dikit biar teks putihnya makin pop-out! */}
+        <div className="absolute inset-0 bg-black/20"></div>
+      </div>
 
-      {/* KONTEN UTAMA ALA MODAL BOX FIGMA */}
-      <div className="bg-[#1A233A] border-4 border-[#F59E0B] rounded-3xl p-10 md:p-12 max-w-2xl relative shadow-[0_0_50px_rgba(245,158,11,0.2)] flex flex-col items-center animate-in fade-in zoom-in duration-300">
+      {/* 2. KONTEN UTAMA */}
+      <div className="relative z-10 flex flex-col items-center text-center animate-in slide-in-from-bottom-5 fade-in duration-500">
         
-        {/* Row Gambar (Karakter & Naga Pixel) */}
-        <div className="flex items-center gap-10 md:gap-16 mb-10">
-          {/* Karakter Bingung (Pastiin aset gambarnya ada di public/ ya broskie!) */}
-          <div className="w-28 h-28 md:w-36 md:h-36 drop-shadow-lg">
-            <img 
-              src="/pixel-char-lost.png" // Ganti ama nama file karakter bingung lu
-              alt="Petualang Bingung" 
-              className="w-full h-full object-contain"
-            />
-          </div>
-          {/* Naga XPact */}
-          <div className="w-28 h-28 md:w-36 md:h-36 drop-shadow-lg">
-            <img 
-              src="/dragon.png" // Pake logo naga yang udah ada
-              alt="Naga XPact" 
-              className="w-full h-full object-contain"
-            />
-          </div>
-        </div>
-
-        {/* Teks "WADUH!" Font Pixel */}
-        <h1 className="font-pixel text-6xl md:text-8xl text-white tracking-widest mb-5 drop-shadow-lg animate-pulse">
-          WADUH!
+        {/* Teks 404 Gede Banget */}
+        <h1 className="text-[100px] md:text-[140px] font-black text-white leading-none drop-shadow-[0_0_30px_rgba(255,255,255,0.4)] mb-2">
+          404
         </h1>
-        
-        {/* Deskripsi Teks Pixel */}
-        <p className="font-pixel text-lg md:text-xl text-gray-300 leading-relaxed max-w-md drop-shadow-md">
-          Sepertinya area ini belum terjamah oleh pahlawan mana pun...
-        </p>
 
-        {/* TOMBOL-TOMBOL RPG STYLE */}
-        <div className="flex flex-col sm:flex-row gap-6 mt-14 w-full justify-center">
-          
-          {/* Tombol Kembali (Biru ala Figma) */}
-          <Link href="/dashboard-siswa" className="w-full sm:w-auto">
-            <button className="w-full bg-[#3B82F6] hover:bg-blue-600 text-white font-pixel text-xs md:text-sm py-4 px-8 rounded-xl transition-all border-b-4 border-r-4 border-black active:translate-y-1 active:translate-x-1 active:border-0 text-center tracking-wider">
-              KEMBALI KE DASHBOARD
-            </button>
-          </Link>
-          
-          {/* Tombol Lapor Bug (Merah ala Figma) */}
-          <button 
-            onClick={() => alert('Siuuu! Terima kasih laporannya pahlawan! Bug bakal segera dibasmi! ⚔️')}
-            className="w-full sm:w-auto bg-[#E11D48] hover:bg-[#BE123C] text-white font-pixel text-xs md:text-sm py-4 px-8 rounded-xl transition-all border-b-4 border-r-4 border-black active:translate-y-1 active:translate-x-1 active:border-0 tracking-wider"
-          >
-            LAPORKAN BUG
-          </button>
+        {/* Gambar Koin XPact Jatuh + Efek Animasi Melayang */}
+        <div className="w-24 h-24 md:w-45 md:h-45 mb-4 animate-bounce hover:scale-110 transition-transform">
+          {/* 👇 Ganti "coin.png" sama nama file koin pixel kuning lu di folder public! 👇 */}
+          <img 
+            src="/coin.png" 
+            alt="Koin Nyasar" 
+            className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(245,158,11,0.8)]" 
+          />
         </div>
+
+        {/* Teks Nyasar (Pake font pixel kebanggaan lu) */}
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-pixel text-white tracking-widest drop-shadow-md mb-10">
+          WADUH KAPTEN! NYASAR KE DIMENSI LAIN!
+        </h2>
+
+        {/* Tombol Kembali ke Markas */}
+        <Link 
+          href="/dashboard-siswa" 
+          className="bg-[#F59E0B] hover:bg-[#D97706] text-[#000010] font-black text-base md:text-lg px-8 py-3.5 rounded-full transition-transform hover:scale-105 shadow-[0_0_30px_rgba(245,158,11,0.4)]"
+        >
+          Kembali ke Markas
+        </Link>
 
       </div>
-    </div>
+    </main>
   );
 }

@@ -20,7 +20,12 @@ export default function Footer() {
               <p className="text-gray-400 text-sm font-medium">xpactsociety@gmail.com</p>
               <div className="flex items-center gap-2">
                  <img src="/portal.png" alt="Skomda" className="h-6 opacity-60 grayscale hover:grayscale-0 transition-all" />
-                 <span className="text-[10px] text-gray-500 font-bold uppercase tracking-tighter">Tentang Kami</span>
+                 <Link 
+                  href="/about" 
+                  className="text-[10px] text-gray-500 font-bold uppercase tracking-tighter hover:text-[#F59E0B] transition-colors cursor-pointer"
+                >
+                  Tentang Kami
+                </Link>
               </div>
             </div>
           </div>

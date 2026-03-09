@@ -60,7 +60,7 @@ export default function ActiveQuest({ activeData }) {
       
       {/* 1. HEADER (Selalu muncul di atas, mau kosong atau ada isi) */}
       <div className="flex justify-between items-end mb-4 px-2">
-        <h2 className="text-xl md:text-2xl font-bold text-white tracking-wide font-pixel">Quest Aktif</h2>
+        <h2 className="text-xl md:text-2xl font-bold text-white tracking-wide font-poppins">Quest Aktif</h2>
         
         {/* TOMBOL BUKA MODAL "LIHAT LAINNYA" */}
         <button 

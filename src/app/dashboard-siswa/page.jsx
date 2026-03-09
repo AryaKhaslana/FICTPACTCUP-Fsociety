@@ -2,27 +2,46 @@ export const dynamic = 'force-dynamic';
 
 import React from 'react';
 import prisma from '../../lib/prisma'; 
-
-// 👇 1. INI YANG DIGANTI! Gusur Navbar lama, Panggil AuthNav Sakti kita!
-import AuthNav from '../components/Navbar/AuthNav'; // (Sesuaikan path-nya kalau beda folder ya)
-
+import AuthNav from '../components/Navbar/AuthNav';
 import ProfileCard from '../dashboard-siswa/ProfileCard';
 import FeedbackCard from './FeedbackCard';
 import ActiveQuest from './ActiveQuest';
 import RecommendedQuests from './ReccomendedQuests';
 
+// 👇 1. Import cookies & jwt buat bongkar brankas rahasia
+import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
+
 export default async function DashboardSiswaPage() {
   
+  // 👇 2. Ambil token JWT dari Cookie
+  const cookieStore = await cookies();
+  const token = cookieStore.get('fictpact_token')?.value; // (Ganti 'token' sesuai nama cookie lu pas login)
+
+  let currentUserId = null;
+
+  // 👇 3. Ekstrak ID User dari dalem Token
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      currentUserId = decoded.id; // Pastiin pas login lu masukin 'id' ke dalem JWT
+    } catch (error) {
+      console.error("Token bodong atau expired nih broskie!");
+    }
+  }
+
+  // 👇 4. Panggil Prisma pakai ID ASLI (Bukan 3 lagi!)
   const userData = await prisma.user.findUnique({
     where: { 
-      id: 3,
+      id: currentUserId || 0, // Kalau ga ada token, kasih 0 biar ga error nge-crash
     },
     include: {
       studentProgress: true
     }
   });
 
-  const namaSiswa = userData?.username || "Kim Booyah";
+  // Data dinamis siap disajikan!
+  const namaSiswa = userData?.username || "Guest (Belum Login)";
   const xpSiswa = userData?.studentProgress?.[0]?.currentXp || 0;
   const levelSiswa = userData?.studentProgress?.[0]?.level || 1;
 

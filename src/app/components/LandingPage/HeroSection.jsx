@@ -8,12 +8,14 @@ export default function HeroSection() {
       {/* 1. Background Image Layer */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/pixel-hero.png" // Pastikan gambar ini udah ada
+          src="/pixel-hero.gif" // 👈 1. UBAH NAMA FILE JADI .gif (Sesuaikan sama nama file lu ya!)
           alt="XPact Hero Background"
           fill
           className="object-cover object-center"
           priority 
+          unoptimized // 👈 2. MANTRA SAKTI BIAR GIF-NYA BEBAS BERGERAK!
         />
+        {/* Layer gelap biar teks lu tetep kebaca jelas walau background-nya rame */}
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
 
