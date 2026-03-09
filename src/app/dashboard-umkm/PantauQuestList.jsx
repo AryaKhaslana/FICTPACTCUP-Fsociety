@@ -34,14 +34,14 @@ export default function PantauQuestList() {
     <section className="bg-transparent">
       <h1 className="text-2xl md:text-3xl font-semibold mb-6">Pantau Quest</h1>
 
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 ">
         {dummyQuests.map((quest) => (
           <article
             key={quest.id}
             className="relative overflow-hidden rounded-2xl bg-[#111121] border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.7)] flex flex-col sm:flex-row"
           >
             {/* Konten kiri */}
-            <div className="flex-1 p-5 sm:p-6 flex flex-col gap-4">
+            <div className="flex-1 p-5 sm:p-6 flex flex-col gap-4 bg-[#11131A]">
               <div className="flex items-center gap-2 text-xs md:text-sm">
                 <span
                   className={`inline-flex items-center px-3 py-1 rounded-full ${quest.badgeColor} ${quest.statusColor} font-semibold uppercase tracking-[0.12em] text-[10px]`}
@@ -87,12 +87,12 @@ export default function PantauQuestList() {
             {/* Gambar kanan dummy */}
             <div className="relative w-full sm:w-60 lg:w-72 h-32 sm:h-auto shrink-0">
               <Image
-                src="/quest-food-placeholder.png"
-                alt="Foto quest UMKM"
+                src="/foto-bakso.png"
+                alt="Quest thumbnail"
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-l from-black/60 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#11131A] via-[#11131A]/80 to-transparent hidden md:block"></div>
             </div>
           </article>
         ))}
