@@ -107,7 +107,7 @@ export default function NavbarUMKM({ userName = "Bos UMKM", userAvatar }) {
               </div>
 
               <div className="py-2">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-                <Link href="/dashboard-umkm/profile" prefetch={false} onClick={() => setIsDropdownOpen(false)}>
+                <Link href="/dashboard-umkm/profile-umkm" prefetch={false} onClick={() => setIsDropdownOpen(false)}>
                   <div className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer font-medium">
                     <User size={16} /> Profile
                   </div>
