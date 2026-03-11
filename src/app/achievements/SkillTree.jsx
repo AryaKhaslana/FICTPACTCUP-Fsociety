@@ -38,23 +38,12 @@ export default function SkillTree() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="w-full relative min-h-[900px] flex flex-col items-center rounded-3xl overflow-hidden border border-gray-800 bg-[#060916]">
-      
-      {/* 🌳 BACKGROUND POHON + GARIS (Wajib di-export bareng dari Figma!) */}
-      <img 
-        src="/treebg.png" 
-        alt="Skill Tree Background" 
-        className="absolute inset-0 w-full h-full object-cover opacity-90"
-      />
-
-      {/* OVERLAY GELAP DI BAWAH BIAR TEXT KELIATAN */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#000010] via-[#000010]/30 to-transparent pointer-events-none"></div>
-
+    <div className="w-full relative min-h-[900px] flex flex-col items-center rounded-3xl overflow-hidden border border-[#A8A8A8]-800 bg-[#060916]">
       {/* KONTEN UTAMA DITUMPUK DI ATAS POHON */}
       <div className="relative z-10 w-full h-full flex flex-col items-center pt-8 pb-12 px-4">
         
         {/* 1. DIAMOND ATAS (Titik Awal) */}
-        <div className="mb-10 relative flex justify-center items-center">
+        <div className="mb-10 relative flex justify-center items-center mb-20 mt-15">
           <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-[#F59E0B] to-[#B45309] border-4 border-[#11131A] shadow-[0_0_40px_rgba(245,158,11,0.6)] rotate-45 flex items-center justify-center overflow-hidden rounded-md">
              {/* Tekstur/Pattern di dalem diamond */}
              <div className="-rotate-45 w-full h-full opacity-40 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
@@ -109,7 +98,7 @@ export default function SkillTree() {
         </div>
 
         {/* 5. TOMBOL CARI MISI */}
-        <button className="bg-[#F59E0B] hover:bg-[#D97706] text-[#000010] font-black text-lg md:text-xl px-12 py-3 md:py-4 rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all hover:scale-105 active:scale-95 border border-[#F59E0B]">
+        <button className="bg-[#F59E0B] hover:bg-[#D97706] text-[#000010] font-black text-lg mt-15 md:text-xl px-12 py-3 md:py-4 rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all hover:scale-105 active:scale-95 border border-[#F59E0B]">
           CARI MISI
         </button>
 

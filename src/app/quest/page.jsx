@@ -10,7 +10,7 @@ export default async function QuestBoardPage() {
     
     // Tarik data user (sementara tembak ID 3 dulu kayak di dashboard)
     prisma.user.findUnique({
-      where: { id: 3 }, 
+      where: { id: 2 }, 
     }),
 
     // Tarik semua data misi
