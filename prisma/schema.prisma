@@ -16,6 +16,8 @@ enum Role {
 
 enum QuestStatus {
   OPEN
+  IN_PROGRESS
+  COMPLETED
   CLOSED
 }
 
