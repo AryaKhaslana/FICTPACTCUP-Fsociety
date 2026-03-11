@@ -92,7 +92,7 @@ export default function PantauQuestList() {
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#11131A] via-[#11131A]/80 to-transparent hidden md:block"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#11131A] via-[#11131A]/20 to-transparent hidden md:block"></div>
             </div>
           </article>
         ))}
