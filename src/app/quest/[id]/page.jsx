@@ -1,9 +1,9 @@
+export const dynamic = 'force-dynamic';
+
 import React from 'react';
 import Link from 'next/link';
 import prisma from '../../../lib/prisma'; 
 import Navbar from '../../components/Navbar'; 
-
-// Panggil komponen Anak yang baru dibikin!
 import QuestDetailClient from './QuestDetailClient'; 
 
 export default async function QuestDetailPage({ params }) {
@@ -11,11 +11,17 @@ export default async function QuestDetailPage({ params }) {
   const questId = Number(resolvedParams.id);
 
   if (isNaN(questId)) {
-    return <div className="text-white text-center mt-20 font-pixel">ID Quest Ngaco Brojak!</div>;
+    return <div className="text-white text-center mt-20 font-pixel uppercase">ID Quest Ngaco Brojak!</div>;
   }
 
+  // 🚀 AMBIL DATA QUEST + NAMA UMKM (CREATOR)-NYA
   const quest = await prisma.quest.findUnique({
     where: { id: questId },
+    include: {
+      creator: {
+        select: { username: true } // Biar dapet nama Tokonya
+      }
+    }
   });
 
   if (!quest) {
@@ -37,10 +43,8 @@ export default async function QuestDetailPage({ params }) {
       <Navbar isAuthenticated={true} />
 
       <main className="max-w-6xl mx-auto px-4 md:px-6 pt-12 relative z-10">
-        
-        {/* 🚀 LEMPAR DATA QUEST KE KOMPONEN ANAK BIAR DITAMPILIN UI-NYA 🚀 */}
+        {/* 🚀 LEMPAR DATA QUEST KE ANAK 🚀 */}
         <QuestDetailClient quest={quest} />
-        
       </main>
     </div>
   );
