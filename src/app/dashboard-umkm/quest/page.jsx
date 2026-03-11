@@ -3,20 +3,15 @@ export const dynamic = 'force-dynamic';
 import React from 'react';
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
-
-// Pastiin path import ini bener ya kapten (mundur 3 folder)
 import prisma from '../../../lib/prisma'; 
 import NavbarUMKM from '../../components/NavbarUMKM/NavbarUMKM'; 
 import KanbanBoard from './KanbanBoard';
 
 export default async function QuestPage() {
-  
-  // 1. BONGKAR BRANKAS JWT
   const cookieStore = await cookies();
   const token = cookieStore.get('fictpact_token')?.value; 
 
   let currentUserId = null;
-
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -26,34 +21,32 @@ export default async function QuestPage() {
     }
   }
 
-  // 2. AMBIL DATA USER BUAT NAVBAR
   const userData = await prisma.user.findUnique({
     where: { id: currentUserId || 0 }
   });
 
-  const namaUmkm = userData?.username || "Guest UMKM";
-  const avatarUmkm = userData?.avatarUrl || null;
-
-  // 🔥 3. INI YANG BIKIN MUNCUL! AMBIL SEMUA QUEST MILIK UMKM INI 🔥
+  // 🔥 INI YANG BANG SEPUH TAMBAHIN! BAWA DATA SISWA SEKALI BARENG SUBMISSION-NYA!
   const umkmQuests = await prisma.quest.findMany({
-    where: { 
-      creatorId: currentUserId || 0 // Pake creatorId sesuai Schema DB lu
+    where: { creatorId: currentUserId || 0 },
+    include: {
+      submissions: {
+        orderBy: { id: 'desc' },
+        include: {
+          student: {
+            select: { username: true } // Bawa nama siswanya sekalian!
+          }
+        }
+      }
     },
-    orderBy: { id: 'desc' } // Urutin dari yang paling baru
+    orderBy: { id: 'desc' }
   });
 
   return (
     <main className="min-h-screen bg-[#040414] text-white">
-      
-      {/* Navbar di atas */}
-      <NavbarUMKM userName={namaUmkm} userAvatar={avatarUmkm} />
-
-      {/* Konten Utama */}
+      <NavbarUMKM userName={userData?.username} userAvatar={userData?.avatarUrl} />
       <div className="max-w-7xl mx-auto px-4 mt-8">
-        
-        {/* 🔥 4. SUAPIN DATA QUEST-NYA KE KANBAN BOARD 👇 */}
+        {/* SUAPIN KE KANBAN BOARD 👇 */}
         <KanbanBoard quests={umkmQuests} />
-        
       </div>
     </main>
   );

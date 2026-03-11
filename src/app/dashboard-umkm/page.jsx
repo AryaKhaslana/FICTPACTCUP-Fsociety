@@ -37,6 +37,20 @@ export default async function UmkmDashboardPage() {
     }
   });
 
+  const pantauSubmissions = await prisma.submission.findMany({
+    where: {
+      // Cari submission yang misi-nya dibikin sama UMKM ini
+      quest: {
+        creatorId: currentUserId || 0
+      }
+    },
+    include: {
+      quest: true,     // Bawa data detail misinya
+      student: true    // Bawa data nama siswanya
+    },
+    orderBy: { id: 'desc' }
+  });
+
   const umkmQuests = await prisma.quest.findMany({
     where: {
       // Ganti 'authorId' sesuai nama relasi UMKM di tabel Quest lu ya!
@@ -65,7 +79,7 @@ export default async function UmkmDashboardPage() {
             </div>
 
             {/* Bagian Quest List (Nanti datanya bisa difetch nyusul) */}
-            <PantauQuestList quests={umkmQuests}/>
+            <PantauQuestList submissions={pantauSubmissions}/>
             
           </div>
       </div>
