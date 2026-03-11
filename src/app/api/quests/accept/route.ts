@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 
-// Panggil Prisma jalur sakti anti nyasar
 const prisma = global.prisma || new PrismaClient();
 if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
 
@@ -15,13 +14,20 @@ export async function POST(request) {
     }
 
     // BIKIN DATA BARU DI DATABASE 🚀
-    // Kita buatin tiket submission buat si Naruto
     const newSubmission = await prisma.submission.create({
       data: {
         questId: Number(questId),
-        studentId: 3, // ⚠️ Masih pakai ID Naruto (3) buat ngetes
-        status: 'PENDING', // Statusnya masih dikerjain
-        fileUrl: '', // Kosongin dulu karena belum dikumpulin link tugasnya
+        // 🔥 GANTI JADI 2 BROS! Karena di DB lu siswa (Gojouuuuu) itu ID-nya 2!
+        studentId: 2, 
+        status: 'PENDING', 
+        fileUrl: '', 
+      }
+    });
+
+    await prisma.quest.update({
+      where: { id: Number(questId) },
+      data: { 
+        status: 'IN_PROGRESS' // Ubah jadi IN_PROGRESS biar pindah kolom!
       }
     });
 
@@ -33,6 +39,10 @@ export async function POST(request) {
 
   } catch (error) {
     console.error("ALASAN MELEDAK:", error);
-    return NextResponse.json({ success: false, message: "Server meledak pas ngambil misi!" }, { status: 500 });
+    // 🔥 BIAR ERROR ASLINYA MUNCUL DI POP-UP ALERT LU, BUKAN TEKS DEFAULT!
+    return NextResponse.json({ 
+      success: false, 
+      message: error.message || "Server meledak pas ngambil misi!" 
+    }, { status: 500 });
   }
 }

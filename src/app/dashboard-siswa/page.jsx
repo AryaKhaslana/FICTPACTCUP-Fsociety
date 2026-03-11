@@ -49,16 +49,17 @@ export default async function DashboardSiswaPage() {
     take: 6,
   });
 
-  const activeSubmission = await prisma.submission.findFirst({
-    where: { 
-      studentId: 3, 
-      status: 'PENDING' 
-    },
-    include: {
-      quest: true 
-    },
-    orderBy: { id: 'desc' } 
-  });
+ const activeSubmission = await prisma.submission.findFirst({
+  where: { 
+    // 🔥 Pake currentUserId, jangan angka 3 lagi mpruy!
+    studentId: currentUserId || 0, 
+    status: 'PENDING' 
+  },
+  include: {
+    quest: true 
+  },
+  orderBy: { id: 'desc' } 
+});
 
   return (
     <div className="min-h-screen bg-[#000010] text-white font-poppins">
