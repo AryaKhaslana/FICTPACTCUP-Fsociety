@@ -36,8 +36,8 @@ const HeroSection = () => {
         
         <a 
           href="/register"
-          className="inline-block bg-[#f59e0b] hover:bg-[#d97706] text-black font-bold py-4 px-10 rounded-xl transition-all shadow-lg cursor-pointer uppercase tracking-wider text-sm active:scale-95"
-          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          className="inline-block bg-[#f59e0b] text-1xl font-pixellari hover:bg-[#d97706] text-black font-bold py-4 px-10 rounded-xl transition-all shadow-lg cursor-pointer uppercase tracking-wider active:scale-95"
+          >
           Daftar UMKM
         </a>
       </div>

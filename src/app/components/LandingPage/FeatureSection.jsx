@@ -84,7 +84,7 @@ export default function FeatureSection() {
         <div className="flex justify-center">
           <Link 
             href="/login" 
-            className="bg-[#F59E0B] hover:bg-[#D97706] text-[#020617] font-bold py-3.5 px-10 rounded-xl flex items-center gap-3 transition-transform active:scale-95 shadow-lg shadow-[#F59E0B]/20"
+            className="bg-[#F59E0B] text-xl hover:bg-[#D97706] text-[#020617] font-pixellari py-3.5 px-10 rounded-xl flex items-center gap-3 transition-transform active:scale-95 shadow-lg shadow-[#F59E0B]/20"
           >
             Jelajahi selengkapnya 
             <span className="text-xl">›</span>
