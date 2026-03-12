@@ -106,11 +106,11 @@ export default function LoginPage() {
           
           {/* KOTAK GOOGLE & LINKEDIN */}
           <div className="flex gap-4 mb-6">
-            <button className="flex-1 flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 hover:bg-gray-100 transition shadow-sm">
+            <button className="flex-1 flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 transition-all shadow-[0_4px_0_0_#9C9C9C] hover:shadow-[0_2px_0_0_#9C9C9C] hover:translate-y-1 active:translate-y-2 active:shadow-none">
               <Image src="/google.png" alt="Google" width={20} height={20} />
               <span className="text-sm font-bold text-gray-700">Google</span>
             </button>
-            <button className="flex-1 flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 hover:bg-gray-100 transition shadow-sm">
+            <button className="flex-1 flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 transition-all shadow-[0_4px_0_0_#9C9C9C] hover:shadow-[0_2px_0_0_#9C9C9C] hover:translate-y-1 active:translate-y-2 active:shadow-none">
               <Image src="/linkedin.png" alt="LinkedIn" width={20} height={20} />
               <span className="text-sm font-bold text-gray-700">LinkedIn</span>
             </button>
@@ -152,7 +152,7 @@ export default function LoginPage() {
             <button 
               type="submit"
               disabled={isLoading}
-              className={`w-full text-white font-bold py-3.5 rounded-lg mt-4 transition shadow-md ${
+              className={`bg-[#3B82F6]] hover:bg-[#3B82F6] text-white text-sm font-bold py-2 px-6 rounded-md transition-all shadow-[0_4px_0_0_#346CC7] hover:shadow-[0_2px_0_0_#346CC7] hover:translate-y-1 active:translate-y-2 active:shadow-none ${
                 isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#3B82F6] hover:bg-blue-600'
               }`}
             >

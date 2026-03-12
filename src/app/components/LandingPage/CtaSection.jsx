@@ -9,7 +9,7 @@ const HeroSection = () => {
     <section className="relative w-full h-[65vh] flex flex-col justify-center px-10 overflow-hidden bg-black">
       {/* Background Image Overlay */}
       <div 
-        className="absolute inset-0 z-0 opacity-60"
+        className="absolute inset-0 z-0 opacity-100"
         style={{
           backgroundImage: `url('/flower.png')`, // Menggunakan aset retro teknologi serupa image_85577e.jpg
           backgroundSize: 'cover',
@@ -17,7 +17,7 @@ const HeroSection = () => {
         }}
       />
       {/* Gradient untuk memastikan teks terbaca jelas */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#020617] via-[#020617]/40 to-transparent" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#020617] via-[#020617]/20 to-transparent" />
 
       <style>
         {`@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');`}
