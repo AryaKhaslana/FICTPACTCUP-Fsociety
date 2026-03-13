@@ -19,7 +19,7 @@ export default function UmkmProfile({ user }) {
   const misiSelesai = 1;
 
   return (
-    <section className="bg-[#11131A] border border-white/10 rounded-2xl p-6 shadow-[0_0_40px_rgba(0,0,0,0.7)] flex flex-col gap-4">
+    <section className="bg-[#060916] border-1 border-gray-400 rounded-2xl p-6 shadow-[0_0_40px_rgba(0,0,0,0.7)] flex flex-col gap-4">
       <div className="flex items-center gap-4">
         <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-[#f79e00] to-[#ff4d00] border border-white/20">
           
@@ -68,7 +68,7 @@ export default function UmkmProfile({ user }) {
 
       <button
         type="button"
-        className="mt-1 w-full rounded-xl bg-transparent border border-white/40 text-xs md:text-sm py-3 font-semibold border-b-4 border-r-4 border-white active:translate-y-0.5 active:translate-x-0.5 active:border-b-0 active:border-r-0 transition-all"
+        className="w-full py-2 rounded-[7px] border-1 border-gray-400 text-base font-pixellari text-gray-300 transition-all shadow-[0_4px_0_0_#A8A8A8] hover:shadow-[0_2px_0_0_#A8A8A8] hover:translate-y-1 active:translate-y-2 active:shadow-none"
       >
         Lihat Profil
       </button>

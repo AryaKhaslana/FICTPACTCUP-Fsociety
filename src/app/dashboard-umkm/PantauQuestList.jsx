@@ -55,10 +55,10 @@ export default function PantauQuestList({ submissions = [] }) {
 
   return (
     <section className="bg-transparent relative">
-      <h1 className="text-1xl md:text-2xl font-semibold mb-6 font-pixel">Pantau Quest</h1>
+      <h1 className="text-[32px] md:text-[32px] mb-2 font-pixellari">Pantau Quest</h1>
 
       {activeSubmissions.length === 0 ? (
-        <div className="relative overflow-hidden rounded-2xl bg-[#111121] border border-dashed border-white/20 flex flex-col items-center justify-center p-12 text-center min-h-[300px]">
+        <div className="relative overflow-hidden rounded-2xl bg-[#111121] border-1 border-gray-400 flex flex-col items-center justify-center p-12 text-center min-h-[300px]">
           <h3 className="text-xl font-bold text-white mb-2">Belum Ada Tugas Masuk</h3>
           <p className="text-sm text-white/50">Santai dulu bos, belum ada pahlawan yang butuh di-review.</p>
         </div>

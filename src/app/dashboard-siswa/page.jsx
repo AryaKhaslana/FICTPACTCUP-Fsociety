@@ -75,7 +75,7 @@ export default async function DashboardSiswaPage() {
           <div className="lg:col-span-1 flex flex-col gap-8">
             <ProfileCard nama={namaSiswa} xp={xpSiswa} level={levelSiswa} />
 
-            <div className="bg-[#060916] rounded-2xl p-6 min-h-[300px] border border-gray-800 flex items-center justify-center text-gray-500">
+            <div className="bg-[#060916] rounded-2xl p-6 min-h-[300px] border-2 border-gray-400 flex items-center justify-center text-gray-500">
               <FeedbackCard isEmpty={false} />
             </div>
           </div>

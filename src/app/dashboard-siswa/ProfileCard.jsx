@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function ProfileCard({ nama, xp, level }) {
   return (
     // Wrapper Utama Kartu
-    <div className="bg-[#0C1021] rounded-3xl p-6 border border-gray-800 w-full flex flex-col gap-6 shadow-lg">
+    <div className="bg-[#060916] rounded-3xl p-6 border-1 border-gray-400 w-full flex flex-col gap-6 shadow-lg">
       
       {/* BAGIAN ATAS: Foto & Info User */}
       <div className="flex items-center gap-4">
@@ -74,7 +74,7 @@ export default function ProfileCard({ nama, xp, level }) {
 
       {/* BAGIAN BAWAH: Tombol */}
       <Link href="/profile" className="w-full mt-2">
-        <button className="w-full py-3 rounded-xl border border-gray-700 text-sm font-bold text-gray-300 hover:bg-white hover:text-black transition-all duration-300 active:scale-95">
+        <button className="w-full py-3 rounded-xl border-1 border-gray-400 text-sm font-bold text-gray-300 transition-all shadow-[0_4px_0_0_#A8A8A8] hover:shadow-[0_2px_0_0_#A8A8A8] hover:translate-y-1 active:translate-y-2 active:shadow-none">
           Lihat Profil
         </button>
       </Link>

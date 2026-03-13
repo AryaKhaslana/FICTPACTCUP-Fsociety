@@ -3,7 +3,7 @@ import { Star, MessageSquareDashed } from 'lucide-react';
 
 export default function FeedbackCard({ isEmpty = false }) {
   return (
-    <div className="bg-[#060916] rounded-3xl p-6 border border-gray-800 w-full flex flex-col gap-4 shadow-lg h-full">
+    <div className="bg-[#060916] rounded-3xl w-full flex flex-col gap-4 shadow-lg h-full">
       <h3 className="text-lg font-bold text-white mb-2">Feedback terbaru</h3>
 
       {isEmpty ? (
@@ -17,7 +17,7 @@ export default function FeedbackCard({ isEmpty = false }) {
         <div className="flex flex-col gap-4">
           
           {/* Item Feedback 1 */}
-          <div className="p-4 rounded-xl border border-gray-800 bg-[#1A1D24] flex flex-col gap-2">
+          <div className="p-4 rounded-xl  bg-[#1A1D24] flex flex-col gap-2">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center shrink-0">
                 <span className="text-orange-500 font-bold text-xs">UM</span>
@@ -53,7 +53,7 @@ export default function FeedbackCard({ isEmpty = false }) {
           </div>
 
           {/* Tombol Lihat Lainnya */}
-          <button className="w-full py-2.5 mt-2 rounded-xl border border-gray-700 text-xs font-bold text-gray-300 hover:bg-gray-800 transition-all">
+          <button className="w-full py-2.5 mt-2 rounded-xl text-16px border-1 border-gray-400 text-xs font-bold text-gray-300 transition-all shadow-[0_4px_0_0_#A8A8A8] hover:shadow-[0_2px_0_0_#A8A8A8] hover:translate-y-1 active:translate-y-2 active:shadow-none">
             Lihat lainnya
           </button>
         </div>

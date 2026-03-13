@@ -82,7 +82,7 @@ export default function ActiveQuest({ activeData }) {
       ) : (
 
         // --- TAMPILAN KALAU ADA MISI ---
-        <div className="bg-[#11131A] rounded-2xl overflow-hidden border border-[#575757] flex flex-col md:flex-row relative shadow-lg">
+        <div className="bg-[#11131A] rounded-2xl overflow-hidden border-2 border-gray-400 flex flex-col md:flex-row relative shadow-lg">
           <div className="p-6 md:w-1/2 flex flex-col justify-center z-10 relative">
             <div className="w-10 h-10 bg-[#FF6B00] rounded-full flex items-center justify-center mb-4 border-2 border-[#11131A]">
               <span className="text-white font-bold text-xs">{activeData.quest.company?.substring(0, 2).toUpperCase() || 'UM'}</span>
@@ -113,7 +113,7 @@ export default function ActiveQuest({ activeData }) {
               alt="Quest Thumbnail" 
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#11131A] via-[#11131A]/80 to-transparent hidden md:block"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#11131A] via-[#11131A]/20 to-transparent hidden md:block"></div>
           </div>
         </div>
       )}
