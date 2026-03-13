@@ -2,7 +2,10 @@ import React from 'react';
 import { Hexagon, Shield, Trophy, Flame } from 'lucide-react';
 import Link from 'next/link';
 
-export default function ProfileCard({ nama, xp, level }) {
+export default function ProfileCard({ nama, xp, level, avatarUrl }) {
+
+  const finalAvatar = avatarUrl || `https://api.dicebear.com/7.x/pixel-art/svg?seed=${nama}&backgroundColor=transparent`;
+
   return (
     // Wrapper Utama Kartu
     <div className="bg-[#060916] rounded-3xl p-6 border-1 border-gray-400 w-full flex flex-col gap-6 shadow-lg">
@@ -11,11 +14,7 @@ export default function ProfileCard({ nama, xp, level }) {
       <div className="flex items-center gap-4">
         {/* Border gradient tipis ala gaming buat avatar */}
         <div className="w-16 h-16 rounded-xl overflow-hidden border border-gray-700 bg-gray-800 shrink-0">
-          <img 
-            src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Booyah&backgroundColor=transparent" 
-            alt="User Avatar" 
-            className="w-full h-full object-cover"
-          />
+         <img src={finalAvatar} alt={nama} className="w-full h-full object-cover" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-xl font-bold text-white tracking-wide">{nama}</h2>

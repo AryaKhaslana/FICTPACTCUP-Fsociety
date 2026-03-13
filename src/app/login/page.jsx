@@ -108,7 +108,7 @@ export default function LoginPage() {
 
           {/* KOTAK GOOGLE & LINKEDIN */}
           <div className="flex gap-4 mb-6 mt-2">
-            <button className="flex-1 flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 hover:bg-gray-100 transition shadow-sm">
+            <button className="flex-1 flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 transition-all shadow-[0_4px_0_0_#9C9C9C] hover:shadow-[0_2px_0_0_#9C9C9C] hover:translate-y-1 active:translate-y-2 active:shadow-none">
               <Image src="/google.png" alt="Google" width={20} height={20} />
               <span className="text-sm font-bold text-gray-700">Google</span>
             </button>

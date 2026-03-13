@@ -122,9 +122,11 @@ export default function AuthNav({ userName = "Pahlawan Tanpa Nama", userAvatar }
                     <User size={16} /> Profile
                   </div>
                 </Link>
+                 <Link href="/settings" prefetch={false} onClick={() => setIsDropdownOpen(false)}>                 
                 <div className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer font-medium">
                   <Settings size={16} /> Account
                 </div>
+                 </Link>
               </div>
 
               <div className="h-px bg-gray-800 my-1"></div>

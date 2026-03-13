@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full h-[90vh] flex items-center justify-center text-center px-4 overflow-hidden">
+    <section className="relative w-full h-[90vh] flex items-center justify-center text-center px-4 overflow-hidden mt-19">
       
       {/* 1. Background Image Layer */}
       <div className="absolute inset-0 z-0">

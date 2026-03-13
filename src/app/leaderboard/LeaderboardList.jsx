@@ -2,104 +2,117 @@ import React from 'react';
 
 export default function LeaderboardList({ topUsers = [], currentUser = null }) {
   return (
-    <div className="w-full flex flex-col items-center mt-12 pb-24 relative">
-      
-      {/* 1. HEADER LEADERBOARD HERO */}
-      <div className="text-center mb-6 px-4">
-        <h2 className="text-3xl md:text-4xl font-pixel font-black text-white uppercase tracking-widest drop-shadow-md mb-2">
-          Leaderboard <span className="text-green-500">hero</span>
-        </h2>
-        <p className="text-xs md:text-sm text-gray-400 max-w-lg mx-auto italic">
-          "Bukan sekadar kode dan desain, ini tentang menyelamatkan roda ekonomi dari ambang kehancuran. Angkat senjatamu, Pahlawan!"
-          <br/>- Guild Master Fsociety.
-        </p>
+    // 🔥 BUNGKUSAN DEWA (FRAGMENT) BIAR BAR KUNING BEBAS DARI PENJARA Z-INDEX 🔥
+    <>
+      {/* BAGIAN ATAS (LIST & HEADER) TETEP RELATIVE */}
+      <div className="w-full flex flex-col items-center pt-24 mt-12 pb-32 relative z-10">
         
-        {/* Mahkota Pixel (Ganti src-nya kalau lu punya gambarnya) */}
-        <div className="flex justify-center mt-6">
-          <img src="/crown.png" alt="Crown" className="w-40 md:w-45 drop-shadow-[0_0_15px_rgba(250,204,21,0.6)]" />
+        {/* 2. HEADER LEADERBOARD HERO */}
+        <div className="text-center mb-10 px-4">
+          <h2 className="text-4xl md:text-5xl font-pixel font-black text-white uppercase tracking-widest drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] mb-4">
+            LEADERBOARD <span className="text-green-500 text-shadow-sm">HERO</span>
+          </h2>
+          <p className="text-xs md:text-sm text-gray-400 max-w-xl mx-auto italic leading-relaxed">
+            "Bukan sekadar kode dan desain, ini tentang menyelamatkan roda ekonomi dari ambang kehancuran. Angkat senjatamu, Pahlawan!"
+            <br/><span className="font-bold text-gray-500">- Guild Master Fsociety.</span>
+          </p>
+        </div>
+
+        {/* 3. KOTAK LIST TOP PLAYER */}
+        <div className="w-full max-w-4xl bg-[#11131A]/80 backdrop-blur-md border-[2px] border-[#F59E0B]/50 rounded-3xl p-4 md:p-8 shadow-[0_0_40px_rgba(245,158,11,0.15)] relative overflow-hidden">
+          
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-1 bg-gradient-to-r from-transparent via-[#F59E0B] to-transparent opacity-50"></div>
+
+          <div className="flex flex-col gap-2">
+            {topUsers.map((user, index) => {
+              // KARENA PODIUM UDAH 1-3, LIST INI MULAI DARI 4 BROSKIE!
+              const rank = index + 4; 
+              return (
+                <div 
+                  key={user.id || index} 
+                  className="group flex items-center justify-between p-3 md:p-4 rounded-2xl hover:bg-white/10 transition-all duration-300 border-b border-gray-800/50 last:border-0 hover:scale-[1.01]"
+                >
+                  <div className="flex items-center gap-4 md:gap-6">
+                    <div className="w-10 flex justify-center">
+                      <span className="font-black text-xl text-gray-500 group-hover:text-white transition-colors">#{rank}</span>
+                    </div>
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gray-800 overflow-hidden border-2 border-gray-600 group-hover:border-[#F59E0B] transition-colors">
+                      <img 
+                        src={user.avatarUrl || `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.name}`} 
+                        alt={user.name} 
+                        className="w-full h-full object-cover" 
+                      />
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <p className="font-bold text-white text-base md:text-lg tracking-wide line-clamp-1 group-hover:text-[#F59E0B] transition-colors">
+                        {user.name}
+                      </p>
+                      <p className="text-[10px] md:text-xs text-gray-400 font-medium uppercase tracking-wider line-clamp-1 mt-0.5">
+                        {user.role || 'Pahlawan Baru'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 md:gap-8">
+                    <span className="text-xs md:text-sm text-gray-400 hidden md:block font-medium">
+                      {user.questsDone || 0} Quest Selesai
+                    </span>
+                    <div className="bg-[#1E293B] border border-gray-700 px-4 py-2 rounded-xl flex items-center gap-2 group-hover:border-[#F59E0B]/50 transition-colors">
+                      <span className="text-[#F59E0B] font-black text-xs md:text-sm whitespace-nowrap drop-shadow-sm">
+                        + {user.xp || 0} XP
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* 2. KOTAK LIST TOP PLAYER */}
-      <div className="w-full max-w-3xl bg-[#11131A] border-[4px] border-[#F59E0B] rounded-3xl p-4 md:p-6 shadow-[0_0_30px_rgba(245,158,11,0.2)]">
-        
-        <div className="flex flex-col gap-3">
-          {topUsers.map((user, index) => {
-            const rank = index + 1;
-            // Nentuin dia dapet medali apa ngga
-            const isTop3 = rank <= 3;
-            const medalColors = ['bg-yellow-400', 'bg-gray-300', 'bg-amber-700'];
-
-            return (
-              <div key={user.id} className="flex items-center justify-between p-3 md:p-4 rounded-xl hover:bg-white/5 transition-colors border-b border-gray-800 last:border-0">
-                
-                {/* Bagian Kiri: Rank & Profil */}
-                <div className="flex items-center gap-4 md:gap-6">
-                  {/* Rank / Medali */}
-                  <div className="w-8 flex justify-center">
-                    {isTop3 ? (
-                      <div className={`w-6 h-8 rounded-full ${medalColors[rank-1]} shadow-lg flex items-center justify-center border-2 border-[#11131A]`}>
-                        <div className="w-3 h-3 bg-white/40 rounded-full"></div>
-                      </div>
-                    ) : (
-                      <span className="font-black text-xl text-white">#{rank}</span>
-                    )}
-                  </div>
-                  
-                  {/* Avatar */}
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-700 overflow-hidden border-2 border-gray-500">
-                    <img src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${user.name}`} alt={user.name} className="w-full h-full object-cover" />
-                  </div>
-
-                  {/* Nama & Role */}
-                  <div>
-                    <p className="font-bold text-white text-sm md:text-base line-clamp-1">{user.name}</p>
-                    <p className="text-[10px] md:text-xs text-gray-400 line-clamp-1">{user.role}</p>
-                  </div>
-                </div>
-
-                {/* Bagian Kanan: Stats */}
-                <div className="flex items-center gap-4 md:gap-8">
-                  <span className="text-xs md:text-sm text-gray-300 hidden md:block">{user.questsDone} Quest selesai</span>
-                  <span className="bg-[#F59E0B] text-[#000010] font-black px-3 md:px-5 py-1.5 md:py-2 rounded-full text-[10px] md:text-xs whitespace-nowrap shadow-md">
-                    + {user.xp} XP
-                  </span>
-                </div>
-
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* 3. STICKY BAR CURRENT USER (Paling Bawah) */}
+      {/* 🔥 4. STICKY BAR CURRENT USER (DI LUAR PENJARA!) 🔥 */}
       {currentUser && (
-        <div className="fixed bottom-0 left-0 w-full z-50 flex justify-center pb-4 md:pb-6 px-4 pointer-events-none">
-          {/* Kotak bar-nya (pointer-events-auto biar tombolnya tetep bisa diklik kalau ada) */}
-          <div className="w-full max-w-4xl bg-[#F59E0B] rounded-2xl p-3 md:p-4 flex items-center justify-between shadow-[0_-10px_30px_rgba(245,158,11,0.3)] pointer-events-auto border-2 border-[#D97706]">
+        <div className="fixed bottom-0 left-0 w-full z-[9999] flex justify-center pb-6 px-4 pointer-events-none">
+          
+          <div className="w-full max-w-4xl bg-gradient-to-r from-[#D97706] to-[#F59E0B] rounded-2xl p-4 flex items-center justify-between shadow-[0_-15px_40px_rgba(245,158,11,0.25)] pointer-events-auto border-t border-yellow-300/30 transform transition-transform hover:-translate-y-1">
             
             <div className="flex items-center gap-4 md:gap-6">
-              <span className="font-black text-2xl text-[#000010] drop-shadow-sm">#{currentUser.rank}</span>
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white overflow-hidden border-2 border-[#000010]">
-                <img src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${currentUser.name}`} alt="You" className="w-full h-full object-cover" />
+              <span className="font-black text-3xl text-black/80 drop-shadow-md w-12 text-center">
+                #{currentUser.rank}
+              </span>
+              
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white overflow-hidden border-2 border-black/80 shadow-inner">
+                <img 
+                  src={currentUser.avatarUrl || `https://api.dicebear.com/7.x/adventurer/svg?seed=${currentUser.name}`} 
+                  alt="You" 
+                  className="w-full h-full object-cover" 
+                />
               </div>
-              <div>
-                <p className="font-black text-[#000010] text-sm md:text-base">{currentUser.name}</p>
-                <p className="text-[10px] md:text-xs text-[#000010]/70 font-bold hidden md:block">Itu kamu broskie!</p>
+              
+              <div className="flex flex-col">
+                <p className="font-black text-black text-base md:text-lg tracking-wide">
+                  {currentUser.name}
+                </p>
+                <p className="text-[10px] md:text-xs text-black/70 font-bold uppercase tracking-widest hidden md:block">
+                  Itu Kamu Broskie! 🚀
+                </p>
               </div>
             </div>
 
             <div className="flex items-center gap-4 md:gap-8 pr-2">
-              <span className="text-xs md:text-sm text-[#000010] font-bold hidden sm:block">{currentUser.questsDone} Quest selesai</span>
-              <span className="bg-white text-[#000010] font-black px-4 md:px-6 py-1.5 md:py-2 rounded-full text-xs md:text-sm shadow-inner border border-gray-200">
-                + {currentUser.xp} XP
+              <span className="text-xs md:text-sm text-black/80 font-bold hidden sm:block">
+                {currentUser.questsDone || 0} Quest Selesai
               </span>
+              
+              <div className="bg-black/90 px-5 md:px-6 py-2 md:py-2.5 rounded-xl border border-white/10 shadow-inner">
+                <span className="text-[#F59E0B] font-black text-xs md:text-sm whitespace-nowrap tracking-wider">
+                  + {currentUser.xp || 0} XP
+                </span>
+              </div>
             </div>
 
           </div>
         </div>
       )}
-
-    </div>
+    </>
   );
 }

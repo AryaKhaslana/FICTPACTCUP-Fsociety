@@ -117,17 +117,11 @@ const SuccessStory = () => {
 
 export default function App() {
   return (
-    <div className="h-screen w-full bg-[#020617] text-white flex flex-col overflow-hidden">
-      <main className="flex-grow flex flex-col h-full relative">
-        <HeroSection />
-        <SuccessStory />
-      </main>
-
-      <footer className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
-        <p className="text-white-800 text-[9px] font-bold uppercase tracking-[0.4em]">
-          &copy; 2024 FICTPACT-F society
-        </p>
-      </footer>
-    </div>
+    // min-h-screen dipake biar halamannya bisa discroll sepanjang apa pun ke bawah!
+    <main className="min-h-screen w-full bg-[#020617] text-white flex flex-col">
+      <HeroSection />
+      <SuccessStory />
+      {/* Kalo lu mau tambahin Footer, taruh komponennya di sini! */}
+    </main>
   );
 }
