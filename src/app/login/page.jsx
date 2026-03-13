@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Moon } from 'lucide-react';
-import { useRouter } from 'next/navigation'; // Wajib pakai ini buat pindah halaman
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -14,99 +14,101 @@ export default function LoginPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
-  const router = useRouter(); // Inisialisasi router
+  const router = useRouter(); 
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Mencegah browser refresh
+    e.preventDefault(); 
     setIsLoading(true);
-    setErrorMsg(''); // Reset error tiap kali mau nembak
+    setErrorMsg(''); 
 
     try {
-      // Nembak API. Pastikan URL ini sesuai dengan folder API lu (misal: src/app/api/auth/login/route.ts)
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        // Data yang dikirim ke backend
         body: JSON.stringify({ email, password }),
       });
 
-      // Tangkap surat balasan dari API lu
       const data = await response.json();
 
       if (response.ok && data.success) {
         console.log(data.message); 
         
-        // 1. Ambil role dari data user yang dikirim backend
         const userRole = data.user.role;
 
-        // 2. Bikin logika if/else untuk misahin rute
         if (userRole === 'UMKM') {
-          router.push('/dashboard-umkm'); // Ganti dengan nama folder dashboard UMKM lu
+          router.push('/dashboard-umkm'); 
         } else if (userRole === 'STUDENT') {
-          router.push('/dashboard-siswa'); // Ganti dengan nama folder dashboard Siswa lu
+          router.push('/dashboard-siswa'); 
         } else {
-          router.push('/'); // Fallback aman kalau role tidak terbaca
+          router.push('/'); 
         }
         
       } else {
-        // Kalau gagal (Email ga kedaftar, password salah, dll)
         setErrorMsg(data.message); 
       }
     } catch (error) {
       console.error('Error nembak API:', error);
       setErrorMsg('Gagal konek ke server bro!');
     } finally {
-      setIsLoading(false); // Matiin loading
+      setIsLoading(false); 
     }
   };
 
   return (
-    // Hilangkan bg-[#1E1E1E] agar background gambarnya terlihat
     <main className="relative min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
       
-      {/* 1. BACKGROUND GAMBAR (Posisi paling belakang z-0) */}
+      {/* 1. BACKGROUND GAMBAR */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/login-bg.png" // Ganti dengan nama file background malam lu di folder public
+          src="/login-bg.png" 
           alt="Login Background"
           fill
           className="object-cover object-center"
           priority
         />
-        {/* Overlay tipis agar teks putih lebih mudah dibaca */}
         <div className="absolute inset-0 bg-black/20"></div>
       </div>
 
-      {/* Tombol Dark Mode (Pojok Kanan Bawah) */}
+      {/* Tombol Dark Mode */}
       <button className="absolute bottom-8 right-8 z-20 bg-black/60 hover:bg-black/80 p-3 rounded-full text-white transition-colors">
         <Moon size={24} />
       </button>
 
-      {/* 2. KONTEN UTAMA (Posisi di depan z-10) */}
+      {/* 2. KONTEN UTAMA */}
       <div className="relative z-10 flex flex-col items-center w-full max-w-md">
         
         {/* TEKS TENGAH DAN LOGO */}
         <div className="text-center mb-8 flex flex-col items-center">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10">
-              {/* Logo Naga XPact */}
               <img src="/dragon.png" alt="Logo" />
             </div>
-            {/* Teks XPact otomatis pakai font pixel lu */}
             <h1 className="font-pixel text-4xl text-white tracking-widest mt-2 drop-shadow-md">XPACT</h1>
           </div>
           <p className="text-white text-sm drop-shadow-md">Selamat datang Kembali!</p>
           <p className="text-white text-sm drop-shadow-md">Login untuk melanjutkan perjalananmu</p>
         </div>
 
-        {/* 3. CARD FORM PUTIH */}
-        <div className="bg-white w-full rounded-2xl p-8 shadow-2xl">
+        {/* 3. CARD FORM PUTIH (🔥 BANG SEPUH TAMBAHIN 'relative' DI SINI 🔥) */}
+        <div className="bg-white w-full rounded-2xl p-8 shadow-2xl relative">
           
+          {/* 🔥 TOMBOL X DEWA BANG SEPUH 🔥 */}
+          <Link 
+            href="/" 
+            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-[#E11D48] hover:text-white transition-all transform active:scale-95 z-20"
+            title="Kembali ke Beranda"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </Link>
+
           {/* KOTAK GOOGLE & LINKEDIN */}
-          <div className="flex gap-4 mb-6">
-            <button className="flex-1 flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 transition-all shadow-[0_4px_0_0_#9C9C9C] hover:shadow-[0_2px_0_0_#9C9C9C] hover:translate-y-1 active:translate-y-2 active:shadow-none">
+          <div className="flex gap-4 mb-6 mt-2">
+            <button className="flex-1 flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 hover:bg-gray-100 transition shadow-sm">
               <Image src="/google.png" alt="Google" width={20} height={20} />
               <span className="text-sm font-bold text-gray-700">Google</span>
             </button>
@@ -123,7 +125,7 @@ export default function LoginPage() {
             <div className="h-px bg-gray-300 flex-1"></div>
           </div>
 
-          {/* Menampilkan pesan error warna merah kalau login gagal */}
+          {/* Menampilkan pesan error */}
           {errorMsg && (
             <div className="mb-4 p-3 bg-red-100 text-red-600 border border-red-300 rounded-md text-sm font-semibold text-center">
               {errorMsg}

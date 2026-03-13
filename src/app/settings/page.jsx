@@ -2,6 +2,7 @@
   import PublicProfileForm from './PublicProfileForm';
   import SecurityForm from './SecurityForm';
   import React, { useState } from 'react';
+  import NavbarUMKM from '../components/NavbarUMKM/NavbarUMKM';
 
   const SecurityFormLocal = () => {
     const [showPass, setShowPass] = useState(false);
@@ -91,34 +92,7 @@
     return (
       <div className="min-h-screen bg-[#020617] text-white font-sans selection:bg-[#f59e0b]/30 pb-20">
         {/* Header / Navbar */}
-        <header className="w-full border-b border-white/5 bg-[#050810]/90 backdrop-blur-xl px-8 py-4 flex items-center justify-between sticky top-0 z-50">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#10b981] to-[#059669] rounded-xl flex items-center justify-center shadow-lg shadow-green-500/10">
-              <img src="https://cdn-icons-png.flaticon.com/512/1147/1147805.png" className="w-6 h-6 invert" alt="Logo" />
-            </div>
-            <span className="font-extrabold text-xl tracking-tight">Pengaturan</span>
-          </div>
-          
-          <nav className="hidden md:flex items-center gap-10 text-xs font-bold uppercase tracking-widest text-gray-400">
-            <a href="#" className="hover:text-white transition-colors">Home</a>
-            <a href="#" className="hover:text-white transition-colors">Quest</a>
-            <a href="#" className="hover:text-white transition-colors">UMKM</a>
-            <a href="#" className="hover:text-white transition-colors">Leaderboard</a>
-          </nav>
-
-          <div className="flex items-center gap-5">
-            <button className="text-gray-400 hover:text-white">
-              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            </button>
-            <button className="text-gray-400 hover:text-white relative">
-              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-              <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            <div className="w-10 h-10 rounded-full border-2 border-[#f59e0b] overflow-hidden p-0.5 shadow-lg shadow-orange-500/10 cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&q=80&w=100" alt="User" className="w-full h-full object-cover rounded-full" />
-            </div>
-          </div>
-        </header>
+       <NavbarUMKM />
 
         {/* Main Content */}
         <main className="max-w-5xl mx-auto px-8 pt-16">
