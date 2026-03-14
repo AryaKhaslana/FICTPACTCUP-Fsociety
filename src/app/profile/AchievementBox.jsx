@@ -13,7 +13,7 @@ export default function AchievementBox() {
         <div className="flex flex-col items-center text-center gap-3">
           <h4 className="font-bold text-white text-sm">Web Wizard</h4>
           <div className="w-20 h-20 rounded-full bg-[#0F172A] border-4 border-blue-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.2)]">
-            <img src="https://api.dicebear.com/7.x/shapes/svg?seed=wizard&backgroundColor=transparent" alt="badge" className="w-12 h-12" />
+            <img src="/gir.png" />
           </div>
           <p className="text-xs text-gray-400 mt-2 leading-relaxed">
             Arsitek mahakarya digital. Tidak ada bug tampilan yang tidak bisa kamu basmi!
@@ -24,7 +24,7 @@ export default function AchievementBox() {
         <div className="flex flex-col items-center text-center gap-3">
           <h4 className="font-bold text-white text-sm">Sepuh design</h4>
           <div className="w-20 h-20 rounded-full bg-[#0F172A] border-4 border-purple-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-            <img src="https://api.dicebear.com/7.x/shapes/svg?seed=design&backgroundColor=transparent" alt="badge" className="w-12 h-12" />
+            <img src="/desain.png" />
           </div>
           <p className="text-xs text-gray-400 mt-2 leading-relaxed">
             Sudah sepuh, tidak ada design yang tidak bisa!
