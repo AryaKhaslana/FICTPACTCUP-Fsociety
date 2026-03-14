@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import React from 'react';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose'; 
@@ -23,11 +25,11 @@ export default async function ProfilePage() {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const { payload } = await jwtVerify(token, secret);
 
-    // 1. TARIK DATA PLUS STUDENT PROGRESS-NYA (Sama kayak di Dashboard lu!)
+    // 1. TARIK DATA PLUS STUDENT PROGRESS-NYA
     currentUser = await prisma.user.findUnique({
-      where: { id: payload.id }, 
+      where: { id: Number(payload.id) }, 
       include: {
-        studentProgress: true // 👈 INI YANG BIKIN XP SAMA LEVEL BISA MUNCUL
+        studentProgress: true 
       }
     });
 
@@ -40,22 +42,33 @@ export default async function ProfilePage() {
     redirect('/login');
   }
 
-  // 2. KITA SETING DATANYA PERSIS KAYAK DI DASHBOARD
+  // 2. KITA SETING DATANYA (TERMASUK AVATAR URL!)
   const namaSiswa = currentUser.username || "Pahlawan Tanpa Nama";
+  const avatarSiswa = currentUser.avatarUrl || null; // 👈 INI KUNCINYA BROSKIE!
   const xpSiswa = currentUser.studentProgress?.[0]?.currentXp || 0;
   const levelSiswa = currentUser.studentProgress?.[0]?.level || 1;
 
+  // Logika sederhana buat nentuin Rank (Bisa lu ubah sesuka hati)
+  let rankSiswa = "Bronze";
+  if (xpSiswa > 5000) rankSiswa = "Silver";
+  if (xpSiswa > 10000) rankSiswa = "Gold";
+
   return (
+    // Kasih pt-24 biar gak nyundul Navbar yang fixed!
     <div className="min-h-screen bg-[#000010] text-white font-poppins pb-24">
-      <AuthNav />
-      <main className="max-w-5xl mx-auto px-4 md:px-6 pt-8 relative z-10">
+      
+      {/* 3. OPER NAMA & AVATAR KE NAVBAR BIAR MUKA SEYRAA MUNCUL DI POJOK */}
+      <AuthNav userName={namaSiswa} userAvatar={avatarSiswa} />
+      
+      <main className="max-w-5xl mx-auto px-4 md:px-6 relative z-10 mt-20">
         
-        {/* 3. OPER VARIABEL YANG UDAH BENER KE ANAKNYA */}
+        {/* 4. OPER SEMUA DATA TERMASUK AVATAR KE HEADER PROFIL */}
         <ProfileHeader 
           nama={namaSiswa} 
+          avatarUrl={avatarSiswa} // 👈 OPER KE SINI
           xp={xpSiswa} 
           level={levelSiswa}
-          rank="Bronze" 
+          rank={rankSiswa} 
           badge={3} 
         />
 
