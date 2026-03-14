@@ -11,6 +11,7 @@ import UmkmProfile from "./UmkmProfile";
 import UmkmMenu from "./UmkmMenu";
 import PantauQuestList from "./PantauQuestList";
 import NavbarUMKM from "../components/NavbarUMKM/NavbarUMKM"; // Sesuaikan path-nya
+import TopKontributorDashboard from './TopKontributorDashboard.jsx';
 
 export default async function UmkmDashboardPage() {
   
@@ -79,7 +80,15 @@ export default async function UmkmDashboardPage() {
             </div>
 
             {/* Bagian Quest List (Nanti datanya bisa difetch nyusul) */}
-            <PantauQuestList submissions={pantauSubmissions}/>
+           <div className="flex flex-col gap-6">
+              
+              {/* Atas: Pantau Quest */}
+              <PantauQuestList submissions={pantauSubmissions}/>
+
+              {/* Bawah: Pahlawan Berjasa */}
+              <TopKontributorDashboard />
+
+            </div>
             
           </div>
       </div>
