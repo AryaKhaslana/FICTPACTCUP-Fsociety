@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Moon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+// 🔥 1. IMPORT SAKLAR SAKTI
+import ThemeToggle from '../components/ThemeToggle'; 
 
 export default function RegisterPage() {
   // State Role
@@ -32,7 +33,6 @@ export default function RegisterPage() {
     setErrorMsg('');
 
     try {
-      // Bikin paket data yang mau dikirim beda-beda tergantung rolenya
       const payload = role === 'STUDENT' 
         ? { nama, email, password, role } 
         : { namaBisnis, kategoriBisnis, lokasi, email, password, role };
@@ -46,7 +46,6 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        // Kalau sukses daftar, lempar ke halaman login
         router.push('/login');
       } else {
         setErrorMsg(data.message || 'Gagal mendaftar bro!');
@@ -62,21 +61,29 @@ export default function RegisterPage() {
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
       
-      {/* BACKGROUND */}
-      <div className="absolute inset-0 z-0">
+      {/* 🔥 2. BACKGROUND 2 ALAM (SIANG & MALAM) 🔥 */}
+      <div className="absolute inset-0 z-0 bg-blue-200 dark:bg-[#0B1026] transition-colors duration-500">
         <Image
-          src="/login-bg.png" 
-          alt="Register Background"
+          src="/login-light.png" 
+          alt="Register Background Day"
           fill
-          className="object-cover object-center"
+          className="object-cover object-center block dark:hidden"
           priority
         />
-        <div className="absolute inset-0 bg-black/20"></div>
+        <Image
+          src="/login-bg.png" 
+          alt="Register Background Night"
+          fill
+          className="object-cover object-center hidden dark:block"
+          priority
+        />
+        <div className="absolute inset-0 bg-white/10 dark:bg-black/20 transition-colors duration-500"></div>
       </div>
 
-      <button className="absolute bottom-8 right-8 z-20 bg-black/60 hover:bg-black/80 p-3 rounded-full text-white transition-colors">
-        <Moon size={24} />
-      </button>
+      {/* 🔥 3. TOMBOL SAKLAR DEWA 🔥 */}
+      <div className="absolute bottom-8 right-8 z-20 bg-white/50 dark:bg-black/60 backdrop-blur-md hover:scale-110 p-1.5 rounded-full transition-all shadow-lg border border-white/20 dark:border-gray-700">
+        <ThemeToggle />
+      </div>
 
       {/* KONTEN UTAMA */}
       <div className="relative z-10 flex flex-col items-center w-full max-w-md mt-4">
@@ -87,14 +94,13 @@ export default function RegisterPage() {
             <div className="w-10 h-10">
               <img src="/dragon.png" alt="Logo" />
             </div>
-            <h1 className="font-pixel text-4xl text-white tracking-widest mt-2 drop-shadow-md">XPACT</h1>
+            {/* Teks XPACT bisa ganti warna Hitam/Putih */}
+            <h1 className="font-pixel text-4xl text-gray-900 dark:text-white tracking-widest mt-2 drop-shadow-md transition-colors">XPACT</h1>
           </div>
         </div>
 
-        {/* CARD FORM PUTIH */}
+        {/* CARD FORM PUTIH (GAK DISENTUH SAMA SEKALI) */}
         <div className="bg-white w-full rounded-2xl p-8 shadow-2xl">
-          
-          {/* TOMBOL OAUTH SAMA GARIS "OR" (Gue skip di sini biar ga kepanjangan, lu pake yang sebelumnya aja) */}
           
           {/* TOGGLE ROLE (SISWA / UMKM) */}
           <div className="flex bg-gray-100 rounded-lg p-1 mb-5 mx-auto max-w-50">
@@ -127,9 +133,7 @@ export default function RegisterPage() {
           {/* FORM INPUT DINAMIS */}
           <form onSubmit={handleRegister} className="flex flex-col gap-4">
             
-            {/* LOKASI RENDER BERSYARAT (CONDITIONAL RENDERING) */}
             {role === 'STUDENT' ? (
-              // TAMPILAN JIKA ROLE = SISWA
               <>
                 <input
                   type="text"
@@ -141,7 +145,6 @@ export default function RegisterPage() {
                 />
               </>
             ) : (
-              // TAMPILAN JIKA ROLE = UMKM
               <>
                 <input
                   type="text"
@@ -152,7 +155,6 @@ export default function RegisterPage() {
                   required
                 />
                 
-                {/* Kategori Bisnis Dropdown */}
                 <select
                   value={kategoriBisnis}
                   onChange={(e) => setKategoriBisnis(e.target.value)}
@@ -177,7 +179,6 @@ export default function RegisterPage() {
               </>
             )}
 
-            {/* INPUT EMAIL & PASSWORD SELALU MUNCUL BUAT KEDUANYA */}
             <input
               type="email"
               placeholder="Email"
@@ -198,8 +199,8 @@ export default function RegisterPage() {
             <button 
               type="submit"
               disabled={isLoading}
-              className={`bg-[#3B82F6]] hover:bg-[#3B82F6] text-white text-sm font-bold py-2 px-6 rounded-md transition-all shadow-[0_4px_0_0_#346CC7] hover:shadow-[0_2px_0_0_#346CC7] hover:translate-y-1 active:translate-y-2 active:shadow-none ${
-                isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#3B82F6] hover:bg-blue-600'
+              className={`text-white text-sm font-bold py-3 px-6 rounded-lg transition-all shadow-[0_4px_0_0_#2563EB] hover:shadow-[0_2px_0_0_#2563EB] hover:translate-y-1 active:translate-y-2 active:shadow-none mt-2 ${
+                isLoading ? 'bg-gray-400 cursor-not-allowed shadow-none' : 'bg-[#3B82F6] hover:bg-blue-600'
               }`}
             >
               {isLoading ? 'Memproses...' : 'Daftar'}
