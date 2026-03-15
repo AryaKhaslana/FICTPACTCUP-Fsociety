@@ -2,7 +2,8 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { Sun, Moon } from "lucide-react"; // Pake icon dari lucide
+// Import Sun doang karena Moon-nya mau pake gambar lu sendiri
+import { Sun } from "lucide-react"; 
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -21,11 +22,12 @@ export default function ThemeToggle() {
       className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
       aria-label="Toggle Dark Mode"
     >
-      {/* Kalo mode dark, munculin matahari. Kalo light, munculin bulan */}
+      {/* Kalo mode dark, munculin matahari Lucide. Kalo light, munculin gambar bulan lu! */}
       {theme === "dark" ? (
         <Sun size={24} className="text-yellow-400" />
       ) : (
-        <Moon size={24} className="text-gray-800" />
+        // 🔥 INI DIA GAMBAR BULAN LU KAPTEN! 🔥
+        <img src="/moon.png" alt="Bulan" className="w-7 h-7 object-contain brightness-0" />
       )}
     </button>
   );
