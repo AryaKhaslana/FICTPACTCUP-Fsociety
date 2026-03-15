@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* 🔥 1. MANTRA SAKTI TAILWIND V4 BUAT DARK MODE CLASS 🔥 */
+@custom-variant dark (&:is(.dark *));
+
 html {
   scroll-behavior: smooth;
 }
@@ -20,6 +23,7 @@ html {
   font-weight: normal;
   font-style: normal;
 }
+
 .font-pixellari {
   font-family: 'Pixellari', sans-serif !important;
 }
@@ -32,15 +36,9 @@ html {
   font-family: var(--font-pixel), cursive !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* 🔥 2. BAGIAN @media (prefers-color-scheme) UDAH BANG SEPUH BUANG KE TONG SAMPAH! 🔥 */
 
+/* 🔥 3. BODY DIBERSIHIN BIAR NURUT SAMA CLASS DI LAYOUT.JS 🔥 */
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;  
 }
