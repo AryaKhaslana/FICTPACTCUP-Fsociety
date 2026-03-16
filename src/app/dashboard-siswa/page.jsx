@@ -8,40 +8,42 @@ import FeedbackCard from './FeedbackCard';
 import ActiveQuest from './ActiveQuest';
 import RecommendedQuests from './ReccomendedQuests';
 
-// 👇 1. Import cookies & jwt buat bongkar brankas rahasia
+// 👇 1. Import cookies & jose (Seragamin pake jose biar gak error broskie!)
 import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
+import { jwtVerify } from 'jose';
 
 export default async function DashboardSiswaPage() {
   
   // 👇 2. Ambil token JWT dari Cookie
   const cookieStore = await cookies();
-  const token = cookieStore.get('fictpact_token')?.value; // (Ganti 'token' sesuai nama cookie lu pas login)
+  const token = cookieStore.get('fictpact_token')?.value; 
 
   let currentUserId = null;
 
-  // 👇 3. Ekstrak ID User dari dalem Token
+  // 👇 3. Ekstrak ID User dari dalem Token pake JOSE
   if (token) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      currentUserId = decoded.id; // Pastiin pas login lu masukin 'id' ke dalem JWT
+      const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+      const { payload } = await jwtVerify(token, secret);
+      currentUserId = Number(payload.id); // Pastiin jadi angka!
     } catch (error) {
       console.error("Token bodong atau expired nih broskie!");
     }
   }
 
-  // 👇 4. Panggil Prisma pakai ID ASLI (Bukan 3 lagi!)
+  // 👇 4. Panggil Prisma pakai ID ASLI
   const userData = await prisma.user.findUnique({
     where: { 
-      id: currentUserId || 0, // Kalau ga ada token, kasih 0 biar ga error nge-crash
+      id: currentUserId || 0, 
     },
     include: {
       studentProgress: true
     }
   });
 
-  // Data dinamis siap disajikan!
-  const namaSiswa = userData?.username || "Guest (Belum Login)";
+  // 🔥 5. TARIK SEMUA DATA DINAMIS TERMASUK AVATAR 🔥
+  const namaSiswa = userData?.username || "Pahlawan Tanpa Nama";
+  const avatarSiswa = userData?.avatarUrl || null; // 👈 KUNCI UTAMANYA DI SINI
   const xpSiswa = userData?.studentProgress?.[0]?.currentXp || 0;
   const levelSiswa = userData?.studentProgress?.[0]?.level || 1;
 
@@ -51,7 +53,6 @@ export default async function DashboardSiswaPage() {
 
  const activeSubmission = await prisma.submission.findFirst({
   where: { 
-    // 🔥 Pake currentUserId, jangan angka 3 lagi mpruy!
     studentId: currentUserId || 0, 
     status: 'PENDING' 
   },
@@ -62,10 +63,11 @@ export default async function DashboardSiswaPage() {
 });
 
   return (
-    <div className="min-h-screen bg-[#000010] text-white font-poppins">
+    // Kasih pt-24 di main atau div paling luar biar ga nyundul AuthNav yang fixed!
+    <div className="min-h-screen bg-[#000010] text-white font-poppins pb-20">
       
-      {/* 👇 2. INI DIA SAKLAR AJAIBNYA! Kita oper namaSiswa ke AuthNav 👇 */}
-      <AuthNav userName={namaSiswa} />
+      {/* 🔥 6. OPER AVATAR KE NAVBAR 🔥 */}
+      <AuthNav userName={namaSiswa} userAvatar={avatarSiswa} />
 
       <main className="max-w-7xl mx-auto p-6 md:p-8">
         
@@ -73,7 +75,14 @@ export default async function DashboardSiswaPage() {
           
           {/* KOLOM KIRI */}
           <div className="lg:col-span-1 flex flex-col gap-8">
-            <ProfileCard nama={namaSiswa} xp={xpSiswa} level={levelSiswa} />
+            
+            {/* 🔥 7. OPER AVATAR KE PROFILE CARD 🔥 */}
+            <ProfileCard 
+              nama={namaSiswa} 
+              xp={xpSiswa} 
+              level={levelSiswa} 
+              avatarUrl={avatarSiswa} 
+            />
 
             <div className="bg-[#060916] rounded-2xl p-6 min-h-[300px] border-2 border-gray-400 flex items-center justify-center text-gray-500">
               <FeedbackCard isEmpty={false} />

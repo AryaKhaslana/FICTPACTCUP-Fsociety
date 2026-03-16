@@ -3,21 +3,19 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import ActiveMissionsModal from './ActiveMissionsModal'; // 👈 Jangan lupa import modal list misinya!
+import ActiveMissionsModal from './ActiveMissionsModal'; 
 
 export default function ActiveQuest({ activeData }) {
   const router = useRouter(); 
   
-  // 💡 KITA PISAH 2 STATE MODAL BIAR GA TABRAKAN!
-  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // Buat Form
-  const [isListModalOpen, setIsListModalOpen] = useState(false);     // Buat Lihat Lainnya
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); 
+  const [isListModalOpen, setIsListModalOpen] = useState(false);     
 
   const [linkQuest, setLinkQuest] = useState('');
   const [pesanUMKM, setPesanUMKM] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false); 
   const [showSuccessNotif, setShowSuccessNotif] = useState(false);
 
-  // FUNGSI BUAT NGIRIM DATA KE BACKEND
   const handleSubmit = async () => {
     if (!linkQuest) return alert("Link quest-nya diisi dulu dong, Master!");
     
@@ -27,7 +25,7 @@ export default function ActiveQuest({ activeData }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          submissionId: activeData.id,
+          submissionId: activeData?.id, // 👈 Kasih tanda tanya biar aman
           fileUrl: linkQuest,
           pesanUMKM: pesanUMKM
         })
@@ -36,10 +34,9 @@ export default function ActiveQuest({ activeData }) {
       const data = await response.json();
 
       if (data.success) {
-        setIsSubmitModalOpen(false); // Tutup modal form
-        setShowSuccessNotif(true); // Munculin notif gulungan surat estetik
+        setIsSubmitModalOpen(false); 
+        setShowSuccessNotif(true); 
 
-        // Tunggu 3 detik, baru refresh halamannya biar datanya ganti
         setTimeout(() => {
           setShowSuccessNotif(false);
           router.refresh(); 
@@ -56,13 +53,12 @@ export default function ActiveQuest({ activeData }) {
   };
 
   return (
-    <div className="w-full relative flex flex-col">
+    <div className="w-full relative flex flex-col h-full">
       
-      {/* 1. HEADER (Selalu muncul di atas, mau kosong atau ada isi) */}
+      {/* 1. HEADER */}
       <div className="flex justify-between items-end mb-4 px-2">
         <h2 className="text-xl md:text-2xl font-bold text-white tracking-wide font-poppins">Quest Aktif</h2>
         
-        {/* TOMBOL BUKA MODAL "LIHAT LAINNYA" */}
         <button 
           onClick={() => setIsListModalOpen(true)}
           className="text-xs md:text-sm text-gray-400 cursor-pointer hover:text-[#F59E0B] transition-colors border-b border-transparent hover:border-[#F59E0B]"
@@ -71,49 +67,69 @@ export default function ActiveQuest({ activeData }) {
         </button>
       </div>
 
-      {/* 2. PENGECEKAN DATA (KOSONG ATAU ADA ISI?) */}
+      {/* 2. KONTEN (PENGECEKAN KOSONG ATAU ADA ISI) */}
       {!activeData ? (
         
         // --- TAMPILAN KALAU KOSONG ---
-        <div className="w-full min-h-[200px] flex flex-col items-center justify-center bg-[#11131A]/50 border-2 border-dashed border-gray-700 rounded-2xl p-8">
+        <div className="w-full h-full min-h-[220px] flex flex-col items-center justify-center bg-[#11131A]/50 border-2 border-dashed border-gray-700 rounded-2xl p-8">
           <p className="text-gray-500 text-sm font-bold text-center">Belum ada quest yang sedang kamu kerjakan, Master!</p>
         </div>
 
       ) : (
 
-        // --- TAMPILAN KALAU ADA MISI ---
-        <div className="bg-[#11131A] rounded-2xl overflow-hidden border-2 border-gray-400 flex flex-col md:flex-row relative shadow-lg">
-          <div className="p-6 md:w-1/2 flex flex-col justify-center z-10 relative">
-            <div className="w-10 h-10 bg-[#FF6B00] rounded-full flex items-center justify-center mb-4 border-2 border-[#11131A]">
-              <span className="text-white font-bold text-xs">{activeData.quest.company?.substring(0, 2).toUpperCase() || 'UM'}</span>
+        // --- TAMPILAN KALAU ADA MISI (DENGAN GIF PIXEL ART) ---
+        // Pake min-h biar kotaknya seukuran sama desain awal
+        <div className="bg-[#11131A] rounded-2xl overflow-hidden border-2 border-white-800 flex flex-col md:flex-row relative shadow-[0_0_20px_rgba(0,0,0,0.5)] min-h-[220px]">
+          
+          {/* Bagian Teks (Kiri) */}
+          <div className="p-6 md:w-[55%] flex flex-col justify-center z-10 relative bg-[#11131A]">
+            
+            {/* Logo Inisial UMKM */}
+            <div className="w-10 h-10 bg-gradient-to-br from-[#FF6B00] to-[#D97706] rounded-full flex items-center justify-center mb-4 border-2 border-[#11131A] shadow-md">
+              <span className="text-white font-black text-xs">
+                {activeData.quest?.title?.substring(0, 2).toUpperCase() || 'UM'}
+              </span>
             </div>
             
-            <h3 className="text-2xl font-bold text-white mb-2">{activeData.quest.title}</h3>
-            <p className="text-xs text-gray-400 leading-relaxed mb-6 line-clamp-3">
-              {activeData.quest.description || 'Deskripsi misi sedang dimuat...'}
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-2 line-clamp-2 pr-4 drop-shadow-md">
+              {activeData.quest?.title || 'Judul Misi Kosong'}
+            </h3>
+            
+            <p className="text-xs text-gray-400 leading-relaxed mb-6 line-clamp-2 pr-4">
+              {activeData.quest?.description || 'Deskripsi misi sedang dimuat...'}
             </p>
 
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-              <span className="text-blue-500 text-xs font-bold">Sedang Dikerjakan</span>
+              <div className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
+              <span className="text-blue-400 text-xs font-bold tracking-wider">SEDANG DIKERJAKAN</span>
             </div>
 
-            {/* TOMBOL BUKA MODAL KUMPULIN MISI */}
             <button 
               onClick={() => setIsSubmitModalOpen(true)}
-              className="bg-[#F59E0B] hover:bg-[#D97706] text-black font-bold py-2.5 px-6 rounded-lg w-max transition-colors text-sm shadow-[0_0_15px_rgba(245,158,11,0.3)]"
+              className="bg-[#F59E0B] hover:bg-[#D97706] text-black font-extrabold py-2.5 px-6 rounded-lg w-max transition-all text-sm shadow-[0_4px_0_rgb(180,83,9)] hover:shadow-[0_2px_0_rgb(180,83,9)] hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none uppercase tracking-wide"
             >
               Kumpulkan
             </button>
           </div>
 
-          <div className="h-48 md:h-auto md:w-1/2 relative overflow-hidden opacity-80 md:opacity-100">
+          {/* 🔥 Bagian Gambar GIF Pixel Art (Kanan) 🔥 */}
+          <div className="h-48 md:h-auto md:w-[45%] relative overflow-hidden bg-black">
+            
+            {/* 💡 INI GIF-NYA BROSKIE! (Tema Cyberpunk/Hacker Room Pixel Art) */}
             <img 
-              src={activeData.quest.image || 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&q=80&w=500'} 
-              alt="Quest Thumbnail" 
-              className="w-full h-full object-cover"
+              src="/makan.gif" 
+              alt="Cyberpunk Quest" 
+              className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500 hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#11131A] via-[#11131A]/20 to-transparent hidden md:block"></div>
+            
+            {/* Gradient hitam dari kiri ke kanan biar teksnya gak nabrak gambar */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#11131A] via-[#11131A]/30 to-transparent hidden md:block"></div>
+            
+            {/* Gradient hitam dari bawah ke atas buat versi HP */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#11131A] via-[#11131A]/10 to-transparent md:hidden"></div>
+
+            {/* Overlay scanline tipis (efek TV jadul) */}
+            <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Scanlines.png/320px-Scanlines.png')] opacity-20 pointer-events-none mix-blend-overlay"></div>
           </div>
         </div>
       )}
@@ -122,7 +138,7 @@ export default function ActiveQuest({ activeData }) {
       {/* AREA KUMPULAN MODAL & NOTIFIKASI DI BAWAH SINI             */}
       {/* ========================================================= */}
 
-      {/* MODAL 1: DAFTAR MISI BERJALAN (DARI FILE SEBELUMNYA) */}
+      {/* MODAL 1: DAFTAR MISI BERJALAN */}
       <ActiveMissionsModal 
         isOpen={isListModalOpen} 
         onClose={() => setIsListModalOpen(false)} 
@@ -132,11 +148,11 @@ export default function ActiveQuest({ activeData }) {
       {isSubmitModalOpen && (
         <div 
           className="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4"
-          onClick={() => setIsSubmitModalOpen(false)} // Tutup kalau klik background
+          onClick={() => setIsSubmitModalOpen(false)}
         >
           <div 
             className="bg-[#0F1423] w-full max-w-[500px] rounded-2xl border border-[#F59E0B] shadow-[0_0_40px_rgba(245,158,11,0.2)] relative overflow-hidden animate-in fade-in zoom-in duration-200"
-            onClick={(e) => e.stopPropagation()} // Biar ga ketutup pas ngetik di form
+            onClick={(e) => e.stopPropagation()} 
           >
             <div className="p-6 pb-2 relative flex items-center justify-center">
               <button 
@@ -145,7 +161,7 @@ export default function ActiveQuest({ activeData }) {
               >
                 <X size={28} strokeWidth={3} />
               </button>
-              <h2 className="text-xl md:text-2xl font-pixel text-white tracking-wider mt-2">Kumpulkan misi</h2>
+              <h2 className="text-xl md:text-2xl font-pixel text-white tracking-wider mt-2 uppercase">Kumpulkan misi</h2>
             </div>
 
             <div className="p-6 md:px-10 flex flex-col gap-5">
@@ -155,35 +171,35 @@ export default function ActiveQuest({ activeData }) {
                 </label>
                 <input 
                   type="url"
-                  placeholder="Link quest"
+                  placeholder="Link Google Drive / Github / Figma..."
                   value={linkQuest}
                   onChange={(e) => setLinkQuest(e.target.value)}
-                  className="w-full bg-[#1A1F30] border border-gray-700 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-[#F59E0B] transition-colors"
+                  className="w-full bg-[#1A1F30] border border-gray-700 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-[#F59E0B] transition-colors shadow-inner"
                 />
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="text-white text-sm font-bold flex items-center gap-2">
-                  <span className="text-white">💬</span> Pesan untuk UMKM
+                  <span className="text-white">💬</span> Pesan untuk Klien
                 </label>
                 <textarea 
-                  placeholder="Ketik pesan untuk klien..."
+                  placeholder="Ketik pesan untuk UMKM (opsional)..."
                   rows={4}
                   value={pesanUMKM}
                   onChange={(e) => setPesanUMKM(e.target.value)}
-                  className="w-full bg-[#1A1F30] border border-gray-700 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-[#F59E0B] transition-colors resize-none"
+                  className="w-full bg-[#1A1F30] border border-gray-700 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-[#F59E0B] transition-colors resize-none shadow-inner"
                 ></textarea>
               </div>
 
-              <div className="flex justify-center mt-2 mb-4">
+              <div className="flex justify-center mt-4 mb-4">
                 <button 
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className={`font-pixel text-xs py-3 px-8 rounded-lg transition-colors border-b-4 border-r-4 border-black active:translate-y-1 active:translate-x-1 active:border-0 ${
-                    isSubmitting ? 'bg-gray-500 text-gray-300' : 'bg-[#F59E0B] hover:bg-[#D97706] text-black shadow-lg'
+                  className={`font-pixel text-xs py-3 px-8 rounded-lg transition-all border-b-4 border-r-4 border-black active:translate-y-1 active:translate-x-1 active:border-0 uppercase tracking-widest ${
+                    isSubmitting ? 'bg-gray-500 text-gray-300 cursor-not-allowed' : 'bg-[#F59E0B] hover:bg-[#D97706] text-black shadow-lg'
                   }`}
                 >
-                  {isSubmitting ? 'MENGIRIM...' : 'KUMPULKAN MISI'}
+                  {isSubmitting ? 'MENGIRIM Laporan...' : 'KUMPULKAN MISI'}
                 </button>
               </div>
             </div>
@@ -191,19 +207,21 @@ export default function ActiveQuest({ activeData }) {
         </div>
       )}
 
-      {/* NOTIFIKASI 3: GULUNGAN SURAT ESTETIK (Muncul 3 detik) */}
+      {/* NOTIFIKASI 3: GULUNGAN SURAT ESTETIK */}
       {showSuccessNotif && (
         <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[150] w-[90%] md:w-[600px] animate-in slide-in-from-top-10 fade-in duration-300">
-          <div className="bg-[#111424] border-2 border-[#F59E0B] rounded-2xl p-5 md:p-6 shadow-[0_0_40px_rgba(245,158,11,0.5)] flex items-center gap-4 md:gap-6">
-            <div className="text-4xl md:text-5xl drop-shadow-md shrink-0">
+          <div className="bg-[#111424]/95 backdrop-blur-md border-2 border-[#F59E0B] rounded-2xl p-5 md:p-6 shadow-[0_0_40px_rgba(245,158,11,0.6)] flex items-center gap-4 md:gap-6 relative overflow-hidden">
+            <div className="text-4xl md:text-5xl drop-shadow-md shrink-0 relative z-10 animate-bounce">
               📜
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 relative z-10">
               <p className="text-white text-sm md:text-base font-bold leading-relaxed tracking-wide">
                 Laporan misi telah terbang menuju markas UMKM! <br className="hidden md:block" />
                 Bersiaplah menunggu hasilnya, Pahlawan.
               </p>
             </div>
+            {/* Efek cahaya emas di belakang notif */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#F59E0B]/10 to-transparent"></div>
           </div>
         </div>
       )}

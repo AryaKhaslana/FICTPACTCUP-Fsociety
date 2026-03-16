@@ -20,7 +20,7 @@ export default function TentangKedai() {
       {/* Map Placeholder */}
       <div className="rounded-xl overflow-hidden mt-auto border border-gray-600">
         <img 
-          src="https://via.placeholder.com/600x300/e5e7eb/a3a3a3?text=Map+Sidoarjo" 
+          src="/bekasi.jpg" 
           alt="Peta Lokasi" 
           className="w-full h-32 object-cover"
         />
