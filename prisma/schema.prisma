@@ -87,6 +87,8 @@ model Submission {
   fileUrl     String
   status      SubmissionStatus @default(PENDING)
   feedback    String?          @db.Text
+  umkmReview  String?          @db.Text
+  rating      Int?
   submittedAt DateTime         @default(now())
 
   quest     Quest @relation(fields: [questId], references: [id])

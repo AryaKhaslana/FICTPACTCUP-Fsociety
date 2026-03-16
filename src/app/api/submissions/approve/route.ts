@@ -24,14 +24,15 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-        const { submissionId } = body;
+        // 🔥 JURUS SAKTI: TANGKEP SEMUA VARIABEL DARI FRONTEND 🔥
+        const { submissionId, feedback, rating } = body;
 
         if (!submissionId) {
             return NextResponse.json({ success: false, message: "ID tugasnya manaa woy"})
         }
 
         const submission = await prisma.submission.findUnique({
-            where: { id: Number(submissionId) }, // <--- TAMBAHIN INI!
+            where: { id: Number(submissionId) },
             include: { quest: true }
         })
 
@@ -42,9 +43,14 @@ export async function POST(request: Request) {
             return NextResponse.json({ success: false, message: "Buset, ini tugas udah di acc"}, { status: 400 });
         }
 
+        // 🔥 SEKARANG VS CODE GAK BAKAL NGAMUK LAGI 🔥
         await prisma.submission.update({
-            where: { id: Number(submissionId) }, // <--- TAMBAHIN INI JUGA!
-            data: { status: 'APPROVED'}
+            where: { id: Number(submissionId) }, 
+            data: { 
+                status: 'APPROVED',
+                umkmReview: feedback || '',    
+                rating: Number(rating) || 5
+            }
         });
 
         let progress = await prisma.studentProgress.findFirst({
@@ -55,9 +61,8 @@ export async function POST(request: Request) {
         });
 
         if (progress) {
-            // 🔥 LOGIKA NAIK LEVEL KALAU PROGRESS UDAH ADA 🔥
             const totalXpBaru = progress.currentXp + submission.quest.rewardXp;
-            const levelBaru = Math.floor(totalXpBaru / 1000) + 1; // Rumus Sakti Naik Level
+            const levelBaru = Math.floor(totalXpBaru / 1000) + 1;
 
             await prisma.studentProgress.update({
                 where: { id: progress.id },
@@ -67,7 +72,6 @@ export async function POST(request: Request) {
                 }
             });
         } else {
-        
             const totalXpBaru = submission.quest.rewardXp;
             const levelBaru = Math.floor(totalXpBaru / 1000) + 1;
             await prisma.studentProgress.create({

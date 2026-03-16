@@ -29,7 +29,7 @@ export default async function ProfilePage() {
     currentUser = await prisma.user.findUnique({
       where: { id: Number(payload.id) }, 
       include: {
-        studentProgress: true 
+        studentProgress: true // 🔥 Tarik semua riwayat skill!
       }
     });
 
@@ -44,32 +44,41 @@ export default async function ProfilePage() {
 
   // 2. KITA SETING DATANYA (TERMASUK AVATAR URL!)
   const namaSiswa = currentUser.username || "Pahlawan Tanpa Nama";
-  const avatarSiswa = currentUser.avatarUrl || null; // 👈 INI KUNCINYA BROSKIE!
-  const xpSiswa = currentUser.studentProgress?.[0]?.currentXp || 0;
-  const levelSiswa = currentUser.studentProgress?.[0]?.level || 1;
+  const avatarSiswa = currentUser.avatarUrl || null; 
+  
+  // 🔥 3. JURUS SAKTI: HITUNG TOTAL XP & GLOBAL LEVEL 🔥
+  let xpSiswa = 0;
+  let levelSiswa = 1;
 
-  // Logika sederhana buat nentuin Rank (Bisa lu ubah sesuka hati)
+  if (currentUser?.studentProgress && currentUser.studentProgress.length > 0) {
+    // Jumlahin semua currentXp dari array pake .reduce()
+    xpSiswa = currentUser.studentProgress.reduce((total, progress) => total + progress.currentXp, 0);
+    // Hitung level globalnya pake rumus: (TotalXP / 1000) + 1
+    levelSiswa = Math.floor(xpSiswa / 1000) + 1;
+  }
+
+  // Logika sederhana buat nentuin Rank
   let rankSiswa = "Bronze";
-  if (xpSiswa > 5000) rankSiswa = "Silver";
-  if (xpSiswa > 10000) rankSiswa = "Gold";
+  if (xpSiswa >= 5000) rankSiswa = "Silver";
+  if (xpSiswa >= 10000) rankSiswa = "Gold";
+  if (xpSiswa >= 50000) rankSiswa = "Mythic";
 
   return (
-    // Kasih pt-24 biar gak nyundul Navbar yang fixed!
     <div className="min-h-screen bg-[#000010] text-white font-poppins pb-24">
       
-      {/* 3. OPER NAMA & AVATAR KE NAVBAR BIAR MUKA SEYRAA MUNCUL DI POJOK */}
+      {/* OPER NAMA & AVATAR KE NAVBAR */}
       <AuthNav userName={namaSiswa} userAvatar={avatarSiswa} />
       
-      <main className="max-w-5xl mx-auto px-4 md:px-6 relative z-10 mt-20">
+      <main className="max-w-6xl mx-auto px-4 md:px-6 relative z-10 pt-8 mt-20">
         
-        {/* 4. OPER SEMUA DATA TERMASUK AVATAR KE HEADER PROFIL */}
+        {/* OPER SEMUA DATA TERMASUK AVATAR KE HEADER PROFIL */}
         <ProfileHeader 
           nama={namaSiswa} 
-          avatarUrl={avatarSiswa} // 👈 OPER KE SINI
+          avatarUrl={avatarSiswa} 
           xp={xpSiswa} 
           level={levelSiswa}
           rank={rankSiswa} 
-          badge={3} 
+          badge={1} 
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">

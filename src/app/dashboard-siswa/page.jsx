@@ -61,16 +61,30 @@ export default async function DashboardSiswaPage() {
     take: 6,
   });
 
- const activeSubmission = await prisma.submission.findFirst({
-  where: { 
-    studentId: currentUserId || 0, 
-    status: 'PENDING' 
-  },
-  include: {
-    quest: true 
-  },
-  orderBy: { id: 'desc' } 
-});
+  const activeSubmission = await prisma.submission.findFirst({
+    where: { 
+      studentId: currentUserId || 0, 
+      status: 'PENDING' 
+    },
+    include: {
+      quest: true 
+    },
+    orderBy: { id: 'desc' } 
+  });
+
+  // 🔥🔥🔥 INI DIA YANG KETINGGALAN: NARIK DATA FEEDBACK! 🔥🔥🔥
+  const recentFeedback = await prisma.submission.findMany({
+    where: { 
+      studentId: currentUserId || 0, 
+      status: 'APPROVED',
+      rating: { not: null } // Tarik yang udah dapet bintang dari UMKM
+    },
+    include: { 
+      quest: true // Biar dapet nama quest-nya
+    },
+    orderBy: { submittedAt: 'desc' },
+    take: 2 // Tampil 2 biji aja biar rapi
+  });
 
   return (
     <div className="min-h-screen bg-[#000010] text-white font-poppins pb-20">
@@ -94,7 +108,8 @@ export default async function DashboardSiswaPage() {
             />
 
             <div className="bg-[#060916] rounded-2xl p-6 min-h-[300px] border-2 border-gray-400 flex items-center justify-center text-gray-500">
-              <FeedbackCard isEmpty={false} />
+              {/* 🔥 OPER DATANYA KE KOMPONEN FEEDBACK CARD 🔥 */}
+              <FeedbackCard feedbackData={recentFeedback} />
             </div>
           </div>
 

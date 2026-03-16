@@ -5,60 +5,58 @@ export default function PortfolioGallery() {
     <div className="bg-[#11131A] rounded-2xl border border-gray-800 p-6 md:p-8 shadow-xl h-full flex flex-col">
       
       {/* Judul Font Pixel */}
-      <h3 className="text-[#F59E0B] font-pixellari text-xl md:text-2xl mb-6 tracking-wider drop-shadow-md">
+      <h3 className="text-[#F59E0B] font-pixellari text-xl md:text-2xl mb-6 tracking-wider drop-shadow-md shrink-0">
         Galeri Portofolio
       </h3>
       
-      {/* GRID CONTAINER SAKTI (3 Kolom) */}
-      <div className="grid grid-cols-3 gap-3 md:gap-5 flex-grow">
+      {/* 🔥 GRID CONTAINER SAKTI: Kunci di 3 Kolom & 2 Baris 🔥 */}
+      <div className="grid grid-cols-3 grid-rows-2 gap-3 md:gap-4 flex-grow min-h-[300px] md:min-h-[400px]">
         
-        {/* ITEM 1: KOPIUM (Kiri Atas - Lebar 2 Kolom) */}
-        <div className="col-span-2 relative rounded-xl overflow-hidden border border-gray-700 group cursor-pointer h-32 md:h-48 shadow-lg bg-gray-800">
+        {/* ITEM 1: WEB UMKM (Kiri Atas - 2 Kolom, 1 Baris) */}
+        <div className="col-span-2 row-span-1 relative rounded-xl overflow-hidden border border-gray-700 group cursor-pointer shadow-lg bg-gray-800">
           <img 
-            src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80" 
-            alt="Kopium" 
+            src="/web-umkm.png" 
+            alt="Web UMKM" 
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
           />
-          {/* Overlay Hitam Pas Di-hover */}
           <div className="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span className="font-pixel text-white text-lg md:text-xl tracking-widest drop-shadow-lg">KOPIUM</span>
+            <span className="font-pixel text-white text-lg md:text-xl tracking-widest drop-shadow-lg text-center leading-relaxed">WEB KATALOG<br/>UMKM</span>
           </div>
         </div>
 
-        {/* ITEM 2: SO MATCHA (Kanan - Tinggi 2 Baris) */}
-        {/* Rahasianya ada di row-span-2 biar dia manjang ke bawah */}
+        {/* ITEM 2: CINEMATIC NASGOR (Kanan - 1 Kolom, 2 Baris Penuh) */}
         <div className="col-span-1 row-span-2 relative rounded-xl overflow-hidden border border-gray-700 group cursor-pointer shadow-lg bg-gray-800">
           <img 
-            src="https://images.unsplash.com/photo-1515516969-d4008cc6241a?w=400&h=800&fit=crop" 
-            alt="So Matcha" 
+            src="/foto-bakso.png" 
+            alt="Cinematic Nasgor" 
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
           />
-          <div className="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span className="font-pixel text-white text-sm md:text-lg tracking-widest text-center leading-relaxed">SO<br/>MATCHA</span>
+          <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 px-2">
+            <span className="font-pixel text-white text-[10px] md:text-sm tracking-widest text-center leading-relaxed">VIDEO<br/>PROMO<br/>NASGOR</span>
           </div>
         </div>
 
-        {/* ITEM 3: MIDNIGHT RAVEN (Kiri Bawah 1 - Kotak) */}
-        <div className="col-span-1 relative rounded-xl overflow-hidden border border-gray-700 group cursor-pointer aspect-square shadow-lg bg-gray-800">
+        {/* ITEM 3: DESIGN LOGO (Kiri Bawah 1 - 1 Kolom, 1 Baris) */}
+        <div className="col-span-1 row-span-1 relative rounded-xl overflow-hidden border border-gray-700 group cursor-pointer shadow-lg bg-gray-800">
           <img 
-            src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&h=500&fit=crop" 
-            alt="Midnight Raven" 
+            src="/logoprof.png" 
+            alt="Design Logo" 
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
           />
           <div className="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span className="font-pixel text-white text-[10px] md:text-sm tracking-widest text-center leading-relaxed px-1">MIDNIGHT<br/>RAVEN</span>
+            <span className="font-pixel text-white text-[8px] md:text-[10px] tracking-widest text-center leading-relaxed px-1">LOGO<br/>MAS AMBAS</span>
           </div>
         </div>
 
-        {/* ITEM 4: KAMPUS KONNECT (Kiri Bawah 2 - Kotak) */}
-        <div className="col-span-1 relative rounded-xl overflow-hidden border border-gray-700 group cursor-pointer aspect-square shadow-lg bg-gray-800">
+        {/* ITEM 4: BRANDING KOPIUM (Kiri Bawah 2 - 1 Kolom, 1 Baris) */}
+        <div className="col-span-1 row-span-1 relative rounded-xl overflow-hidden border border-gray-700 group cursor-pointer shadow-lg bg-gray-800">
           <img 
-            src="https://images.unsplash.com/photo-1557683316-973673baf926?w=500&h=500&fit=crop" 
-            alt="Kampus Konnect" 
+            src="/kopiumbg.png" 
+            alt="Branding Kopium" 
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
           />
           <div className="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span className="font-pixel text-white text-[10px] md:text-sm tracking-widest text-center leading-relaxed px-1">KAMPUS<br/>KONNECT</span>
+            <span className="font-pixel text-white text-[8px] md:text-[10px] tracking-widest text-center leading-relaxed px-1">BRANDING<br/>KOPIUM</span>
           </div>
         </div>
 
