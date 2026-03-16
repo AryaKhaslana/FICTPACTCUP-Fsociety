@@ -35,7 +35,7 @@ const testimonials = [
 
 const SuccessStory = () => {
   return (
-    <div className="min-h-screen bg-[#060813] py-16 px-0 md:px-4 font-pixellari overflow-hidden">
+    <div className="min-h-screen bg-[#020617] py-16 px-0 md:px-4 font-pixellari overflow-hidden">
       
       {/* Judul Utama */}
       <h1 className="text-white text-3xl md:text-5xl text-center mb-16 md:mb-28 tracking-widest px-4" 
