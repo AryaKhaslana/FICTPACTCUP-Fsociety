@@ -8,7 +8,7 @@ import FeedbackCard from './FeedbackCard';
 import ActiveQuest from './ActiveQuest';
 import RecommendedQuests from './ReccomendedQuests';
 
-// 👇 1. Import cookies & jose (Seragamin pake jose biar gak error broskie!)
+// 👇 1. Import cookies & jose
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 
@@ -37,15 +37,25 @@ export default async function DashboardSiswaPage() {
       id: currentUserId || 0, 
     },
     include: {
-      studentProgress: true
+      studentProgress: true // Narik SEMUA riwayat XP dari berbagai kategori/skill
     }
   });
 
-  // 🔥 5. TARIK SEMUA DATA DINAMIS TERMASUK AVATAR 🔥
+  // 🔥 5. TARIK DATA USER 🔥
   const namaSiswa = userData?.username || "Pahlawan Tanpa Nama";
-  const avatarSiswa = userData?.avatarUrl || null; // 👈 KUNCI UTAMANYA DI SINI
-  const xpSiswa = userData?.studentProgress?.[0]?.currentXp || 0;
-  const levelSiswa = userData?.studentProgress?.[0]?.level || 1;
+  const avatarSiswa = userData?.avatarUrl || null; 
+
+  // 👑 JURUS SAKTI: HITUNG TOTAL XP & GLOBAL LEVEL 👑
+  let xpSiswa = 0;
+  let levelSiswa = 1;
+
+  if (userData?.studentProgress && userData.studentProgress.length > 0) {
+    // 1. Jumlahin semua currentXp dari array pake .reduce()
+    xpSiswa = userData.studentProgress.reduce((total, progress) => total + progress.currentXp, 0);
+    
+    // 2. Hitung level globalnya pake rumus: (TotalXP / 1000) + 1
+    levelSiswa = Math.floor(xpSiswa / 1000) + 1;
+  }
 
   const allQuests = await prisma.quest.findMany({
     take: 6,
@@ -63,7 +73,6 @@ export default async function DashboardSiswaPage() {
 });
 
   return (
-    // Kasih pt-24 di main atau div paling luar biar ga nyundul AuthNav yang fixed!
     <div className="min-h-screen bg-[#000010] text-white font-poppins pb-20">
       
       {/* 🔥 6. OPER AVATAR KE NAVBAR 🔥 */}
@@ -76,7 +85,7 @@ export default async function DashboardSiswaPage() {
           {/* KOLOM KIRI */}
           <div className="lg:col-span-1 flex flex-col gap-8">
             
-            {/* 🔥 7. OPER AVATAR KE PROFILE CARD 🔥 */}
+            {/* 🔥 7. OPER DATA KE PROFILE CARD 🔥 */}
             <ProfileCard 
               nama={namaSiswa} 
               xp={xpSiswa} 

@@ -1,21 +1,23 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { jwtVerify } from "jose";
+import { cookies } from 'next/headers';
 
 const prisma = new PrismaClient();
 const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'rahasia_dong');
 
-export async function PUT(request: Request) {
+export async function POST(request: Request) {
     try {
-        const authHeader = request.headers.get('authorization');
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return NextResponse.json({ success: false, message: "akses ditolak!"}, { status: 401 });
+        const cookieStore = await cookies();
+        const tokenDariCookie = cookieStore.get('fictpact_token')?.value;
+
+        if (!tokenDariCookie) {
+            return NextResponse.json({ success: false, message: "akses ditolak! gak ada cookie"}, { status: 401 });
         }
-        const token = authHeader.split(' ')[1];
 
         let payload;
         try {
-            const verified = await jwtVerify(token, secret);
+            const verified = await jwtVerify(tokenDariCookie, secret);
             payload = verified.payload;
         } catch (error) {
             return NextResponse.json({ success: false, message: "token basi" }, { status: 401 })
@@ -29,7 +31,7 @@ export async function PUT(request: Request) {
         }
 
         const submission = await prisma.submission.findUnique({
-            where: {id: submissionId},
+            where: { id: Number(submissionId) }, // <--- TAMBAHIN INI!
             include: { quest: true }
         })
 
@@ -41,7 +43,7 @@ export async function PUT(request: Request) {
         }
 
         await prisma.submission.update({
-            where: {id: submissionId},
+            where: { id: Number(submissionId) }, // <--- TAMBAHIN INI JUGA!
             data: { status: 'APPROVED'}
         });
 
@@ -53,17 +55,27 @@ export async function PUT(request: Request) {
         });
 
         if (progress) {
+            // 🔥 LOGIKA NAIK LEVEL KALAU PROGRESS UDAH ADA 🔥
+            const totalXpBaru = progress.currentXp + submission.quest.rewardXp;
+            const levelBaru = Math.floor(totalXpBaru / 1000) + 1; // Rumus Sakti Naik Level
+
             await prisma.studentProgress.update({
                 where: { id: progress.id },
-                data: { currentXp: progress.currentXp + submission.quest.rewardXp }
+                data: { 
+                    currentXp: totalXpBaru,
+                    level: levelBaru 
+                }
             });
         } else {
+        
+            const totalXpBaru = submission.quest.rewardXp;
+            const levelBaru = Math.floor(totalXpBaru / 1000) + 1;
             await prisma.studentProgress.create({
                 data: {
                     userId: submission.studentId,
                     skillId: submission.quest.categoryId,
-                    currentXp: submission.quest.rewardXp,
-                    level: 1
+                    currentXp: totalXpBaru,
+                    level: levelBaru
                 }
             });
         }

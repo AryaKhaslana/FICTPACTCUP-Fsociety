@@ -49,7 +49,17 @@ export default function KanbanBoard({ quests = [] }) {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await fetch('/api/quests', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
+      // AMBIL TOKEN DARI LOCAL STORAGE
+      const token = localStorage.getItem('fictpact_token');
+      
+      const res = await fetch('/api/quests', { 
+        method: 'POST', 
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Tambahin KTP juga di sini jaga-jaga API lu minta
+        }, 
+        body: JSON.stringify(formData) 
+      });
       const dataDariServer = await res.json(); 
       if (res.ok) {
         setIsModalOpen(false); setFormData({ title: '', description: '', kategori: 'Desain / UI UX', xp: '1000', rank: 'A', deadline: '' }); router.refresh(); 
@@ -61,15 +71,28 @@ export default function KanbanBoard({ quests = [] }) {
   const handleReviewAction = async (submissionId, action, message) => {
     setIsSubmitting(true);
     try {
+      // 🚨 INI DIA JURUS SAKTINYA: AMBIL TOKEN DULU
+      // 🔥 PASTIKAN METHODNYA SESUAI SAMA API BACKEND LU (Ubah ke PUT kalau API lu pake PUT)
       const res = await fetch(`/api/submissions/${action}`, { 
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/json' }, 
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+        }, 
         body: JSON.stringify({ submissionId, rejectMessage: message }) 
       });
+
+      const responseData = await res.json();
+
       if (res.ok) {
         setIsReviewModalOpen(false); setSelectedSubmission(null); setRejectMessage(''); router.refresh();
-      } else { alert("Gagal nge-review bos!"); }
-    } catch (error) { alert("Koneksi meledak broskie!"); } finally { setIsSubmitting(false); }
+        alert(responseData.message || "Berhasil ACC Misi!"); // Kasih notif kalau dapet XP!
+      } else { 
+        alert(`Gagal nge-review bos! Pesan: ${responseData.message}`); 
+      }
+    } catch (error) { 
+      alert("Koneksi meledak broskie!"); 
+      console.error(error);
+    } finally { setIsSubmitting(false); }
   };
 
   const openReviewModal = (submission) => {
