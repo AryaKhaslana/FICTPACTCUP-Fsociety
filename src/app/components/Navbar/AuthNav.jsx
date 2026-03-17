@@ -18,6 +18,10 @@ export default function AuthNav({ userName = "Pahlawan Tanpa Nama", userAvatar }
   // 🔥 2. STATE BUAT BUKA TUTUP MENU BURGER DI HP 🔥
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // 🔥 3. STATE BUAT FITUR SEARCH EXPANDING 🔥
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const handleLogout = async () => {
     try {
       const res = await fetch('/api/auth/logout', { method: 'POST' }); 
@@ -30,6 +34,16 @@ export default function AuthNav({ userName = "Pahlawan Tanpa Nama", userAvatar }
       }
     } catch (error) {
       console.error("Waduh, gagal logout broskie:", error);
+    }
+  };
+
+  // 🔥 4. FUNGSI BUAT JALANIN PENCARIAN PAS DI-ENTER 🔥
+  const handleSearch = (e) => {
+    e.preventDefault(); 
+    if (searchQuery.trim() !== "") {
+      router.push(`/quest?search=${searchQuery}`);
+      setIsSearchOpen(false); 
+      setSearchQuery(""); 
     }
   };
 
@@ -53,25 +67,31 @@ export default function AuthNav({ userName = "Pahlawan Tanpa Nama", userAvatar }
 
         {/* 2. BAGIAN TENGAH: Menu Navigasi (HANYA MUNCUL DI LAPTOP/PC) */}
         <ul className="hidden md:flex items-center gap-8">
-          <li>
-            <Link href="/dashboard-siswa" prefetch={false} className="text-sm font-semibold text-white hover:text-[#FFB800] transition-colors">
+          <li className="relative group">
+            <Link href="/dashboard-siswa" prefetch={false} className="text-sm font-semibold text-white hover:text-[#FFB800] transition-colors py-1">
               Home
             </Link>
+            {/* Garis Bawah Kuning (Muncul pas hover & aktif) */}
+            <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100  transition-transform duration-300 origin-left"></span>
           </li>
-          <li>
-            <Link href="/quest" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors">
+          <li className="relative group">
+            <Link href="/quest" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors py-1">
               Quest
             </Link>
+            {/* Garis Bawah Kuning (Muncul pas hover doang) */}
+            <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </li>
-          <li>
-            <Link href="/achievements" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors">
+          <li className="relative group">
+            <Link href="/achievements" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors py-1">
               Achievement
             </Link>
+            <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </li>
-          <li>
-            <Link href="/leaderboard" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors">
+          <li className="relative group">
+            <Link href="/leaderboard" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors py-1">
               Leaderboard
             </Link>
+            <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </li>
         </ul>
 
@@ -79,9 +99,27 @@ export default function AuthNav({ userName = "Pahlawan Tanpa Nama", userAvatar }
         {/* Gap-nya dikecilin jadi gap-3 di HP biar gak sempit */}
         <div className="flex items-center gap-3 md:gap-5 text-gray-400">
           
-          <button className="hover:scale-110 transition-transform">
-            <img src="/search-pixel.png" alt="Search" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
-          </button>
+          {/* 🔥 5. FITUR EXPANDING SEARCH BAR DI SINI 🔥 */}
+          <form onSubmit={handleSearch} className="relative flex items-center">
+            <input
+              type="text"
+              placeholder="Cari Quest..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              // Delay dikit pas nutup biar fungsi Enter/Submit sempet jalan
+              onBlur={() => setTimeout(() => setIsSearchOpen(false), 200)} 
+              className={`absolute right-8 bg-[#11131A] border border-gray-700 text-white text-sm rounded-full py-1.5 focus:outline-none focus:border-[#FFB800] transition-all duration-300 origin-right ${
+                isSearchOpen ? "w-40 md:w-56 opacity-100 px-4" : "w-0 opacity-0 px-0 border-transparent"
+              }`}
+            />
+            <button
+              type="button"
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              className={`hover:scale-110 transition-transform relative z-10 p-1 rounded-full ${isSearchOpen ? 'bg-gray-800' : ''}`}
+            >
+              <img src="/search-pixel.png" alt="Search" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
+            </button>
+          </form>
 
           <button onClick={() => setIsChatOpen(true)} className="hover:scale-110 transition-transform relative">
             <img src="/chat-pixel.png" alt="Chat" className="w-5 h-5 md:w-6 md:h-6 object-contain" />

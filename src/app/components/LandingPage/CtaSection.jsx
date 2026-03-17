@@ -66,9 +66,9 @@ const SuccessStory = () => {
     },
     { 
       id: 3, 
-      title: 'Hijab by Noelle', 
+      title: 'Ayam geprek by Noelle', 
       quest: '5 Quest selesai', 
-      img: 'https://images.unsplash.com/photo-1589810635656-1250284ab9bb?auto=format&fit=crop&q=80&w=600',
+      img: '/ayam-geprek.jpg',
       avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=HN&backgroundColor=f97316'
     },
   ];
