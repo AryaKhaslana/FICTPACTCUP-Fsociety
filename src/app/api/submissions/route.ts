@@ -22,8 +22,8 @@ export async function POST(request) {
       },
       data: {
         fileUrl: fileUrl,
-        status: 'APPROVED', 
-        feedback: pesanUMKM
+        status: 'PENDING', 
+        feedback: pesanUMKM 
       }
     });
 

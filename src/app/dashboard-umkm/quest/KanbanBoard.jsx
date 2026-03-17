@@ -14,8 +14,12 @@ export default function KanbanBoard({ quests = [] }) {
 
   // 🔥 ================= STATE MODAL REVIEW (BARU) ================= 🔥
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false); // <--- State Modal Rating
+  
   const [selectedSubmission, setSelectedSubmission] = useState(null); 
   const [rejectMessage, setRejectMessage] = useState(''); 
+  const [feedbackText, setFeedbackText] = useState(''); // <--- State Feedback
+  const [rating, setRating] = useState(5); // <--- State Rating Bintang
   const [isSubmitting, setIsSubmitting] = useState(false); 
 
   // 🔥 LOGIKA DEWA BUAT MISAHIN KOLOM KANBAN BOARD 🔥
@@ -49,7 +53,17 @@ export default function KanbanBoard({ quests = [] }) {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await fetch('/api/quests', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
+      // AMBIL TOKEN DARI LOCAL STORAGE (Sesuai aslinya)
+      const token = localStorage.getItem('fictpact_token');
+      
+      const res = await fetch('/api/quests', { 
+        method: 'POST', 
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        }, 
+        body: JSON.stringify(formData) 
+      });
       const dataDariServer = await res.json(); 
       if (res.ok) {
         setIsModalOpen(false); setFormData({ title: '', description: '', kategori: 'Desain / UI UX', xp: '1000', rank: 'A', deadline: '' }); router.refresh(); 
@@ -58,23 +72,54 @@ export default function KanbanBoard({ quests = [] }) {
   };
   
   // 🔥 ================= FUNGSI ACTION REVIEW (BARU) ================= 🔥
-  const handleReviewAction = async (submissionId, action, message) => {
+  const handleReviewAction = async (submissionId, action, messageParam, ratingValue = null) => {
     setIsSubmitting(true);
     try {
+      // Bikin payload dewa (messageParam bisa jadi rejectMessage ATAU feedback)
+      const payload = {
+        submissionId,
+        rejectMessage: action === 'reject' ? messageParam : '',
+        feedback: action === 'approve' ? messageParam : '', 
+        rating: ratingValue
+      };
+
       const res = await fetch(`/api/submissions/${action}`, { 
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/json' }, 
-        body: JSON.stringify({ submissionId, rejectMessage: message }) 
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+        }, 
+        body: JSON.stringify(payload) 
       });
+
+      const responseData = await res.json();
+
       if (res.ok) {
-        setIsReviewModalOpen(false); setSelectedSubmission(null); setRejectMessage(''); router.refresh();
-      } else { alert("Gagal nge-review bos!"); }
-    } catch (error) { alert("Koneksi meledak broskie!"); } finally { setIsSubmitting(false); }
+        setIsReviewModalOpen(false); 
+        setIsRatingModalOpen(false); // Tutup modal rating
+        setSelectedSubmission(null); 
+        setRejectMessage(''); 
+        setFeedbackText('');
+        setRating(5);
+        router.refresh();
+        alert(responseData.message || "Berhasil ACC Misi!"); 
+      } else { 
+        alert(`Gagal nge-review bos! Pesan: ${responseData.message}`); 
+      }
+    } catch (error) { 
+      alert("Koneksi meledak broskie!"); 
+      console.error(error);
+    } finally { setIsSubmitting(false); }
   };
 
   const openReviewModal = (submission) => {
     setSelectedSubmission(submission);
     setIsReviewModalOpen(true);
+  };
+
+  // 🔥 FUNGSI PINDAH MODAL (DARI REVIEW KE RATING)
+  const goToRatingModal = () => {
+    setIsReviewModalOpen(false); 
+    setIsRatingModalOpen(true);  
   };
 
   // 🔥 ================= KOMPONEN KARTU KANBAN ================= 🔥
@@ -114,7 +159,7 @@ export default function KanbanBoard({ quests = [] }) {
   return (
     <section className="w-full relative">
       
-      {/* Header & Tombol Tambah */}
+      {/* Header & Tombol Tambah (100% BALIK KE VERSI ASLI LU) */}
       <div className="flex justify-between items-center mb-8">
         <div className="relative w-64">
           <input type="text" placeholder="Cari misi..." className="w-full bg-[#11131A] border border-gray-700 rounded-full py-2 px-4 pl-10 text-sm text-white focus:outline-none focus:border-[#F59E0B]" />
@@ -149,7 +194,7 @@ export default function KanbanBoard({ quests = [] }) {
         </div>
       </div>
 
-      {/* ================= MODAL BOUNTY BARU (LAMA) ================= */}
+      {/* ================= MODAL BOUNTY BARU (100% BALIK KE VERSI ASLI LU) ================= */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
           <div className="bg-[#0F1423] border border-gray-700 rounded-3xl w-full max-w-3xl p-8 relative shadow-[0_0_50px_rgba(0,0,0,0.8)]">
@@ -180,7 +225,7 @@ export default function KanbanBoard({ quests = [] }) {
         </div>
       )}
 
-      {/* 🔥 ================= MODAL BOUNTY REVIEW (BARU) ================= 🔥 */}
+      {/* 🔥 ================= MODAL BOUNTY REVIEW (UBAH TOMBOL ACC) ================= 🔥 */}
       {isReviewModalOpen && selectedSubmission && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
           <div className="bg-[#0A0A1A] border-2 border-[#F59E0B] rounded-3xl w-full max-w-4xl p-8 relative shadow-[0_0_50px_rgba(245,158,11,0.3)]">
@@ -223,10 +268,79 @@ export default function KanbanBoard({ quests = [] }) {
                <button onClick={() => handleReviewAction(selectedSubmission.id, 'reject', rejectMessage)} disabled={isSubmitting || !rejectMessage} className={`w-full py-4 rounded-xl text-white font-bold tracking-widest transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase ${isSubmitting ? 'bg-gray-600' : 'bg-[#E11D48] hover:bg-red-700'}`}>
                 {isSubmitting ? 'MEREVISI...' : 'Revisi'}
                </button>
-               <button onClick={() => handleReviewAction(selectedSubmission.id, 'approve', '')} disabled={isSubmitting} className={`w-full py-4 rounded-xl text-black font-bold tracking-widest transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_5px_0_rgb(180,120,0)] uppercase ${isSubmitting ? 'bg-gray-600' : 'bg-[#F59E0B] hover:bg-yellow-600'}`}>
-                {isSubmitting ? 'MENG-ACC...' : 'Acc'}
+               {/* 🔥 TOMBOL ACC SEKARANG BUKA MODAL RATING 🔥 */}
+               <button onClick={goToRatingModal} className={`w-full py-4 rounded-xl text-black font-bold tracking-widest transition-all transform active:scale-95 shadow-[0_5px_0_rgb(180,120,0)] uppercase bg-[#F59E0B] hover:bg-yellow-600`}>
+                Acc
                </button>
              </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* 🔥 MODAL 2: BERI PENILAIAN & FEEDBACK (Desain Baru Figma) 🔥 */}
+      {isRatingModalOpen && selectedSubmission && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
+          <div className="bg-[#11131A] border border-gray-800 rounded-[2rem] w-full max-w-md p-8 relative shadow-2xl">
+            
+            <h2 className="text-center text-white font-bold text-xl mb-8 tracking-wide">Beri Penilaian Pahlawan</h2>
+
+            {/* User Info Card Ala Figma */}
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-800 shrink-0 border-2 border-gray-700">
+                <img src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${selectedSubmission.student?.username}&backgroundColor=transparent`} alt="avatar" className="w-full h-full object-cover" />
+              </div>
+              <div className="flex flex-col flex-1">
+                <h3 className="text-white font-bold text-lg leading-tight">{selectedSubmission.student?.username || 'Pahlawan'}</h3>
+                <p className="text-gray-400 text-xs">Level {selectedSubmission.student?.studentProgress?.[0]?.level || '??'}</p>
+              </div>
+              <div className="w-[1px] h-10 bg-gray-700 mx-2"></div>
+              <p className="text-[10px] text-gray-400 leading-relaxed flex-1 italic">
+                Bagaimana hasil kerja dari pahlawan {selectedSubmission.student?.username}?
+              </p>
+            </div>
+
+            {/* Bintang Rating Raksasa */}
+            <div className="flex justify-center gap-2 mb-8">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <button 
+                  key={s} 
+                  onClick={() => setRating(s)} 
+                  className={`text-5xl transition-all transform active:scale-75 hover:scale-110 ${rating >= s ? 'grayscale-0 drop-shadow-[0_0_15px_rgba(245,158,11,0.8)]' : 'grayscale opacity-20'}`}
+                >
+                  ⭐
+                </button>
+              ))}
+            </div>
+
+            {/* Textarea Cerita Singkat */}
+            <div className="mb-8">
+              <textarea 
+                value={feedbackText} 
+                onChange={e => setFeedbackText(e.target.value)} 
+                rows={3} 
+                className="w-full bg-[#0A0A1A] border border-gray-700 rounded-xl p-4 text-white text-sm focus:border-[#F59E0B] outline-none resize-none" 
+                placeholder="Cerita singkat siswa ini..."
+              ></textarea>
+            </div>
+
+            {/* Tombol Action */}
+            <div className="flex gap-4">
+              <button 
+                onClick={() => setIsRatingModalOpen(false)} 
+                disabled={isSubmitting} 
+                className="flex-1 py-3 border border-gray-600 hover:border-gray-400 text-gray-300 font-bold rounded-xl transition-all disabled:opacity-50 text-sm"
+              >
+                Nanti saja
+              </button>
+              <button 
+                onClick={() => handleReviewAction(selectedSubmission.id, 'approve', feedbackText, rating)} 
+                disabled={isSubmitting} 
+                className="flex-1 py-3 bg-[#F59E0B] hover:bg-yellow-600 text-black font-bold rounded-xl shadow-[0_4px_0_rgb(180,120,0)] transition-all transform active:translate-y-1 active:shadow-none disabled:opacity-50 text-sm"
+              >
+                {isSubmitting ? 'Memproses...' : 'Kirim & Cairkan XP'}
+              </button>
+            </div>
 
           </div>
         </div>

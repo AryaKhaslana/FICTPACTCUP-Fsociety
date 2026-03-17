@@ -4,6 +4,7 @@ import SuccessStory from './SuccessStory';
 import HowItWorks from './HowItWorks';
 import CtaSection from './CtaSection';
 import Footer from '../Navbar/footer';
+import FeatureShowcase from './FeatureShowcase';
 
 export default function LandingPage() {
   return (
@@ -19,6 +20,10 @@ export default function LandingPage() {
       {/* Kasih id="quest" atau id="fitur" sesuaikan sama href navbar lu */}
       <div id="quest" className="scroll-mt-24">
         <FeatureSection />
+      </div>
+
+      <div id="fitur" className="scroll-mt-24">
+        <FeatureShowcase/>
       </div>
 
       {/* 3. SUCCESS STORY (Cerita Sukses) */}

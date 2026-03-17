@@ -1,5 +1,4 @@
 import React from 'react';
-import { Hexagon, Shield, Trophy, Flame } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ProfileCard({ nama, xp, level, avatarUrl }) {
@@ -7,10 +6,10 @@ export default function ProfileCard({ nama, xp, level, avatarUrl }) {
   const finalAvatar = avatarUrl || `https://api.dicebear.com/7.x/pixel-art/svg?seed=${nama}&backgroundColor=transparent`;
 
   return (
-    // Wrapper Utama Kartu
+    // Wrapper Utama Kartu (GAK DIUBAH)
     <div className="bg-[#060916] rounded-3xl p-6 border-1 border-gray-400 w-full flex flex-col gap-6 shadow-lg">
       
-      {/* BAGIAN ATAS: Foto & Info User */}
+      {/* BAGIAN ATAS: Foto & Info User (GAK DIUBAH) */}
       <div className="flex items-center gap-4">
         {/* Border gradient tipis ala gaming buat avatar */}
         <div className="w-16 h-16 rounded-xl overflow-hidden border border-gray-700 bg-gray-800 shrink-0">
@@ -27,8 +26,8 @@ export default function ProfileCard({ nama, xp, level, avatarUrl }) {
         
         {/* Stat 1: Total XP */}
         <div className="flex items-center gap-3">
-          <div className="text-blue-500 drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">
-            <Hexagon size={28} fill="currentColor" className="text-blue-900" />
+          <div className="drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]">
+            <img src="/xp-icon.png" alt="XP" className="w-7 h-7 object-contain" />
           </div>
           <div className="flex flex-col">
             <span className="text-white font-bold text-sm">{ xp }</span>
@@ -38,8 +37,8 @@ export default function ProfileCard({ nama, xp, level, avatarUrl }) {
 
         {/* Stat 2: Rank */}
         <div className="flex items-center gap-3">
-          <div className="text-[#CD7F32] drop-shadow-[0_0_8px_rgba(205,127,50,0.5)]">
-            <Shield size={28} fill="currentColor" className="text-orange-900" />
+          <div className="drop-shadow-[0_0_10px_rgba(205,127,50,0.8)]">
+            <img src="/rank-icon.png" alt="Rank" className="w-7 h-7 object-contain" />
           </div>
           <div className="flex flex-col">
             <span className="text-white font-bold text-sm">Bronze</span>
@@ -49,8 +48,8 @@ export default function ProfileCard({ nama, xp, level, avatarUrl }) {
 
         {/* Stat 3: Badge */}
         <div className="flex items-center gap-3">
-          <div className="text-yellow-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]">
-            <Trophy size={28} fill="currentColor" className="text-yellow-900" />
+          <div className="drop-shadow-[0_0_10px_rgba(234,179,8,0.8)]">
+            <img src="/badge-icon.png" alt="Badge" className="w-7 h-7 object-contain" />
           </div>
           <div className="flex flex-col">
             <span className="text-white font-bold text-sm">1</span>
@@ -60,8 +59,8 @@ export default function ProfileCard({ nama, xp, level, avatarUrl }) {
 
         {/* Stat 4: Day Streak */}
         <div className="flex items-center gap-3">
-          <div className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]">
-            <Flame size={28} fill="currentColor" className="text-red-900" />
+          <div className="drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]">
+            <img src="/streak-icon.png" alt="Streak" className="w-7 h-7 object-contain" />
           </div>
           <div className="flex flex-col">
             <span className="text-white font-bold text-sm">?</span>
@@ -71,7 +70,7 @@ export default function ProfileCard({ nama, xp, level, avatarUrl }) {
 
       </div>
 
-      {/* BAGIAN BAWAH: Tombol */}
+      {/* BAGIAN BAWAH: Tombol (GAK DIUBAH) */}
       <Link href="/profile" className="w-full mt-2">
         <button className="w-full py-3 rounded-xl border-1 border-gray-400 text-sm font-bold text-gray-300 transition-all shadow-[0_4px_0_0_#A8A8A8] hover:shadow-[0_2px_0_0_#A8A8A8] hover:translate-y-1 active:translate-y-2 active:shadow-none">
           Lihat Profil
