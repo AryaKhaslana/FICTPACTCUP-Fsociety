@@ -64,7 +64,9 @@ export default async function DashboardSiswaPage() {
   const activeSubmission = await prisma.submission.findFirst({
     where: { 
       studentId: currentUserId || 0, 
-      status: 'PENDING' 
+      status: {
+        in: ['PENDING', 'REJECTED'] 
+      }
     },
     include: {
       quest: true 
