@@ -74,7 +74,6 @@ export default async function DashboardSiswaPage() {
     orderBy: { id: 'desc' } 
   });
 
-  // 🔥🔥🔥 INI DIA YANG KETINGGALAN: NARIK DATA FEEDBACK! 🔥🔥🔥
   const recentFeedback = await prisma.submission.findMany({
     where: { 
       studentId: currentUserId || 0, 
