@@ -5,6 +5,21 @@ export default function ProfileCard({ nama, xp, level, avatarUrl }) {
 
   const finalAvatar = avatarUrl || `https://api.dicebear.com/7.x/pixel-art/svg?seed=${nama}&backgroundColor=transparent`;
 
+  // 🔥 LOGIKA DEWA: RANKING DINAMIS BERDASARKAN XP 🔥
+  let rankName = "Bronze";
+  let rankIcon = "/rank-icon.png";
+  let rankGlow = "drop-shadow-[0_0_10px_rgba(205,127,50,0.8)]"; // Efek cahaya perunggu
+
+  if (xp >= 6000) {
+    rankName = "Gold";
+    rankIcon = "/gold-badge.png";
+    rankGlow = "drop-shadow-[0_0_10px_rgba(255,215,0,0.8)]"; // Efek cahaya emas menyala
+  } else if (xp >= 4000) {
+    rankName = "Silver";
+    rankIcon = "/silver-badge.png";
+    rankGlow = "drop-shadow-[0_0_10px_rgba(192,192,192,0.8)]"; // Efek cahaya perak elegan
+  }
+
   return (
     // Wrapper Utama Kartu (GAK DIUBAH)
     <div className="bg-[#060916] rounded-3xl p-6 border-1 border-gray-400 w-full flex flex-col gap-6 shadow-lg">
@@ -35,13 +50,13 @@ export default function ProfileCard({ nama, xp, level, avatarUrl }) {
           </div>
         </div>
 
-        {/* Stat 2: Rank */}
+        {/* 🔥 Stat 2: Rank (UDAH DINAMIS BROSKIE!) 🔥 */}
         <div className="flex items-center gap-3">
-          <div className="drop-shadow-[0_0_10px_rgba(205,127,50,0.8)]">
-            <img src="/rank-icon.png" alt="Rank" className="w-7 h-7 object-contain" />
+          <div className={rankGlow}>
+            <img src={rankIcon} alt="Rank" className="w-7 h-7 object-contain" />
           </div>
           <div className="flex flex-col">
-            <span className="text-white font-bold text-sm">Bronze</span>
+            <span className="text-white font-bold text-sm">{rankName}</span>
             <span className="text-[11px] text-gray-500 font-medium">Rank</span>
           </div>
         </div>

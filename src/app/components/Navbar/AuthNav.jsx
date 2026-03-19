@@ -75,20 +75,20 @@ export default function AuthNav({ userName = "Pahlawan Tanpa Nama", userAvatar }
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100  transition-transform duration-300 origin-left"></span>
           </li>
           <li className="relative group">
-            <Link href="/quest" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors py-1">
+            <Link href="/quest" prefetch={false} className="text-sm font-semibold text-white hover:text-[#FFB800] transition-colors py-1">
               Quest
             </Link>
             {/* Garis Bawah Kuning (Muncul pas hover doang) */}
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </li>
           <li className="relative group">
-            <Link href="/achievements" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors py-1">
+            <Link href="/achievements" prefetch={false} className="text-sm font-semibold text-white hover:text-[#FFB800] transition-colors py-1">
               Achievement
             </Link>
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </li>
           <li className="relative group">
-            <Link href="/leaderboard" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors py-1">
+            <Link href="/leaderboard" prefetch={false} className="text-sm font-semibold text-white hover:text-[#FFB800] transition-colors py-1">
               Leaderboard
             </Link>
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>

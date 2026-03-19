@@ -59,14 +59,14 @@ export default function NavbarUMKM({ userName = "Bos UMKM", userAvatar }) {
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </li>
           <li className="relative group">
-            <Link href="/dashboard-umkm/quest" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors py-1">
+            <Link href="/dashboard-umkm/quest" prefetch={false} className="text-sm font-semibold text-white hover:text-[#FFB800] transition-colors py-1">
               Quest
             </Link>
             {/* Garis Bawah Kuning (Muncul pas hover doang) */}
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </li>
           <li className="relative group">
-            <Link href="/dashboard-umkm/eksplor-siswa" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors py-1">
+            <Link href="/dashboard-umkm/eksplor-siswa" prefetch={false} className="text-sm font-semibold text-white hover:text-[#FFB800] transition-colors py-1">
               Eksplor Siswa
             </Link>
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
@@ -76,10 +76,6 @@ export default function NavbarUMKM({ userName = "Bos UMKM", userAvatar }) {
         {/* 3. BAGIAN KANAN: Ikon & Profil */}
         <div className="flex items-center gap-3 md:gap-5 text-gray-400">
           
-          <button className="hover:scale-110 transition-transform">
-            <img src="/search-pixel.png" alt="Search" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
-          </button>
-
           <button onClick={() => setIsChatOpen(true)} className="hover:scale-110 transition-transform relative">
             <img src="/chat-pixel.png" alt="Chat" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
             <span className="absolute -top-1 -right-1 w-2 h-2 md:w-2.5 md:h-2.5 bg-red-500 rounded-full border-2 border-[#0F172A]"></span>

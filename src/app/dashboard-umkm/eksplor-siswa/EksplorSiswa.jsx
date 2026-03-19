@@ -1,6 +1,6 @@
 import React from 'react';
 import { Search } from 'lucide-react';
-import prisma from '../../../lib/prisma'; // 👈 SESUAIKAN PATH KE PRISMA LU! // 👈 Tambahin Navbar UMKM biar estetiknya full! (Kalo ada)
+import prisma from '../../../lib/prisma'; // 👈 SESUAIKAN PATH KE PRISMA LU! 
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 import Link from 'next/link';
@@ -11,7 +11,7 @@ export const metadata = {
 
 export default async function EksplorSiswaPage() {
   
-  // 1. CARI TAU SIAPA UMKM YANG LAGI LOGIN BUAT NAVBAR (Opsional, biar makin elit)
+  // 1. CARI TAU SIAPA UMKM YANG LAGI LOGIN
   const cookieStore = await cookies();
   const token = cookieStore.get('fictpact_token')?.value; 
   let loggedInUser = null;
@@ -33,39 +33,38 @@ export default async function EksplorSiswaPage() {
   const studentsData = await prisma.user.findMany({
     where: { role: 'STUDENT' }, 
     include: {
-      studentProgress: true, // Biar tau XP-nya
+      studentProgress: true, // Narik SEMUA riwayat XP siswa
     },
   });
 
-  // 🔥 3. RAPIHIN DATA & SORTING BERDASARKAN XP TERTINGGI 🔥
+  // 🔥 3. RAPIHIN DATA & HITUNG TOTAL XP (BUKAN CUMA INDEX 0!) 🔥
   const sortedStudents = studentsData
-    .map(student => ({
-      id: student.id,
-      name: student.username || "Pahlawan Tanpa Nama",
-      role: "Web Developer", // 💡 Nanti lu bisa ganti ini ambil dari relasi Skill kalo DB lu udah lengkap
-      xp: student.studentProgress?.[0]?.currentXp || 0,
-      avatarUrl: student.avatarUrl, // Ini kuncinya broskie!
-    }))
-    .sort((a, b) => b.xp - a.xp);
+    .map(student => {
+      // THE FIX: Jumlahin semua currentXp dari riwayat progressnya
+      const totalXp = student.studentProgress?.reduce((sum, progress) => sum + (progress.currentXp || 0), 0) || 0;
+
+      return {
+        id: student.id,
+        name: student.username || "Pahlawan Tanpa Nama",
+        role: "Pahlawan XPACT", // Default role
+        xp: totalXp, // MASUKIN TOTAL XP YANG UDAH DIHITUNG BENER!
+        avatarUrl: student.avatarUrl,
+      };
+    })
+    .sort((a, b) => b.xp - a.xp); // Sortir dari XP terbesar
 
   // 🔥 4. PISAHIN TOP 3 (Buat Highlight) & SISANYA (Buat List) 🔥
-  // Karena desain lu bentuknya Podium: Index 1 (Juara 1) di tengah, Index 0 (Juara 2) di kiri, Index 2 (Juara 3) di kanan.
-  // Jadi Bang Sepuh susun manual array top3-nya biar sesuai desain UI lu: [Juara 2, Juara 1, Juara 3]
   const top3Raw = sortedStudents.slice(0, 3);
   
-  // Amanin datanya kalo DB lu masih sepi (kurang dari 3 siswa)
   const topStudents = [
-    top3Raw[1] || null, // Juara 2 (Index array 0 di desain lu)
-    top3Raw[0] || null, // Juara 1 (Index array 1 di desain lu)
-    top3Raw[2] || null, // Juara 3 (Index array 2 di desain lu)
+    top3Raw[1] || null, // Juara 2 (Index array 0 di desain)
+    top3Raw[0] || null, // Juara 1 (Index array 1 di desain)
+    top3Raw[2] || null, // Juara 3 (Index array 2 di desain)
   ];
 
-  // Sisanya (Rank 4 ke bawah) masuk ke otherStudents
   const otherStudents = sortedStudents.slice(3);
 
-
   return (
-    // 1. BACKGROUND BERNYAWA
     <main className="min-h-screen font-poppins text-white pb-20 bg-[#05050A] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1A1F35] via-[#05050A] to-[#000000]">
 
       {/* Search & Header Section */}
@@ -76,7 +75,6 @@ export default async function EksplorSiswaPage() {
         <p className="text-center text-gray-400 mb-8">Temukan talenta terbaik untuk menyelesaikan misi bisnismu.</p>
         
         <div className="relative max-w-2xl mx-auto">
-          {/* 💡 Karena ini Server Component, fungsi Search benerannya (Ngetik trus filter) harus dipisah ke Client Component nanti kalo lu mau fungsional. Sekarang UI dulu. */}
           <input 
             type="text" 
             placeholder="Cari skill atau nama pahlawan..." 
@@ -94,7 +92,9 @@ export default async function EksplorSiswaPage() {
           <div className="flex flex-col md:flex-row justify-center items-end gap-6 mb-16 mt-8">
             
             {/* Juara 2 (Kiri) */}
-            <div className="flex flex-col items-center bg-gradient-to-t from-[#11131A] to-transparent p-6 rounded-2xl border-b-4 border-gray-400 w-full md:w-64 opacity-90 transform transition-transform hover:-translate-y-2">
+            <div className="relative flex flex-col items-center bg-gradient-to-t from-[#11131A] to-transparent p-6 rounded-2xl border-b-4 border-gray-400 w-full md:w-64 opacity-90 transform transition-transform hover:-translate-y-2">
+              {/* THE FIX: Tambahin Angka Rank */}
+              <div className="absolute -top-4 -left-4 w-10 h-10 bg-gray-600 rounded-full border-2 border-gray-400 flex items-center justify-center font-pixel text-lg font-bold shadow-lg z-20">#2</div>
               <div className="w-20 h-20 bg-gray-800 rounded-full mb-4 border-2 border-gray-400 overflow-hidden shadow-[0_0_15px_rgba(156,163,175,0.4)]">
                 <img 
                   src={topStudents[0]?.avatarUrl || `https://api.dicebear.com/7.x/adventurer/svg?seed=${topStudents[0]?.name || 'Kosong'}`} 
@@ -107,10 +107,13 @@ export default async function EksplorSiswaPage() {
               <span className="text-gray-300 font-pixel text-sm">{topStudents[0]?.xp || 0} XP</span>
             </div>
 
-            {/* Juara 1 (Tengah - Paling Gede) */}
-            <div className="flex flex-col items-center bg-gradient-to-t from-[#1A1105] to-transparent p-8 rounded-2xl border-b-4 border-[#F59E0B] w-full md:w-72 relative z-10 transform transition-transform hover:-translate-y-2 shadow-[0_-10px_40px_rgba(245,158,11,0.15)]">
+            {/* Juara 1 (Tengah) */}
+            <div className="relative flex flex-col items-center bg-gradient-to-t from-[#1A1105] to-transparent p-8 rounded-2xl border-b-4 border-[#F59E0B] w-full md:w-72 z-10 transform transition-transform hover:-translate-y-2 shadow-[0_-10px_40px_rgba(245,158,11,0.15)]">
+              {/* THE FIX: Tambahin Angka Rank */}
+              <div className="absolute -top-6 -left-6 w-14 h-14 bg-[#F59E0B] text-white rounded-full border-4 border-[#1A1105] flex items-center justify-center font-pixel text-2xl font-bold shadow-xl z-20 animate-pulse">#1</div>
               <div className="absolute -top-6 bg-[#F59E0B] text-black text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">Top Talent</div>
-              <div className="w-28 h-28 bg-gray-900 rounded-full mb-4 border-4 border-[#F59E0B] overflow-hidden shadow-[0_0_25px_rgba(245,158,11,0.6)]">
+              
+              <div className="w-28 h-28 bg-gray-900 rounded-full mb-4 border-4 border-[#F59E0B] overflow-hidden shadow-[0_0_25px_rgba(245,158,11,0.6)] relative">
                 <img 
                   src={topStudents[1]?.avatarUrl || `https://api.dicebear.com/7.x/adventurer/svg?seed=${topStudents[1]?.name || 'Kosong'}`} 
                   alt="Juara 1" 
@@ -123,7 +126,9 @@ export default async function EksplorSiswaPage() {
             </div>
 
             {/* Juara 3 (Kanan) */}
-            <div className="flex flex-col items-center bg-gradient-to-t from-[#1A1311] to-transparent p-6 rounded-2xl border-b-4 border-[#D97706] w-full md:w-64 opacity-90 transform transition-transform hover:-translate-y-2">
+            <div className="relative flex flex-col items-center bg-gradient-to-t from-[#1A1311] to-transparent p-6 rounded-2xl border-b-4 border-[#D97706] w-full md:w-64 opacity-90 transform transition-transform hover:-translate-y-2">
+              {/* THE FIX: Tambahin Angka Rank */}
+              <div className="absolute -top-4 -right-4 w-10 h-10 bg-[#D97706] text-white rounded-full border-2 border-[#1A1311] flex items-center justify-center font-pixel text-lg font-bold shadow-lg z-20">#3</div>
               <div className="w-20 h-20 bg-gray-800 rounded-full mb-4 border-2 border-[#D97706] overflow-hidden shadow-[0_0_15px_rgba(217,119,6,0.4)]">
                 <img 
                   src={topStudents[2]?.avatarUrl || `https://api.dicebear.com/7.x/adventurer/svg?seed=${topStudents[2]?.name || 'Kosong'}`} 
@@ -141,7 +146,7 @@ export default async function EksplorSiswaPage() {
           {/* Garis Pemisah */}
           <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent mb-10"></div>
 
-          {/* --- BAGIAN LIST SISWA LAINNYA --- */}
+          {/* --- BAGIAN LIST SISWA LAINNYA (Aman) --- */}
           <div className="flex flex-col gap-4">
             <h4 className="text-gray-400 text-sm font-bold uppercase tracking-widest mb-2 pl-2">Pahlawan Lainnya</h4>
             
@@ -171,7 +176,7 @@ export default async function EksplorSiswaPage() {
                   <div className="flex items-center gap-4 md:gap-6">
                     <span className="text-gray-400 font-pixel text-xs md:text-sm whitespace-nowrap">{student.xp} XP</span>
                     <Link 
-                    href={`/profile/${student.id}`} // 👈 Ini bakal ngarahin ke /profile/1, /profile/2, dst.
+                    href={`/profile/${student.id}`} 
                     className="bg-[#1A1D26] hover:bg-[#F59E0B] hover:text-black text-gray-300 px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-colors shadow-md whitespace-nowrap"
                   >
                     Lihat Profil

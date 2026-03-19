@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function KanbanBoard({ quests = [] }) {
@@ -8,9 +8,34 @@ export default function KanbanBoard({ quests = [] }) {
   // ================= STATE MODAL TERBITKAN =================
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  
+  // 🔥 THE ULTIMATE ANTI-KIKIR SYSTEM: Tarif Mutlak XPACT! 🔥
+  // UMKM cuma milih nama kategori, sistem yang nentuin Rank & XP!
+  const SYSTEM_RATES = {
+    'Copywriting': { rank: 'C', xp: 200, label: 'Mudah', color: 'text-[#3BD47F]', bg: 'bg-[#1A2F25]' },
+    'Desain / UI UX': { rank: 'B', xp: 500, label: 'Menengah', color: 'text-[#3B82F6]', bg: 'bg-[#1D2A43]' },
+    'Video Editing': { rank: 'A', xp: 1000, label: 'Sulit', color: 'text-[#D946EF]', bg: 'bg-[#301636]' },
+    'Web Dev': { rank: 'S', xp: 2000, label: 'Epic', color: 'text-[#F59E0B]', bg: 'bg-[#332414]' },
+  };
+
   const [formData, setFormData] = useState({
-    title: '', description: '', kategori: 'Desain / UI UX', xp: '1000', rank: 'A', deadline: ''
+    title: '', 
+    description: '', 
+    kategori: 'Desain / UI UX', 
+    rank: 'B',                  
+    xp: '500',                  
+    deadline: ''
   });
+
+  // 🔥 SISTEM OTOMATIS: Kunci Rank & XP sesuai Kategori 🔥
+  useEffect(() => {
+    const rate = SYSTEM_RATES[formData.kategori] || SYSTEM_RATES['Desain / UI UX'];
+    setFormData(prev => ({ 
+      ...prev, 
+      xp: rate.xp.toString(), 
+      rank: rate.rank 
+    }));
+  }, [formData.kategori]);
 
   // 🔥 ================= STATE MODAL REVIEW & RATING ================= 🔥
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
@@ -22,7 +47,7 @@ export default function KanbanBoard({ quests = [] }) {
   const [rating, setRating] = useState(5); 
   const [isSubmitting, setIsSubmitting] = useState(false); 
 
-  // 🔥 LOGIKA DEWA BUAT MISAHIN KOLOM KANBAN BOARD 🔥
+  // 🔥 LOGIKA KANBAN BOARD (Aman gak diubah) 🔥
   const papanTerbuka = [];
   const medanPerang = [];
   const butuhAcc = [];
@@ -54,18 +79,20 @@ export default function KanbanBoard({ quests = [] }) {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('fictpact_token');
+      const dataToSubmit = { ...formData, xp: parseInt(formData.xp) };
+      
       const res = await fetch('/api/quests', { 
         method: 'POST', 
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}` 
         }, 
-        body: JSON.stringify(formData) 
+        body: JSON.stringify(dataToSubmit) 
       });
       const dataDariServer = await res.json(); 
       if (res.ok) {
         setIsModalOpen(false); 
-        setFormData({ title: '', description: '', kategori: 'Desain / UI UX', xp: '1000', rank: 'A', deadline: '' }); 
+        setFormData({ title: '', description: '', kategori: 'Desain / UI UX', rank: 'B', xp: '500', deadline: '' }); 
         router.refresh(); 
       } else { 
         alert("GAGAL BROSKIE: " + dataDariServer.message); 
@@ -136,8 +163,8 @@ export default function KanbanBoard({ quests = [] }) {
       <div className="bg-[#11131A] border border-gray-700 rounded-xl p-4 mb-3 shadow-lg flex flex-col relative">
         <div>
           <div className="flex justify-between items-start mb-2">
-            <span className="text-[10px] font-bold px-2 py-1 rounded bg-[#3A1117] text-[#FF4D5A] border border-[#FF4D5A]/30">Rank - {quest.rank || 'A'}</span>
-            <span className="text-[#F59E0B] text-xs font-bold">+{quest.rewardXp || quest.xpReward || 1000} XP</span>
+            <span className="text-[10px] font-bold px-2 py-1 rounded bg-[#3A1117] text-[#FF4D5A] border border-[#FF4D5A]/30">Rank - {quest.rank || 'C'}</span>
+            <span className="text-[#F59E0B] text-xs font-bold">+{quest.rewardXp || quest.xpReward || 0} XP</span>
           </div>
           <h4 className="text-white font-bold text-sm mb-1">{quest.title}</h4>
           <p className="text-gray-400 text-[10px] line-clamp-2 mb-2">{quest.description}</p>
@@ -198,37 +225,89 @@ export default function KanbanBoard({ quests = [] }) {
         </div>
       </div>
 
-      {/* ================= MODAL BOUNTY BARU ================= */}
+      {/* ================= MODAL BOUNTY BARU (DIREVISI) ================= */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
           <div className="bg-[#0F1423] border border-gray-700 rounded-3xl w-full max-w-3xl p-8 relative shadow-[0_0_50px_rgba(0,0,0,0.8)]">
             <button onClick={() => setIsModalOpen(false)} className="absolute top-6 right-6 text-red-500 hover:text-red-400 font-bold text-2xl">X</button>
             <h2 className="text-center text-white font-bold text-2xl mb-8 tracking-widest font-pixel">Bounty baru</h2>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              
               {/* KIRI: Judul, Deskripsi, Kategori */}
               <div className="flex flex-col gap-5">
-                <div><label className="text-white text-sm font-bold flex items-center gap-2 mb-2"><span className="text-red-500">📌</span> Judul quest</label><input type="text" required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full bg-[#11131A] border border-gray-700 rounded-lg p-3 text-white text-sm focus:border-[#F59E0B] outline-none" placeholder="Masukkan judul..." /></div>
-                <div><label className="text-white text-sm font-bold flex items-center gap-2 mb-2"><span className="text-gray-400">📄</span> Deskripsi detail</label><textarea required value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full bg-[#11131A] border border-gray-700 rounded-lg p-3 text-white text-sm h-32 focus:border-[#F59E0B] outline-none" placeholder="Jelaskan detail misinya..."></textarea></div>
-                <div><label className="text-white text-sm font-bold mb-2 block">Kategori</label><div className="flex gap-2">{['Desain / UI UX', 'Video Editing', 'Web Dev'].map(kat => (<button type="button" key={kat} onClick={() => setFormData({...formData, kategori: kat})} className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${formData.kategori === kat ? 'bg-[#F59E0B] text-black' : 'border border-gray-600 text-gray-400 hover:border-[#F59E0B]'}`}>{kat}</button>))}</div></div>
-              </div>
-              {/* KANAN: Hadiah XP & Deadline */}
-              <div className="flex flex-col gap-5">
-                <div><label className="text-white text-sm font-bold flex items-center gap-2 mb-4"><span className="text-yellow-500">⚔️</span> Hadiah XP</label>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div onClick={() => setFormData({...formData, xp: '200', rank: 'C'})} className={`cursor-pointer border rounded-xl p-3 text-center transition-all ${formData.rank === 'C' ? 'border-[#F59E0B] bg-[#11131A]' : 'border-gray-700 hover:border-gray-500'}`}><div className="bg-[#1A2F25] text-[#3BD47F] font-bold text-sm py-1 rounded mb-2">+ 200 XP</div><div className="text-white text-sm font-bold">Rank - C</div><div className="text-gray-500 text-[10px]">(Mudah)</div></div>
-                    <div onClick={() => setFormData({...formData, xp: '500', rank: 'B'})} className={`cursor-pointer border rounded-xl p-3 text-center transition-all ${formData.rank === 'B' ? 'border-[#F59E0B] bg-[#11131A]' : 'border-gray-700 hover:border-gray-500'}`}><div className="bg-[#1D2A43] text-[#3B82F6] font-bold text-sm py-1 rounded mb-2">+ 500 XP</div><div className="text-white text-sm font-bold">Rank - B</div><div className="text-gray-500 text-[10px]">(Menengah)</div></div>
-                    <div onClick={() => setFormData({...formData, xp: '1000', rank: 'A'})} className={`cursor-pointer border rounded-xl p-3 text-center transition-all ${formData.rank === 'A' ? 'border-[#F59E0B] bg-[#11131A]' : 'border-gray-700 hover:border-gray-500'}`}><div className="bg-[#301636] text-[#D946EF] font-bold text-sm py-1 rounded mb-2">+ 1000 XP</div><div className="text-white text-sm font-bold">Rank - A</div><div className="text-gray-500 text-[10px]">(Sulit)</div></div>
-                    <div onClick={() => setFormData({...formData, xp: '2000', rank: 'S'})} className={`cursor-pointer border rounded-xl p-3 text-center transition-all ${formData.rank === 'S' ? 'border-[#F59E0B] bg-[#11131A]' : 'border-gray-700 hover:border-gray-500'}`}><div className="bg-[#332414] text-[#F59E0B] font-bold text-sm py-1 rounded mb-2">+ 2000 XP</div><div className="text-white text-sm font-bold">Rank - S</div><div className="text-gray-500 text-[10px]">(Epic)</div></div>
+                <div>
+                  <label className="text-white text-sm font-bold flex items-center gap-2 mb-2"><span className="text-red-500">📌</span> Judul quest</label>
+                  <input type="text" required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full bg-[#11131A] border border-gray-700 rounded-lg p-3 text-white text-sm focus:border-[#F59E0B] outline-none" placeholder="Masukkan judul..." />
+                </div>
+                <div>
+                  <label className="text-white text-sm font-bold flex items-center gap-2 mb-2"><span className="text-gray-400">📄</span> Deskripsi detail</label>
+                  <textarea required value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full bg-[#11131A] border border-gray-700 rounded-lg p-3 text-white text-sm h-32 focus:border-[#F59E0B] outline-none" placeholder="Jelaskan detail misinya..."></textarea>
+                </div>
+                <div>
+                  <label className="text-white text-sm font-bold mb-2 block">Pilih Kategori Pekerjaan</label>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.keys(SYSTEM_RATES).map(kat => (
+                      <button 
+                        type="button" 
+                        key={kat} 
+                        onClick={() => setFormData({...formData, kategori: kat})} 
+                        className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${formData.kategori === kat ? 'bg-[#F59E0B] text-black shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'border border-gray-600 text-gray-400 hover:border-[#F59E0B]'}`}
+                      >
+                        {kat}
+                      </button>
+                    ))}
                   </div>
                 </div>
-                <div><label className="text-white text-sm font-bold flex items-center gap-2 mb-2"><span className="text-gray-400">📅</span> Batas waktu berakhir</label><input type="date" required value={formData.deadline} onChange={e => setFormData({...formData, deadline: e.target.value})} className="w-full bg-[#11131A] border border-gray-700 rounded-lg p-3 text-white text-sm focus:border-[#F59E0B] outline-none [color-scheme:dark]" /></div>
               </div>
-              <div className="col-span-1 md:col-span-2 mt-4 flex justify-center"><button type="submit" disabled={isLoading} className="bg-[#F59E0B] hover:bg-yellow-600 text-black font-bold py-3 px-8 rounded-xl shadow-[0_0_15px_rgba(245,158,11,0.5)] transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">{isLoading ? 'Menancapkan...' : 'Tancapkan ke Papan Misi!'}</button></div>
+              
+              {/* KANAN: TAMPILAN LOCK SISTEM (UMKM GAK BISA EDIT INI) */}
+              <div className="flex flex-col gap-5">
+                <div>
+                  <label className="text-white text-sm font-bold flex items-center gap-2 mb-2"><span className="text-yellow-500">⚖️</span> Tarif & Peringkat (Diatur Sistem)</label>
+                  <div className="bg-[#11131A] border border-gray-700 rounded-2xl p-6 relative overflow-hidden">
+                    {/* Efek Garis Polisi biar kesannya di-lock */}
+                    <div className="absolute top-0 left-0 w-full h-1 bg-[#F59E0B]"></div>
+                    
+                    <p className="text-xs text-gray-400 mb-4 text-center">Berdasarkan kategori <strong className="text-white">{formData.kategori}</strong>, misi ini dikunci pada:</p>
+                    
+                    {/* Tampilan Dinamis Berdasarkan State formData yang otomatis berubah */}
+                    <div className="flex items-center justify-between bg-[#0A0A1A] rounded-xl p-4 border border-gray-800">
+                      <div>
+                        <div className="text-gray-500 text-[10px] mb-1 uppercase tracking-widest">Peringkat Misi</div>
+                        <div className={`text-xl font-bold font-pixel ${SYSTEM_RATES[formData.kategori]?.color || 'text-white'}`}>
+                          Rank - {formData.rank}
+                        </div>
+                      </div>
+                      <div className={`px-3 py-1 rounded text-xs font-bold ${SYSTEM_RATES[formData.kategori]?.bg || 'bg-gray-800'} ${SYSTEM_RATES[formData.kategori]?.color || 'text-white'}`}>
+                        {SYSTEM_RATES[formData.kategori]?.label || 'Menengah'}
+                      </div>
+                    </div>
+
+                    <div className="mt-4 text-center">
+                       <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Total Hadiah Siswa</p>
+                       <h3 className="text-[#F59E0B] text-4xl font-bold tracking-wider font-pixel drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]">
+                         +{formData.xp} XP
+                       </h3>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-white text-sm font-bold flex items-center gap-2 mb-2"><span className="text-gray-400">📅</span> Batas waktu berakhir</label>
+                  <input type="date" required value={formData.deadline} onChange={e => setFormData({...formData, deadline: e.target.value})} className="w-full bg-[#11131A] border border-gray-700 rounded-lg p-3 text-white text-sm focus:border-[#F59E0B] outline-none [color-scheme:dark]" />
+                </div>
+              </div>
+              <div className="col-span-1 md:col-span-2 mt-4 flex justify-center">
+                <button type="submit" disabled={isLoading} className="bg-[#F59E0B] hover:bg-yellow-600 text-black font-bold py-3 px-8 rounded-xl shadow-[0_0_15px_rgba(245,158,11,0.5)] transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                  {isLoading ? 'Menancapkan...' : 'Tancapkan ke Papan Misi!'}
+                </button>
+              </div>
             </form>
           </div>
         </div>
       )}
 
+      {/* Sisa Modal Review & Rating aman di bawah sini... */}
       {/* 🔥 ================= MODAL BOUNTY REVIEW ================= 🔥 */}
       {isReviewModalOpen && selectedSubmission && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">

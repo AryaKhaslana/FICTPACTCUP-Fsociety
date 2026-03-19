@@ -3,30 +3,43 @@
 import React from 'react';
 import { Star, Download } from 'lucide-react';
 
-export default function ProfileHeader({ nama, xp, level, rank = "Bronze", badge = 0, avatarUrl }) {
+export default function ProfileHeader({ nama, xp, level, badge = 0, avatarUrl }) {
   
   const finalAvatar = avatarUrl || `https://api.dicebear.com/7.x/pixel-art/svg?seed=${nama}&backgroundColor=transparent`;
+
+  // 🔥 LOGIKA DEWA: RANKING DINAMIS BERDASARKAN XP 🔥
+  let calculatedRank = "Bronze";
+  let rankIcon = "/rank-icon.png";
+  let rankGlow = "drop-shadow-[0_0_8px_rgba(205,127,50,0.6)]"; // Cahaya Perunggu
+
+  if (xp >= 6000) {
+    calculatedRank = "Gold";
+    rankIcon = "/gold-badge.png";
+    rankGlow = "drop-shadow-[0_0_8px_rgba(255,215,0,0.6)]"; // Cahaya Emas
+  } else if (xp >= 4000) {
+    calculatedRank = "Silver";
+    rankIcon = "/silver-badge.png";
+    rankGlow = "drop-shadow-[0_0_8px_rgba(192,192,192,0.6)]"; // Cahaya Perak
+  }
 
   return (
     <div className="w-full bg-[#0A0D1A] rounded-3xl border border-gray-800 overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.5)] mb-8 relative">
       
       {/* 1. BANNER PIXEL ART */}
       <div className="w-full h-48 md:h-56 relative bg-[#11131A] overflow-hidden">
-        {/* Opsional: Ganti banner.png sesuai nama file lu di public */}
         <img 
           src="/banner.png" 
           alt="Banner Profile" 
           className="w-full h-full object-cover opacity-80"
           onError={(e) => { e.target.style.display = 'none'; }}
         />
-        {/* Gradient shadow biar transisi ke bawah mulus */}
         <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#0A0D1A] to-transparent"></div>
       </div>
 
       {/* 2. AREA KONTEN BAWAH BANNER */}
       <div className="px-6 md:px-10 pb-8 relative">
         
-        {/* WADAH AVATAR & INFO (JURUS NUMPUK BANNER) */}
+        {/* WADAH AVATAR & INFO */}
         <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end -mt-16 lg:-mt-20 relative z-10 gap-6 lg:gap-0">
             
             {/* BAGIAN KIRI: FOTO SAMA NAMA */}
@@ -36,7 +49,7 @@ export default function ProfileHeader({ nama, xp, level, rank = "Bronze", badge 
                   <img src={finalAvatar} alt={nama} className="w-full h-full object-cover" />
                 </div>
                 
-                {/* Teks Nama & Rating (Digeser dikit ke atas biar sejajar) */}
+                {/* Teks Nama & Rating */}
                 <div className="text-center md:text-left mb-2">
                     <div className="flex items-center justify-center md:justify-start gap-3 mb-1">
                         <h2 className="text-3xl font-bold text-white tracking-wide">{nama}</h2>
@@ -74,13 +87,13 @@ export default function ProfileHeader({ nama, xp, level, rank = "Bronze", badge 
                     </div>
                 </div>
 
-                {/* Stat 2: Rank */}
+                {/* 🔥 Stat 2: Rank (UDAH DINAMIS BROS!) 🔥 */}
                 <div className="flex items-center gap-3 pr-4 border-r border-gray-700 hidden md:flex">
                     <div className="w-10 h-10 flex items-center justify-center">
-                        <img src="/rank-icon.png" alt="Rank" className="w-full h-full object-contain drop-shadow-[0_0_8px_rgba(205,127,50,0.6)]" />
+                        <img src={rankIcon} alt="Rank" className={`w-full h-full object-contain ${rankGlow}`} />
                     </div>
                     <div className="flex flex-col">
-                        <span className="text-white font-bold text-xl leading-none">{ rank }</span>
+                        <span className="text-white font-bold text-xl leading-none">{ calculatedRank }</span>
                         <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Rank</span>
                     </div>
                 </div>
@@ -98,14 +111,14 @@ export default function ProfileHeader({ nama, xp, level, rank = "Bronze", badge 
 
             </div>
             
-            {/* Tombol Cetak CV (Posisi mutlak di kanan atas stats buat Desktop) */}
+            {/* Tombol Cetak CV (Desktop) */}
             <button className="hidden lg:flex absolute top-4 right-10 items-center justify-center gap-2 border border-gray-600 hover:border-blue-500 text-gray-300 hover:text-white font-bold text-xs uppercase tracking-widest py-2.5 px-6 rounded-xl transition-all hover:bg-[#1A2038] active:scale-95 shadow-lg">
                 <Download size={14} strokeWidth={2.5} /> Cetak CV
             </button>
 
         </div>
         
-        {/* Tombol Cetak CV (Buat Mobile/Tablet biar rapi) */}
+        {/* Tombol Cetak CV (Mobile) */}
         <button className="flex lg:hidden w-full mt-6 items-center justify-center gap-2 border border-gray-600 hover:border-blue-500 text-gray-300 hover:text-white font-bold text-xs uppercase tracking-widest py-3 px-6 rounded-xl transition-all hover:bg-[#1A2038] active:scale-95 shadow-lg">
             <Download size={14} strokeWidth={2.5} /> Cetak CV
         </button>
