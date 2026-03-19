@@ -42,7 +42,7 @@ export default async function UmkmDashboardPage() {
     where: {
       // Cari submission yang misi-nya dibikin sama UMKM ini
       quest: {
-        creatorId: currentUserId || 0
+        creatorId: currentUserId  || 0
       }
     },
     include: {
@@ -59,6 +59,12 @@ export default async function UmkmDashboardPage() {
     },
     orderBy: { id: 'desc' }
   });
+
+  <UmkmProfile 
+  user={userData} 
+  misiAktifCount={umkmQuests.length} 
+  misiSelesaiCount={pantauSubmissions.length} 
+/>
 
   // Data dinamis siap disajikan! (Kasih fallback kalau null)
   const namaUmkm = userData?.username || "Guest UMKM";
