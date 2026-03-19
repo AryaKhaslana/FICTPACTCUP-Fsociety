@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link'; // 🔥 1. WAJIB IMPORT INI BROSKIE!
 
 export default function LeaderboardList({ topUsers = [], currentUser = null }) {
   return (
@@ -28,9 +29,11 @@ export default function LeaderboardList({ topUsers = [], currentUser = null }) {
               // KARENA PODIUM UDAH 1-3, LIST INI MULAI DARI 4 BROSKIE!
               const rank = index + 4; 
               return (
-                <div 
+                // 🔥 2. SULAP <div> JADI <Link> BIAR BISA PINDAH HALAMAN! 🔥
+                <Link 
+                  href={`/profile/${user.id}`} // 👈 Ngarah ke profil musuh
                   key={user.id || index} 
-                  className="group flex items-center justify-between p-3 md:p-4 rounded-2xl hover:bg-white/10 transition-all duration-300 border-b border-gray-800/50 last:border-0 hover:scale-[1.01]"
+                  className="group flex items-center justify-between p-3 md:p-4 rounded-2xl hover:bg-white/10 transition-all duration-300 border-b border-gray-800/50 last:border-0 hover:scale-[1.01] cursor-pointer"
                 >
                   <div className="flex items-center gap-4 md:gap-6">
                     <div className="w-10 flex justify-center">
@@ -62,7 +65,7 @@ export default function LeaderboardList({ topUsers = [], currentUser = null }) {
                       </span>
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
@@ -73,7 +76,8 @@ export default function LeaderboardList({ topUsers = [], currentUser = null }) {
       {currentUser && (
         <div className="fixed bottom-0 left-0 w-full z-[9999] flex justify-center pb-6 px-4 pointer-events-none">
           
-          <div className="w-full max-w-4xl bg-gradient-to-r from-[#D97706] to-[#F59E0B] rounded-2xl p-4 flex items-center justify-between shadow-[0_-15px_40px_rgba(245,158,11,0.25)] pointer-events-auto border-t border-yellow-300/30 transform transition-transform hover:-translate-y-1">
+          {/* 🔥 3. STICKY BAR JUGA DIBIKIN BISA DIKLIK NGARAH KE PROFIL SENDIRI 🔥 */}
+          <Link href="/profile" className="w-full max-w-4xl bg-gradient-to-r from-[#D97706] to-[#F59E0B] rounded-2xl p-4 flex items-center justify-between shadow-[0_-15px_40px_rgba(245,158,11,0.25)] pointer-events-auto border-t border-yellow-300/30 transform transition-transform hover:-translate-y-1 cursor-pointer">
             
             <div className="flex items-center gap-4 md:gap-6">
               <span className="font-black text-3xl text-black/80 drop-shadow-md w-12 text-center">
@@ -110,7 +114,7 @@ export default function LeaderboardList({ topUsers = [], currentUser = null }) {
               </div>
             </div>
 
-          </div>
+          </Link>
         </div>
       )}
     </>

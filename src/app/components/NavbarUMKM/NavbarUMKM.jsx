@@ -51,20 +51,25 @@ export default function NavbarUMKM({ userName = "Bos UMKM", userAvatar }) {
 
         {/* 2. BAGIAN TENGAH: Menu Navigasi (SEMBUNYI DI HP) */}
         <ul className="hidden md:flex items-center gap-8">
-          <li>
-            <Link href="/dashboard-umkm" prefetch={false} className="text-sm font-semibold text-white hover:text-[#FFB800] transition-colors">
+          <li className="relative group">
+            <Link href="/dashboard-umkm" prefetch={false} className="text-sm font-semibold text-white hover:text-[#FFB800] transition-colors py-1">
               Home
             </Link>
+            {/* Garis Bawah Kuning (Muncul pas hover & aktif) */}
+            <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </li>
-          <li>
-            <Link href="/dashboard-umkm/quest" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors">
+          <li className="relative group">
+            <Link href="/dashboard-umkm/quest" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors py-1">
               Quest
             </Link>
+            {/* Garis Bawah Kuning (Muncul pas hover doang) */}
+            <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </li>
-          <li>
-            <Link href="/dashboard-umkm/eksplor-siswa" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors">
+          <li className="relative group">
+            <Link href="/dashboard-umkm/eksplor-siswa" prefetch={false} className="text-sm font-semibold text-gray-400 hover:text-[#FFB800] transition-colors py-1">
               Eksplor Siswa
             </Link>
+            <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#FFB800] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </li>
         </ul>
 

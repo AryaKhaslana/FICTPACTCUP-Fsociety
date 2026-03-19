@@ -3,6 +3,7 @@ import { Search } from 'lucide-react';
 import prisma from '../../../lib/prisma'; // 👈 SESUAIKAN PATH KE PRISMA LU! // 👈 Tambahin Navbar UMKM biar estetiknya full! (Kalo ada)
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Eksplor Pahlawan | XPact',
@@ -169,9 +170,12 @@ export default async function EksplorSiswaPage() {
 
                   <div className="flex items-center gap-4 md:gap-6">
                     <span className="text-gray-400 font-pixel text-xs md:text-sm whitespace-nowrap">{student.xp} XP</span>
-                    <button className="bg-[#1A1D26] hover:bg-[#F59E0B] hover:text-black text-gray-300 px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-colors shadow-md whitespace-nowrap">
-                      Lihat Profil
-                    </button>
+                    <Link 
+                    href={`/profile/${student.id}`} // 👈 Ini bakal ngarahin ke /profile/1, /profile/2, dst.
+                    className="bg-[#1A1D26] hover:bg-[#F59E0B] hover:text-black text-gray-300 px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-colors shadow-md whitespace-nowrap"
+                  >
+                    Lihat Profil
+                  </Link>
                   </div>
 
                 </div>

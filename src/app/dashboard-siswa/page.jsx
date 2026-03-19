@@ -64,7 +64,9 @@ export default async function DashboardSiswaPage() {
   const activeSubmission = await prisma.submission.findFirst({
     where: { 
       studentId: currentUserId || 0, 
-      status: 'PENDING' 
+      status: {
+        in: ['PENDING', 'REJECTED'] 
+      }
     },
     include: {
       quest: true 
@@ -72,7 +74,6 @@ export default async function DashboardSiswaPage() {
     orderBy: { id: 'desc' } 
   });
 
-  // 🔥🔥🔥 INI DIA YANG KETINGGALAN: NARIK DATA FEEDBACK! 🔥🔥🔥
   const recentFeedback = await prisma.submission.findMany({
     where: { 
       studentId: currentUserId || 0, 
