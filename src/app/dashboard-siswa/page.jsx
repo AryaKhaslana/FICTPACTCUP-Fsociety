@@ -8,9 +8,10 @@ import FeedbackCard from './FeedbackCard';
 import ActiveQuest from './ActiveQuest';
 import RecommendedQuests from './ReccomendedQuests';
 
-// 👇 1. Import cookies & jose
+// 👇 1. Import cookies, jose, & REDIRECT (Ini yang paling penting!)
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
+import { redirect } from 'next/navigation'; // 🔥 WAJIB IMPORT INI
 
 export default async function DashboardSiswaPage() {
   
@@ -18,17 +19,22 @@ export default async function DashboardSiswaPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get('fictpact_token')?.value; 
 
+  // 🔥 SATPAM LAPIS 1: Gak ada token = Tendang ke Login!
+  if (!token) {
+    redirect('/login');
+  }
+
   let currentUserId = null;
 
   // 👇 3. Ekstrak ID User dari dalem Token pake JOSE
-  if (token) {
-    try {
-      const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-      const { payload } = await jwtVerify(token, secret);
-      currentUserId = Number(payload.id); // Pastiin jadi angka!
-    } catch (error) {
-      console.error("Token bodong atau expired nih broskie!");
-    }
+  try {
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const { payload } = await jwtVerify(token, secret);
+    currentUserId = Number(payload.id); // Pastiin jadi angka!
+  } catch (error) {
+    // 🔥 SATPAM LAPIS 2: Token bodong/expired = Tendang ke Login!
+    console.error("Token bodong atau expired nih broskie!", error);
+    redirect('/login');
   }
 
   // 👇 4. Panggil Prisma pakai ID ASLI
@@ -40,6 +46,17 @@ export default async function DashboardSiswaPage() {
       studentProgress: true // Narik SEMUA riwayat XP dari berbagai kategori/skill
     }
   });
+
+  // 🔥 SATPAM LAPIS 3 (PALING KRITIS): CEK ROLE! 🔥
+  // Kalau usernya gak ada ATAU dia Bos UMKM, tendang balik ke kandangnya!
+  if (!userData || userData.role === 'UMKM') {
+    console.log("Wah ada Bos UMKM nyasar ke tempat tongkrongan Siswa!");
+    redirect('/dashboard-umkm');
+  }
+
+  // =========================================================================
+  // KALAU DIA LOLOS SAMPAI SINI, BERARTI DIA BENERAN SISWA! AMAN BROS! 🛡️
+  // =========================================================================
 
   // 🔥 5. TARIK DATA USER 🔥
   const namaSiswa = userData?.username || "Pahlawan Tanpa Nama";
