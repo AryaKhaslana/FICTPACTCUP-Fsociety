@@ -5,21 +5,21 @@ import { useRouter } from 'next/navigation';
 export default function KanbanBoard({ quests = [] }) {
   const router = useRouter();
   
-  // ================= STATE MODAL TERBITKAN (LAMA) =================
+  // ================= STATE MODAL TERBITKAN =================
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '', description: '', kategori: 'Desain / UI UX', xp: '1000', rank: 'A', deadline: ''
   });
 
-  // 🔥 ================= STATE MODAL REVIEW (BARU) ================= 🔥
+  // 🔥 ================= STATE MODAL REVIEW & RATING ================= 🔥
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false); // <--- State Modal Rating
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false); 
   
   const [selectedSubmission, setSelectedSubmission] = useState(null); 
   const [rejectMessage, setRejectMessage] = useState(''); 
-  const [feedbackText, setFeedbackText] = useState(''); // <--- State Feedback
-  const [rating, setRating] = useState(5); // <--- State Rating Bintang
+  const [feedbackText, setFeedbackText] = useState(''); 
+  const [rating, setRating] = useState(5); 
   const [isSubmitting, setIsSubmitting] = useState(false); 
 
   // 🔥 LOGIKA DEWA BUAT MISAHIN KOLOM KANBAN BOARD 🔥
@@ -48,14 +48,12 @@ export default function KanbanBoard({ quests = [] }) {
     }
   });
 
-  // ================= FUNGSI SUBMIT TERBITKAN MISI (LAMA) =================
+  // ================= FUNGSI AKSI & SUBMIT =================
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      // AMBIL TOKEN DARI LOCAL STORAGE (Sesuai aslinya)
       const token = localStorage.getItem('fictpact_token');
-      
       const res = await fetch('/api/quests', { 
         method: 'POST', 
         headers: { 
@@ -66,16 +64,33 @@ export default function KanbanBoard({ quests = [] }) {
       });
       const dataDariServer = await res.json(); 
       if (res.ok) {
-        setIsModalOpen(false); setFormData({ title: '', description: '', kategori: 'Desain / UI UX', xp: '1000', rank: 'A', deadline: '' }); router.refresh(); 
-      } else { alert("GAGAL BROSKIE: " + dataDariServer.message); }
-    } catch (error) { alert("Koneksi putus broskie! Cek terminal VS Code lu."); console.error(error); } finally { setIsLoading(false); }
+        setIsModalOpen(false); 
+        setFormData({ title: '', description: '', kategori: 'Desain / UI UX', xp: '1000', rank: 'A', deadline: '' }); 
+        router.refresh(); 
+      } else { 
+        alert("GAGAL BROSKIE: " + dataDariServer.message); 
+      }
+    } catch (error) { 
+      alert("Koneksi putus broskie! Cek terminal."); 
+      console.error(error); 
+    } finally { 
+      setIsLoading(false); 
+    }
   };
-  
-  // 🔥 ================= FUNGSI ACTION REVIEW (BARU) ================= 🔥
+
+  const openReviewModal = (submission) => {
+    setSelectedSubmission(submission);
+    setIsReviewModalOpen(true);
+  };
+
+  const goToRatingModal = () => {
+    setIsReviewModalOpen(false); 
+    setIsRatingModalOpen(true);  
+  };
+
   const handleReviewAction = async (submissionId, action, messageParam, ratingValue = null) => {
     setIsSubmitting(true);
     try {
-      // Bikin payload dewa (messageParam bisa jadi rejectMessage ATAU feedback)
       const payload = {
         submissionId,
         rejectMessage: action === 'reject' ? messageParam : '',
@@ -85,9 +100,7 @@ export default function KanbanBoard({ quests = [] }) {
 
       const res = await fetch(`/api/submissions/${action}`, { 
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-        }, 
+        headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify(payload) 
       });
 
@@ -95,31 +108,22 @@ export default function KanbanBoard({ quests = [] }) {
 
       if (res.ok) {
         setIsReviewModalOpen(false); 
-        setIsRatingModalOpen(false); // Tutup modal rating
+        setIsRatingModalOpen(false); 
         setSelectedSubmission(null); 
         setRejectMessage(''); 
         setFeedbackText('');
         setRating(5);
         router.refresh();
-        alert(responseData.message || "Berhasil ACC Misi!"); 
+        alert(responseData.message || "Berhasil!"); 
       } else { 
         alert(`Gagal nge-review bos! Pesan: ${responseData.message}`); 
       }
     } catch (error) { 
       alert("Koneksi meledak broskie!"); 
       console.error(error);
-    } finally { setIsSubmitting(false); }
-  };
-
-  const openReviewModal = (submission) => {
-    setSelectedSubmission(submission);
-    setIsReviewModalOpen(true);
-  };
-
-  // 🔥 FUNGSI PINDAH MODAL (DARI REVIEW KE RATING)
-  const goToRatingModal = () => {
-    setIsReviewModalOpen(false); 
-    setIsRatingModalOpen(true);  
+    } finally { 
+      setIsSubmitting(false); 
+    }
   };
 
   // 🔥 ================= KOMPONEN KARTU KANBAN ================= 🔥
@@ -127,7 +131,7 @@ export default function KanbanBoard({ quests = [] }) {
     const sub = quest.submissions && quest.submissions.length > 0 ? quest.submissions[0] : null;
     const workerName = sub?.student?.username || null;
     const showReviewButton = sub?.status === 'PENDING' && sub.fileUrl && sub.fileUrl !== '';
-
+    
     return (
       <div className="bg-[#11131A] border border-gray-700 rounded-xl p-4 mb-3 shadow-lg flex flex-col relative">
         <div>
@@ -159,7 +163,7 @@ export default function KanbanBoard({ quests = [] }) {
   return (
     <section className="w-full relative">
       
-      {/* Header & Tombol Tambah (100% BALIK KE VERSI ASLI LU) */}
+      {/* Header & Tombol Tambah */}
       <div className="flex justify-between items-center mb-8">
         <div className="relative w-64">
           <input type="text" placeholder="Cari misi..." className="w-full bg-[#11131A] border border-gray-700 rounded-full py-2 px-4 pl-10 text-sm text-white focus:outline-none focus:border-[#F59E0B]" />
@@ -194,7 +198,7 @@ export default function KanbanBoard({ quests = [] }) {
         </div>
       </div>
 
-      {/* ================= MODAL BOUNTY BARU (100% BALIK KE VERSI ASLI LU) ================= */}
+      {/* ================= MODAL BOUNTY BARU ================= */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
           <div className="bg-[#0F1423] border border-gray-700 rounded-3xl w-full max-w-3xl p-8 relative shadow-[0_0_50px_rgba(0,0,0,0.8)]">
@@ -225,18 +229,15 @@ export default function KanbanBoard({ quests = [] }) {
         </div>
       )}
 
-      {/* 🔥 ================= MODAL BOUNTY REVIEW (UBAH TOMBOL ACC) ================= 🔥 */}
+      {/* 🔥 ================= MODAL BOUNTY REVIEW ================= 🔥 */}
       {isReviewModalOpen && selectedSubmission && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
           <div className="bg-[#0A0A1A] border-2 border-[#F59E0B] rounded-3xl w-full max-w-4xl p-8 relative shadow-[0_0_50px_rgba(245,158,11,0.3)]">
-             
              <button onClick={() => setIsReviewModalOpen(false)} className="absolute top-6 right-8 text-white hover:text-red-500 font-bold text-2xl">X</button>
-
              <div className="flex justify-between items-center mb-10 mt-2 pr-10">
                <h1 className="text-4xl font-bold tracking-widest font-pixel uppercase">Bounty review</h1>
                <span className="text-orange-500 font-pixel text-4xl"> Rank - {quests.find(q => q.id === selectedSubmission.questId)?.rank || 'A'}</span>
              </div>
-
              <div className="flex flex-col md:flex-row gap-8">
                <div className="bg-[#11131A] border border-gray-800 rounded-2xl p-6 flex-1">
                  <h3 className="text-[#F59E0B] font-bold mb-4 flex items-center gap-2">📜 Syarat & Ketentuan (Requirements) :</h3>
@@ -246,7 +247,6 @@ export default function KanbanBoard({ quests = [] }) {
                     <li className="flex gap-3"><span>•</span> Format Pengumpulan: Link Google Drive (Kualitas tinggi).</li>
                  </ul>
                </div>
-               
                <div className="bg-[#11131A] border border-gray-800 rounded-2xl p-6 flex-1">
                  <h3 className="text-[#F59E0B] font-bold mb-4 flex items-center gap-2">⚔️ Misi Pahlawan (Dari {selectedSubmission.student?.username || 'Pahlawan'}) :</h3>
                  <p className="text-xs md:text-sm text-white/80 leading-relaxed italic mb-6">"{selectedSubmission.pesanUMKM || 'Tidak ada pesan dari pahlawan.'}"</p>
@@ -259,33 +259,27 @@ export default function KanbanBoard({ quests = [] }) {
                  </a>
                </div>
              </div>
-
              <div className="mt-10 mb-8 max-w-lg mx-auto">
                <textarea required value={rejectMessage} onChange={e => setRejectMessage(e.target.value)} rows={3} className="w-full bg-[#11131A] border border-gray-700 rounded-xl p-4 text-white text-sm focus:border-[#F59E0B] outline-none" placeholder="Tuliskan alasan revisi bos... (wajib isi jika mau nolak)"></textarea>
              </div>
-
              <div className="flex flex-col gap-4 max-w-sm mx-auto">
                <button onClick={() => handleReviewAction(selectedSubmission.id, 'reject', rejectMessage)} disabled={isSubmitting || !rejectMessage} className={`w-full py-4 rounded-xl text-white font-bold tracking-widest transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase ${isSubmitting ? 'bg-gray-600' : 'bg-[#E11D48] hover:bg-red-700'}`}>
                 {isSubmitting ? 'MEREVISI...' : 'Revisi'}
                </button>
-               {/* 🔥 TOMBOL ACC SEKARANG BUKA MODAL RATING 🔥 */}
                <button onClick={goToRatingModal} className={`w-full py-4 rounded-xl text-black font-bold tracking-widest transition-all transform active:scale-95 shadow-[0_5px_0_rgb(180,120,0)] uppercase bg-[#F59E0B] hover:bg-yellow-600`}>
                 Acc
                </button>
              </div>
-
           </div>
         </div>
       )}
 
-      {/* 🔥 MODAL 2: BERI PENILAIAN & FEEDBACK (Desain Baru Figma) 🔥 */}
+      {/* 🔥 MODAL 2: BERI PENILAIAN & FEEDBACK 🔥 */}
       {isRatingModalOpen && selectedSubmission && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
           <div className="bg-[#11131A] border border-gray-800 rounded-[2rem] w-full max-w-md p-8 relative shadow-2xl">
-            
             <h2 className="text-center text-white font-bold text-xl mb-8 tracking-wide">Beri Penilaian Pahlawan</h2>
-
-            {/* User Info Card Ala Figma */}
+            
             <div className="flex items-center gap-4 mb-8">
               <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-800 shrink-0 border-2 border-gray-700">
                 <img src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${selectedSubmission.student?.username}&backgroundColor=transparent`} alt="avatar" className="w-full h-full object-cover" />
@@ -300,20 +294,18 @@ export default function KanbanBoard({ quests = [] }) {
               </p>
             </div>
 
-            {/* Bintang Rating Raksasa */}
             <div className="flex justify-center gap-2 mb-8">
               {[1, 2, 3, 4, 5].map((s) => (
                 <button 
-                  key={s} 
-                  onClick={() => setRating(s)} 
-                  className={`text-5xl transition-all transform active:scale-75 hover:scale-110 ${rating >= s ? 'grayscale-0 drop-shadow-[0_0_15px_rgba(245,158,11,0.8)]' : 'grayscale opacity-20'}`}
+                key={s} 
+                onClick={() => setRating(s)} 
+                className={`text-5xl transition-all transform active:scale-75 hover:scale-110 ${rating >= s ? 'grayscale-0 drop-shadow-[0_0_15px_rgba(245,158,11,0.8)]' : 'grayscale opacity-20'}`}
                 >
                   ⭐
                 </button>
               ))}
             </div>
 
-            {/* Textarea Cerita Singkat */}
             <div className="mb-8">
               <textarea 
                 value={feedbackText} 
@@ -324,7 +316,6 @@ export default function KanbanBoard({ quests = [] }) {
               ></textarea>
             </div>
 
-            {/* Tombol Action */}
             <div className="flex gap-4">
               <button 
                 onClick={() => setIsRatingModalOpen(false)} 
@@ -341,7 +332,6 @@ export default function KanbanBoard({ quests = [] }) {
                 {isSubmitting ? 'Memproses...' : 'Kirim & Cairkan XP'}
               </button>
             </div>
-
           </div>
         </div>
       )}
