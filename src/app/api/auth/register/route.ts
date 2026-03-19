@@ -9,8 +9,23 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { email, password, role, nama, namaBisnis, kategoriBisnis, lokasi } = body;
 
-        const finalUsername = role === 'UMKM' ? namaBisnis : nama;
-        const finalRole = role === 'STUDENT' ? 'STUDENT' : 'UMKM';
+        // 🔥 1. AMANIN ROLE DULU (Ubah ke huruf besar semua biar gampang dicek)
+        const incomingRole = role ? role.toUpperCase() : '';
+
+        // 🔥 2. LOGIC SATPAM YANG BENER
+        let finalRole: 'STUDENT' | 'UMKM' = 'STUDENT';
+        
+        if (incomingRole === 'UMKM') {
+            finalRole = 'UMKM';
+        } else if (incomingRole === 'STUDENT' || incomingRole === 'SISWA') {
+            finalRole = 'STUDENT';
+        } else {
+            // Kalau ada yang iseng nembak API pake role ngawur
+            return NextResponse.json({ success: false, message: "Role apaan nih bos? Ga valid!"}, { status: 400 });
+        }
+
+        // 🔥 3. NENTUIN USERNAME BERDASARKAN ROLE
+        const finalUsername = finalRole === 'UMKM' ? namaBisnis : nama;
 
         if (!finalUsername || !email || !password) {
             return NextResponse.json({ success: false, message: "data lu kurang lengkap bos"}, { status: 400 });
@@ -32,6 +47,7 @@ export async function POST(request: Request) {
                 email: email,
                 password: hashedPassword,
                 role: finalRole,
+                // Insert data tambahan cuma kalau dia UMKM
                 ...(finalRole === 'UMKM' && {
                     kategoriBisnis: kategoriBisnis,
                     lokasi: lokasi
