@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link"; // 🔥 1. WAJIB IMPORT INI BROSKIE!
 
 // 👇 Tambahin props `misiAktifCount` dan `misiSelesaiCount` buat nangkep angka dari DB
 export default function UmkmProfile({ user, misiAktifCount, misiSelesaiCount }) {
@@ -57,12 +58,16 @@ export default function UmkmProfile({ user, misiAktifCount, misiSelesaiCount }) 
         </div>
       </div>
 
-      <button
-        type="button"
-        className="w-full py-2 rounded-[7px] border-1 border-gray-400 text-base font-pixellari text-gray-300 transition-all shadow-[0_4px_0_0_#A8A8A8] hover:shadow-[0_2px_0_0_#A8A8A8] hover:translate-y-1 active:translate-y-2 active:shadow-none"
+      {/* 🔥 4. TOMBOL BERUBAH JADI LINK 🔥
+          Tag <button> diganti pake <Link href="...">.
+          Bang Sepuh tambahin class 'block text-center' biar bentuknya tetep kayak tombol full width! 
+      */}
+      <Link
+        href="/dashboard-umkm/profile-umkm"
+        className="w-full block text-center py-2 rounded-[7px] border-1 border-gray-400 text-base font-pixellari text-gray-300 transition-all shadow-[0_4px_0_0_#A8A8A8] hover:shadow-[0_2px_0_0_#A8A8A8] hover:translate-y-1 active:translate-y-2 active:shadow-none"
       >
         Lihat Profil
-      </button>
+      </Link>
     </section>
   );
 }

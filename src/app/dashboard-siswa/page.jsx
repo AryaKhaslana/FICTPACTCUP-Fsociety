@@ -74,8 +74,12 @@ export default async function DashboardSiswaPage() {
     levelSiswa = Math.floor(xpSiswa / 1000) + 1;
   }
 
+  // 🔥 UPDATE DI SINI: Cuma nambahin orderBy biar dapet Quest Paling Baru 🔥
   const allQuests = await prisma.quest.findMany({
     take: 6,
+    orderBy: {
+      createdAt: 'desc' 
+    }
   });
 
   const activeSubmission = await prisma.submission.findFirst({
@@ -138,6 +142,7 @@ export default async function DashboardSiswaPage() {
             </div>
 
             <div className="bg-transparent min-h-[400px] flex items-center justify-center text-gray-500 rounded-2xl">
+              {/* OPER KE KOMPONEN REKOMENDASI (Gak Berubah) */}
               <RecommendedQuests questsData={allQuests}/>
             </div>
           </div>
