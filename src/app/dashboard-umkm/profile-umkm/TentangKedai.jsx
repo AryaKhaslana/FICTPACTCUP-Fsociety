@@ -1,12 +1,16 @@
+"use client"
 import React from 'react';
 
-export default function TentangKedai() {
-  return (
-    <div className="bg-[#1A1F32] rounded-2xl p-6 border border-gray-700 text-white h-full flex flex-col">
+export default function TentangKedai({ userData }) {
+  const bio = userData?.bio || "Tidak ada bio"
+  
+  
+    return (
+      <div className="bg-[#1A1F32] rounded-2xl p-6 border border-gray-700 text-white h-full flex flex-col">
       <h3 className="text-orange-400 font-bold text-lg mb-4">Tentang kedai</h3>
       
       <p className="text-gray-300 text-sm leading-relaxed mb-6">
-        Menyediakan ransum nasi goreng penambah HP terbaik se-Sidoarjo. Sedang mencari pahlawan visual untuk memperbarui logo kami
+        {bio}
       </p>
 
       <div className="flex items-center gap-3 mb-4">
@@ -23,7 +27,7 @@ export default function TentangKedai() {
           src="/bekasi.jpg" 
           alt="Peta Lokasi" 
           className="w-full h-32 object-cover"
-        />
+          />
       </div>
     </div>
   );

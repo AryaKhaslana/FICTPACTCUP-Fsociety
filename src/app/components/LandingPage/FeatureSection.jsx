@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import QuestCard from './QuestCard';
 import Link from 'next/link';
 
@@ -8,6 +8,9 @@ import Link from 'next/link';
 // @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 export default function FeatureSection() {
+  // 🔥 1. Tambahin State untuk melacak kategori yang aktif (Default: "Popular")
+  const [activeCategory, setActiveCategory] = useState("Popular");
+
   const data = [
     {
       title: "Bikin Logo Warkop Makmur",
@@ -31,6 +34,9 @@ export default function FeatureSection() {
 
   // Duplikasi data agar menjadi 6 item seperti di foto
   const allQuests = [...data, ...data, ...data].slice(0, 6);
+
+  // Kategori yang tersedia
+  const filterCategories = ["Popular", "Design UI/UX", "Web Dev"];
 
   return (
     <div className="min-h-screen bg-[#020617] text-white px-4 py-16 font-sans">
@@ -56,17 +62,22 @@ export default function FeatureSection() {
             <input 
               type="text" 
               placeholder="Search..." 
-              // Border diganti jadi solid #F59E0B
               className="bg-transparent border border-[#F59E0B] rounded-full pl-11 pr-6 py-2.5 text-sm w-64 focus:outline-none focus:border-[#F59E0B] focus:ring-1 focus:ring-[#F59E0B] transition-all"
             />
           </div>
           
           <div className="hidden md:block w-[1.5px] h-8 bg-gray-700 mx-2"></div>
 
-          {["Popular", "Design UI/UX", "Web Dev"].map((filter) => (
-            <button key={filter} 
-              // Border diganti jadi solid #F59E0B
-              className="px-7 py-2.5 rounded-full border border-[#F59E0B] text-sm font-medium hover:bg-[#F59E0B] hover:text-[#020617] transition-all duration-300"
+          {/* 🔥 2. Tombol Kategori Dinamis 🔥 */}
+          {filterCategories.map((filter) => (
+            <button 
+              key={filter} 
+              onClick={() => setActiveCategory(filter)} // Set state pas diklik
+              className={`px-7 py-2.5 rounded-full border border-[#F59E0B] text-sm font-medium transition-all duration-300 ${
+                activeCategory === filter
+                  ? "bg-[#F59E0B] text-black shadow-[0_0_10px_rgba(245,158,11,0.3)]" // Kalau Aktif: Background Oren, Teks Putih
+                  : "bg-transparent text-gray-300 hover:bg-[#F59E0B] hover:text-black" // Kalau Pasif: Tembus pandang, di-hover jadi Oren
+              }`}
             >
               {filter}
             </button>

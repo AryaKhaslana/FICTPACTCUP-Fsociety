@@ -25,7 +25,8 @@ export default async function Page() {
         select: { 
           username: true, 
           avatarUrl: true,
-          bio: true // 👈 Sekalian ditarik biar "Tentang Kedai" gak hardcode juga!
+          bio: true,
+          kategoriBisnis: true
         }
       });
     } catch (error) {
