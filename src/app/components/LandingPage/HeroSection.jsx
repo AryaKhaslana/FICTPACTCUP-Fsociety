@@ -46,7 +46,7 @@ export default function HeroSection() {
         {/* 🔥 ANIMASI 3: TOMBOL 🔥 */}
        <Link 
           href="/login"
-          className="inline-block text-center mt-2 md:mt-4 px-10 py-3 md:py-4 bg-[#FFB800] hover:bg-[#E6A600] text-black font-pixel text-base md:text-lg rounded-xl transition-all duration-300 transform hover:scale-105 shadow-[0_4px_0_0_#996E00,0_0_20px_rgba(255,184,0,0.5)] hover:shadow-[0_2px_0_0_#996E00,0_0_30px_rgba(255,184,0,0.8)] hover:translate-y-1 active:translate-y-2 active:shadow-none uppercase tracking-wider"
+          className="inline-block text-center mt-2 md:mt-2 px-10 py-3 md:py-4 bg-[#FFB800] hover:bg-[#E6A600] text-black font-pixellari text-base md:text-lg rounded-xl transition-all duration-300 transform hover:scale-105 shadow-[0_4px_0_0_#996E00,0_0_20px_rgba(255,184,0,0.5)] hover:shadow-[0_2px_0_0_#996E00,0_0_30px_rgba(255,184,0,0.8)] hover:translate-y-1 active:translate-y-2 active:shadow-none uppercase tracking-wider"
         >
           Mulai
         </Link>

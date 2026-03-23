@@ -1,4 +1,7 @@
+"use client";
+
 import React from 'react';
+import Link from 'next/link'; // 👈 Tambahin ini buat pindah halaman
 
 // 🔥 KITA TERIMA SUAPAN DATA DARI page.jsx LEWAT PROPS userData 🔥
 export default function ProfileClient({ userData }) {
@@ -7,21 +10,11 @@ export default function ProfileClient({ userData }) {
   const namaKlien = userData?.username || "UMKM Indonesia Nusantara";
   const avatarKlien = userData?.avatarUrl || `https://api.dicebear.com/7.x/initials/svg?seed=${namaKlien}&backgroundColor=1A1F32`;
   
-  // 🔥 2. LOGIKA LEVELING (Biar Gambar dan Teks Otomatis Ganti) 🔥
-  const currentXp = userData?.xp || 8000; 
-
-  const getRankInfo = (xp) => {
-    // Kalo XP di bawah 3000 -> Bronze
-    if (xp < 3000) return { name: 'Bronze', textColor: 'text-orange-400', imgSrc: '/rank-icon.png' };
-    // Kalo XP 3000 sampe 5999 -> Silver
-    if (xp < 6000) return { name: 'Silver', textColor: 'text-gray-300', imgSrc: '/silver-badge.png' };
-    // Kalo XP 6000 sampe 9999 -> Gold
-    if (xp < 10000) return { name: 'Gold', textColor: 'text-yellow-400', imgSrc: '/gold-badge.png' };
-    // Kalo XP 10000+ -> Diamond/Platinum
-    return { name: 'Diamond', textColor: 'text-cyan-400', imgSrc: 'https://cdn-icons-png.flaticon.com/512/1783/1783073.png' };
-  };
-
-  const rank = getRankInfo(currentXp);
+  // 🔥 2. TARIK KATEGORI BISNIS (Pastikan select 'kategoriBisnis' di page.jsx Prisma lu) 🔥
+  const kategoriKlien = userData?.kategoriBisnis || "Kategori Belum Diatur";
+  
+  // 3. Tarik Cover URL (kalo lu udah nambahin di DB nanti, sementari pakai placeholder)
+  const coverUrl = userData?.coverUrl || "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=1000";
 
   return (
     <div className="bg-[#1A1F32] rounded-2xl overflow-hidden border border-gray-700/50 shadow-2xl">
@@ -29,7 +22,7 @@ export default function ProfileClient({ userData }) {
       {/* 🔥 1. COVER IMAGE 🔥 */}
       <div className="h-32 md:h-48 w-full relative">
         <img 
-          src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=1000" 
+          src={coverUrl} 
           alt="Cover UMKM" 
           className="w-full h-full object-cover opacity-70"
         />
@@ -50,54 +43,27 @@ export default function ProfileClient({ userData }) {
             />
           </div>
 
-          {/* INFO TEXT */}
-          <div className="flex-1 text-center md:text-left mb-2 md:mb-4 pt-2 md:pt-0">
-            <h2 className="text-2xl md:text-3xl font-bold text-white drop-shadow-md">{namaKlien}</h2>
+          {/* INFO TEXT (NAMA & KATEGORI) */}
+          <div className="flex-1 text-center md:text-left mb-4 pt-2 md:pt-0 pb-2 md:pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
             
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-3">
-              <div className="flex items-center gap-1 bg-yellow-500/10 px-3 py-1.5 rounded-full border border-yellow-500/20 shadow-inner">
-                <span>👑</span>
-                <span className="text-yellow-400 font-semibold text-xs md:text-sm">Klien Elite</span>
-              </div>
-              <div className="flex items-center gap-1 bg-gray-800/60 px-3 py-1.5 rounded-full border border-gray-700/50">
-                <span className="text-yellow-400 text-xs md:text-sm tracking-widest">⭐⭐⭐⭐⭐</span>
-                <span className="text-gray-300 text-xs md:text-sm font-bold ml-1">(5.0)</span>
-              </div>
-            </div>
-          </div>
-
-          {/* BADGES / STATS */}
-          <div className="flex gap-3 md:gap-4 justify-center md:justify-end mb-2 md:mb-4 w-full md:w-auto">
-            
-            {/* EXP Badge (Tetep pake SVG bawaan lu) */}
-            <div className="flex items-center gap-3 bg-[#111424]/80 p-3 rounded-xl border border-gray-700/50 hover:bg-[#111424] transition duration-300 shadow-md">
-              <div className="w-10 h-10 relative flex items-center justify-center transform transition-transform hover:scale-110">
-                <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full drop-shadow-md">
-                  <polygon points="50 5, 95 25, 95 75, 50 95, 5 75, 5 25" fill="#1D4ED8" stroke="#EAB308" strokeWidth="6" />
-                </svg>
-                <span className="relative z-10 text-white font-bold text-[9px] tracking-wider">EXP</span>
-              </div>
-              <div className="flex flex-col items-start pr-2">
-                <div className="font-bold text-sm text-white">{currentXp}</div>
-                <div className="text-[10px] text-gray-400 font-medium whitespace-nowrap">XP Diberikan</div>
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-white drop-shadow-md">{namaKlien}</h2>
+              
+              {/* KATEGORI UMKM */}
+              <div className="inline-flex flex-wrap items-center justify-center md:justify-start mt-2">
+                <span className="bg-[#F59E0B]/10 border border-[#F59E0B]/30 text-[#F59E0B] px-3 py-1 rounded-full text-xs md:text-sm font-semibold tracking-wide shadow-sm">
+                  {kategoriKlien}
+                </span>
               </div>
             </div>
 
-            {/* 🔥 RANK BADGE (UDAH DIGANTI JADI IMG!) 🔥 */}
-            <div className="flex items-center gap-3 bg-[#111424]/80 p-3 rounded-xl border border-gray-700/50 hover:bg-[#111424] transition duration-300 shadow-md">
-              <div className="w-10 h-10 relative flex items-center justify-center transform transition-transform hover:scale-110">
-                {/* SVG dibuang, diganti IMG yang narik dari variabel rank.imgSrc */}
-                <img 
-                  src={rank.imgSrc} 
-                  alt={rank.name} 
-                  className="w-full h-full object-contain drop-shadow-md"
-                />
-              </div>
-              <div className="flex flex-col items-start pr-2">
-                <div className={`font-bold text-sm drop-shadow-sm ${rank.textColor}`}>{rank.name}</div>
-                <div className="text-[10px] text-gray-400 font-medium whitespace-nowrap">Rank Umkm</div>
-              </div>
-            </div>
+            {/* 🔥 TOMBOL EDIT PROFILE DI KANAN 🔥 */}
+            <Link 
+              href="/settings" // 👈 Sesuaikan URL halaman setting lu
+              className="md:ml-auto bg-[#F59E0B] hover:bg-[#D97706] text-black font-bold py-2 px-6 rounded-xl transition-all shadow-[0_4px_0_rgb(180,83,9)] hover:shadow-[0_2px_0_rgb(180,83,9)] hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none flex items-center justify-center gap-2"
+            >
+             Edit Profile
+            </Link>
 
           </div>
 

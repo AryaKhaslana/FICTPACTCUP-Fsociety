@@ -31,14 +31,13 @@ export default function UmkmProfile({ user, misiAktifCount, misiSelesaiCount }) 
 
         <div className="flex flex-col gap-1">
           <h2 className="text-lg md:text-xl font-semibold truncate w-40">{namaUmkm}</h2>
-          <span className=" items-center font-medium py-1 text-[15px] uppercase tracking-wide text-[#f79e00]">
+          <span className=" items-center font-medium py-1 text-[12px] uppercase tracking-wide text-[#f79e00]">
             {kategori}
           </span>
         </div>
       </div>
 
       <div className="space-y-3 text-xs md:text-sm text-white/80">
-        {/* 👇 1. Rating bintang udah gw basmi dari sini */}
         
         <p className="line-clamp-3 leading-relaxed">
           {bio}

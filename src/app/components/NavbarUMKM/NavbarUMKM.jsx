@@ -45,7 +45,7 @@ export default function NavbarUMKM({ userName = "Bos UMKM", userAvatar }) {
             <div className="w-8 h-8 group-hover:scale-110 transition-transform">
               <img src="/dragon.png" alt="XPact Logo" className="w-full h-full object-contain" />
             </div>
-            <span className="font-pixel text-lg md:text-xl text-white mt-1 group-hover:text-[#FFB800] transition-colors">Dashboard</span>
+            <span className="font-pixel text-lg md:text-xl text-white mt-1 group-hover:text-[#FFB800] transition-colors">XPACT</span>
           </div>
         </Link>
 
