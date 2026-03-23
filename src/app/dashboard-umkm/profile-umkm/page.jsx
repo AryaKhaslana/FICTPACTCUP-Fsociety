@@ -25,7 +25,8 @@ export default async function Page() {
         select: { 
           username: true, 
           avatarUrl: true,
-          bio: true // 👈 Sekalian ditarik biar "Tentang Kedai" gak hardcode juga!
+          bio: true, // 👈 Narik Bio
+          lokasi: true // 🔥 INI YANG KURANG BROSKIE! WAJIB DITAMBAHIN BIAR LOKASINYA KETARIK! 🔥
         }
       });
     } catch (error) {
@@ -35,7 +36,6 @@ export default async function Page() {
 
   return (
     // 1. WRAPPER UTAMA
-    // Bang Sepuh tambahin pt-24 biar kalo Navbar lu itu tipe "fixed", kontennya gak nabrak!
     <div className="min-h-screen bg-[#0A0D1A] font-sans pb-16">
       
       {/* 2. NAVBAR: Disuapin data nama dan foto */}
@@ -53,8 +53,11 @@ export default async function Page() {
         {/* Bagian Bawah (Grid 2 Kolom) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
-          {/* 🔥 Disuapin data juga biar Bio-nya beneran narik dari DB 🔥 */}
-          <TentangKedai userData={currentUser} />
+          {/* 🔥 UBAH CARA MANGGILNYA JADI GINI BIAR NYAMBUNG SAMA PROPS KOMPONENNYA 🔥 */}
+          <TentangKedai 
+            bio={currentUser?.bio || null} 
+            lokasi={currentUser?.lokasi || null} 
+          />
           
           <MisiOpenList />
         </div>
