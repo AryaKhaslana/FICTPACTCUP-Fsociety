@@ -25,8 +25,24 @@ export default async function Page() {
         select: { 
           username: true, 
           avatarUrl: true,
-          bio: true, // 👈 Narik Bio
-          lokasi: true // 🔥 INI YANG KURANG BROSKIE! WAJIB DITAMBAHIN BIAR LOKASINYA KETARIK! 🔥
+          bio: true, 
+          lokasi: true, 
+          kategoriBisnis: true,
+          coverUrl: true, // 🔥 1. INI DIA TARIKAN BUAT BANNER FATIH! 🔥
+          
+          // 🔥 2. INI BUAT NAMPILIN DAFTAR MISI DI BAWAH BIAR GAK KOSONG 🔥
+          questsCreated: {
+            where: { status: 'OPEN' }, 
+            select: {
+              id: true,
+              title: true,
+              rewardXp: true, // Sesuai nama kolom di schema Prisma lu
+              status: true
+              // thumbnailUrl: true // 👈 Buka komen ini kalau lu nanti nambahin gambar quest di Prisma
+            },
+            take: 3, 
+            orderBy: { createdAt: 'desc' } 
+          }
         }
       });
     } catch (error) {
@@ -47,19 +63,20 @@ export default async function Page() {
       {/* 3. CONTAINER KONTEN */}
       <div className="max-w-5xl mx-auto px-4 md:px-8 mt-8 space-y-6 relative z-10">
         
-        {/* 🔥 Bagian Atas: Disuapin data userData penuh 🔥 */}
+        {/* 🔥 Bagian Atas: Disuapin data userData penuh termasuk coverUrl 🔥 */}
         <ProfileClient userData={currentUser} />
         
         {/* Bagian Bawah (Grid 2 Kolom) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
-          {/* 🔥 UBAH CARA MANGGILNYA JADI GINI BIAR NYAMBUNG SAMA PROPS KOMPONENNYA 🔥 */}
           <TentangKedai 
             bio={currentUser?.bio || null} 
             lokasi={currentUser?.lokasi || null} 
           />
           
-          <MisiOpenList />
+          {/* 🔥 UBAH CARA MANGGILNYA JADI GINI BIAR NYAMBUNG SAMA PROPS KOMPONENNYA 🔥 */}
+          <MisiOpenList quests={currentUser?.questsCreated || []} />
+          
         </div>
         
       </div>

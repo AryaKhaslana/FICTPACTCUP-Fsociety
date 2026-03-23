@@ -13,7 +13,7 @@ const getJwtSecretKey = () => {
   return new TextEncoder().encode(secret);
 };
 
-// 🔥 FUNGSI GET (TETEP SAMA) 🔥
+// 🔥 FUNGSI GET 🔥
 export async function GET() {
   const cookieStore = await cookies();
   const token = cookieStore.get('fictpact_token')?.value;
@@ -27,7 +27,8 @@ export async function GET() {
     
     const user = await prisma.user.findUnique({
       where: { id: Number(payload.id) },
-      select: { username: true, bio: true, avatarUrl: true, email: true } 
+      // 🔥 TAMBAHIN coverUrl: true DI SINI BIAR PAS BUKA SETTING, BANNER LAMA NONGOL 🔥
+      select: { username: true, bio: true, avatarUrl: true, email: true, coverUrl: true } 
     });
     
     return NextResponse.json({ success: true, user });
@@ -37,8 +38,8 @@ export async function GET() {
   }
 }
 
-// 🔥 FUNGSI PUT (UDAH DIKEBALIN DARI ERROR TYPESCRIPT) 🔥
-export async function PUT(req: Request) { // 👈 Kasih tau req itu tipenya Request
+// 🔥 FUNGSI PUT 🔥
+export async function PUT(req: Request) { 
   const cookieStore = await cookies();
   const token = cookieStore.get('fictpact_token')?.value;
 
@@ -50,20 +51,23 @@ export async function PUT(req: Request) { // 👈 Kasih tau req itu tipenya Requ
     const { payload } = await jwtVerify(token, getJwtSecretKey());
     
     const body = await req.json();
-    const { username, bio, avatarUrl, newPassword } = body;
+    // 🔥 TANGKEP coverUrl DARI FORM SETTING 🔥
+    const { username, bio, avatarUrl, coverUrl, newPassword } = body;
 
-    // 🔥 INI OBATNYA BROSKIE! Kita deklarasiin tipe datanya 🔥
+    // 🔥 TAMBAHIN coverUrl?: string DI DALAM TIPE DATANYA 🔥
     let updateData: {
       username?: string;
       bio?: string;
       avatarUrl?: string;
+      coverUrl?: string; 
       password?: string;
     } = {};
     
-    // Sekarang TypeScript gak bakal marah lagi!
     if (username !== undefined) updateData.username = username;
     if (bio !== undefined) updateData.bio = bio;
     if (avatarUrl !== undefined) updateData.avatarUrl = avatarUrl;
+    // 🔥 MASUKIN DATA coverUrl KE PAYLOAD YANG MAU DI-SAVE KE DATABASE 🔥
+    if (coverUrl !== undefined) updateData.coverUrl = coverUrl;
 
     if (newPassword && newPassword.trim() !== '') {
       const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -75,9 +79,9 @@ export async function PUT(req: Request) { // 👈 Kasih tau req itu tipenya Requ
       data: updateData
     });
 
-    return NextResponse.json({ success: true, message: 'Siuuu! Profil berhasil diupdate!' });
+    return NextResponse.json({ success: true, message: 'Siuuu! Profil & Banner berhasil diupdate!' });
   } catch (error) {
     console.error("Gagal update DB:", error);
     return NextResponse.json({ success: false, message: 'Gagal update ke Database!' }, { status: 500 });
   }
-}
+} 

@@ -36,6 +36,7 @@ model User {
   role      Role     @default(STUDENT)
   bio       String?  @db.Text
   avatarUrl String?
+  coverUrl  String?
 
   kategoriBisnis String?
   lokasi         String?

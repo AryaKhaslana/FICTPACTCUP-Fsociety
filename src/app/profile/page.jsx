@@ -74,9 +74,10 @@ export default async function ProfilePage() {
         {/* OPER SEMUA DATA TERMASUK AVATAR KE HEADER PROFIL */}
         <ProfileHeader 
           nama={namaSiswa} 
-          avatarUrl={avatarSiswa} 
+          avatarUrl={avatarSiswa}
+          coverUrl={currentUser.coverUrl} 
           xp={xpSiswa} 
-          level={levelSiswa}
+          level={levelSiswa}  
           rank={rankSiswa} 
           badge={1} 
         />
