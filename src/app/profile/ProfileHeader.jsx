@@ -1,7 +1,8 @@
 "use client";
 
 import React from 'react';
-import { Star, Download } from 'lucide-react';
+import { Star } from 'lucide-react'; // 👈 Download udah dihapus
+import Link from 'next/link'; // 👈 Tambahin ini buat fungsi pindah halaman
 
 // 🔥 TANGKEP PROPS 'rank' dan 'coverUrl' DI SINI 🔥
 export default function ProfileHeader({ nama, xp, level, rank, badge = 0, avatarUrl, coverUrl }) {
@@ -110,17 +111,23 @@ export default function ProfileHeader({ nama, xp, level, rank, badge = 0, avatar
                 </div>
             </div>
             
-            {/* Tombol Cetak CV (Desktop) */}
-            <button className="hidden lg:flex absolute top-6 right-10 items-center justify-center gap-2 border border-gray-600 hover:border-orange-500 text-gray-300 hover:text-orange-400 font-bold text-xs uppercase tracking-widest py-2.5 px-6 rounded-xl transition-all hover:bg-[#1A2038] active:scale-95 shadow-lg group">
-                <Download size={14} strokeWidth={2.5} className="group-hover:-translate-y-1 transition-transform" /> Cetak CV
-            </button>
+            {/* 🔥 Tombol Edit Profile (Desktop) 🔥 */}
+            <Link 
+              href="/settings" // 👈 Sesuaikan URL halaman setting lu
+              className="hidden lg:flex absolute top-6 right-10 items-center justify-center gap-2 bg-[#F59E0B] hover:bg-[#D97706] text-black font-bold py-2 px-6 rounded-xl transition-all shadow-[0_4px_0_rgb(180,83,9)] hover:shadow-[0_2px_0_rgb(180,83,9)] hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none"
+            >
+              <span>✏️</span> Edit Profile
+            </Link>
 
         </div>
         
-        {/* Tombol Cetak CV (Mobile) */}
-        <button className="flex lg:hidden w-full mt-6 items-center justify-center gap-2 border border-gray-600 hover:border-orange-500 text-gray-300 hover:text-orange-400 font-bold text-xs uppercase tracking-widest py-3 px-6 rounded-xl transition-all hover:bg-[#1A2038] active:scale-95 shadow-lg">
-            <Download size={14} strokeWidth={2.5} /> Cetak CV
-        </button>
+        {/* 🔥 Tombol Edit Profile (Mobile) 🔥 */}
+        <Link 
+          href="/settings" // 👈 Sesuaikan URL halaman setting lu
+          className="flex lg:hidden w-full mt-6 items-center justify-center gap-2 bg-[#F59E0B] hover:bg-[#D97706] text-black font-bold py-3 px-6 rounded-xl transition-all shadow-[0_4px_0_rgb(180,83,9)] hover:shadow-[0_2px_0_rgb(180,83,9)] hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none"
+        >
+          <span>✏️</span> Edit Profile
+        </Link>
 
       </div>
     </div>
