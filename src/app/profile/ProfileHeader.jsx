@@ -1,23 +1,21 @@
 "use client";
 
 import React from 'react';
-import { Star } from 'lucide-react'; 
-import Link from 'next/link'; 
+import { Star } from 'lucide-react'; // 👈 Download udah dihapus
+import Link from 'next/link'; // 👈 Tambahin ini buat fungsi pindah halaman
 
+// 🔥 TANGKEP PROPS 'rank' dan 'coverUrl' DI SINI 🔥
 export default function ProfileHeader({ nama, xp, level, rank, badge = 0, avatarUrl, coverUrl }) {
   
   const finalAvatar = avatarUrl || `https://api.dicebear.com/7.x/pixel-art/svg?seed=${nama}&backgroundColor=transparent`;
-  
-  // 🔥 UDAH DISAMBUNGIN! Default banner disamain persis kayak di Setting Form 🔥
-  const defaultBanner = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=1000';
-  const finalCover = coverUrl && coverUrl.trim() !== '' ? coverUrl : defaultBanner;
+  const finalCover = coverUrl || "/banner.png"; // 👈 Kalo gada cover, baru pake default
 
-  // 🔥 LOGIKA RANKING 🔥
+  // 🔥 LOGIKA RANKING NGILUTIN PAGE.JSX 🔥
   let rankIcon = "/rank-icon.png"; // Default Bronze
   let rankGlow = "drop-shadow-[0_0_8px_rgba(205,127,50,0.6)]"; // Cahaya Perunggu
 
   if (rank === "Mythic") {
-    rankIcon = "/mythic-badge.png"; 
+    rankIcon = "/mythic-badge.png"; // Pastiin lu sedia gambarnya bro!
     rankGlow = "drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]"; // Cahaya Merah Dewa
   } else if (rank === "Gold") {
     rankIcon = "/gold-badge.png";
@@ -36,7 +34,7 @@ export default function ProfileHeader({ nama, xp, level, rank, badge = 0, avatar
           src={finalCover} 
           alt="Banner Profile" 
           className="w-full h-full object-cover opacity-80"
-          onError={(e) => { e.target.src = defaultBanner; }} // 👈 Fallback aman
+          onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=1000'; }}
         />
         <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0A0D1A] via-[#0A0D1A]/80 to-transparent"></div>
       </div>
@@ -82,7 +80,7 @@ export default function ProfileHeader({ nama, xp, level, rank, badge = 0, avatar
                 {/* Stat 1: Total XP */}
                 <div className="flex items-center gap-3 pr-4 border-r border-gray-700">
                     <div className="w-10 h-10 flex items-center justify-center text-2xl drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">
-                        ⚔️ 
+                        ⚔️ {/* Ganti pake icon img lu kalo ada */}
                     </div>
                     <div className="flex flex-col">
                         <span className="text-white font-bold text-xl leading-none">{ xp }</span>
@@ -90,7 +88,7 @@ export default function ProfileHeader({ nama, xp, level, rank, badge = 0, avatar
                     </div>
                 </div>
 
-                {/* Stat 2: Rank Dinamis */}
+                {/* 🔥 Stat 2: Rank Dinamis 🔥 */}
                 <div className="flex items-center gap-3 pr-4 border-r border-gray-700">
                     <div className="w-10 h-10 flex items-center justify-center">
                         <img src={rankIcon} alt="Rank" className={`w-full h-full object-contain ${rankGlow}`} onError={(e) => { e.target.style.display = 'none'; }} />
@@ -104,7 +102,7 @@ export default function ProfileHeader({ nama, xp, level, rank, badge = 0, avatar
                 {/* Stat 3: Badge */}
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 flex items-center justify-center text-2xl drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]">
-                        🛡️ 
+                        🛡️ {/* Ganti pake icon img lu kalo ada */}
                     </div>
                     <div className="flex flex-col">
                         <span className="text-white font-bold text-xl leading-none">{ badge }</span>
@@ -113,9 +111,9 @@ export default function ProfileHeader({ nama, xp, level, rank, badge = 0, avatar
                 </div>
             </div>
             
-            {/* Tombol Edit Profile (Desktop) */}
+            {/* 🔥 Tombol Edit Profile (Desktop) 🔥 */}
             <Link 
-              href="/settings" 
+              href="/settings" // 👈 Sesuaikan URL halaman setting lu
               className="hidden lg:flex absolute top-6 right-10 items-center justify-center gap-2 bg-[#F59E0B] hover:bg-[#D97706] text-black font-bold py-2 px-6 rounded-xl transition-all shadow-[0_4px_0_rgb(180,83,9)] hover:shadow-[0_2px_0_rgb(180,83,9)] hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none"
             >
               <span>✏️</span> Edit Profile
@@ -123,9 +121,9 @@ export default function ProfileHeader({ nama, xp, level, rank, badge = 0, avatar
 
         </div>
         
-        {/* Tombol Edit Profile (Mobile) */}
+        {/* 🔥 Tombol Edit Profile (Mobile) 🔥 */}
         <Link 
-          href="/settings" 
+          href="/settings" // 👈 Sesuaikan URL halaman setting lu
           className="flex lg:hidden w-full mt-6 items-center justify-center gap-2 bg-[#F59E0B] hover:bg-[#D97706] text-black font-bold py-3 px-6 rounded-xl transition-all shadow-[0_4px_0_rgb(180,83,9)] hover:shadow-[0_2px_0_rgb(180,83,9)] hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none"
         >
           <span>✏️</span> Edit Profile
