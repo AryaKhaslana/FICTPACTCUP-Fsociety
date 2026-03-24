@@ -1,9 +1,13 @@
 import React from 'react';
+import Link from 'next/link'; // 🔥 1. IMPORT KOMPONEN LINK DARI NEXT.JS 🔥
 
 export default function QuestCard({ title, description, company, categories, xp, stars, image }) {
   return (
-    // 🔥 1. BACKGROUND CARD: Putih (Siang), Gelap (Malam)
-    <div className="bg-white dark:bg-[#0F172A] rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-[#F59E0B] dark:hover:border-[#F59E0B] shadow-sm hover:shadow-md dark:shadow-none transition-all duration-300 group cursor-pointer flex flex-col h-full">
+    // 🔥 2. GANTI TAG <div> LUAR JADI <Link> DAN KASIH href="/login" 🔥
+    <Link 
+      href="/login" 
+      className="bg-white dark:bg-[#0F172A] rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-[#F59E0B] dark:hover:border-[#F59E0B] shadow-sm hover:shadow-md dark:shadow-none transition-all duration-300 group cursor-pointer flex flex-col h-full"
+    >
       
       {/* Bagian Gambar */}
       <div className="relative h-48 w-full overflow-hidden">
@@ -27,10 +31,10 @@ export default function QuestCard({ title, description, company, categories, xp,
       {/* Bagian Konten */}
       <div className="p-5 flex flex-col grow justify-between gap-4">
         <div>
-          {/* 🔥 2. TEKS JUDUL: Hitam (Siang), Putih (Malam) */}
+          {/* TEKS JUDUL: Hitam (Siang), Putih (Malam) */}
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 leading-tight group-hover:text-[#F59E0B] dark:group-hover:text-[#F59E0B] transition-colors">{title}</h3>
           
-          {/* 🔥 3. TEKS DESKRIPSI: Abu Gelap (Siang), Abu Terang (Malam) */}
+          {/* TEKS DESKRIPSI: Abu Gelap (Siang), Abu Terang (Malam) */}
           <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed transition-colors">{description}</p>
         </div>
 
@@ -44,11 +48,11 @@ export default function QuestCard({ title, description, company, categories, xp,
               </span>
             ))}
           </div>
-          {/* 🔥 4. TEKS XP: Hitam (Siang), Putih (Malam) */}
+          {/* TEKS XP: Hitam (Siang), Putih (Malam) */}
           <span className="text-sm font-bold text-gray-900 dark:text-white transition-colors">+ {xp} XP</span>
         </div>
       </div>
 
-    </div>
+    </Link>
   );
 }

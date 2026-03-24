@@ -8,10 +8,10 @@ import FeedbackCard from './FeedbackCard';
 import ActiveQuest from './ActiveQuest';
 import RecommendedQuests from './ReccomendedQuests';
 
-// 👇 1. Import cookies, jose, & REDIRECT (Ini yang paling penting!)
+// 👇 1. Import cookies, jose, & REDIRECT 
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
-import { redirect } from 'next/navigation'; // 🔥 WAJIB IMPORT INI
+import { redirect } from 'next/navigation'; 
 
 export default async function DashboardSiswaPage() {
   
@@ -19,20 +19,17 @@ export default async function DashboardSiswaPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get('fictpact_token')?.value; 
 
-  // 🔥 SATPAM LAPIS 1: Gak ada token = Tendang ke Login!
   if (!token) {
     redirect('/login');
   }
 
   let currentUserId = null;
 
-  // 👇 3. Ekstrak ID User dari dalem Token pake JOSE
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const { payload } = await jwtVerify(token, secret);
-    currentUserId = Number(payload.id); // Pastiin jadi angka!
+    currentUserId = Number(payload.id); 
   } catch (error) {
-    // 🔥 SATPAM LAPIS 2: Token bodong/expired = Tendang ke Login!
     console.error("Token bodong atau expired nih broskie!", error);
     redirect('/login');
   }
@@ -43,20 +40,14 @@ export default async function DashboardSiswaPage() {
       id: currentUserId || 0, 
     },
     include: {
-      studentProgress: true // Narik SEMUA riwayat XP dari berbagai kategori/skill
+      studentProgress: true 
     }
   });
 
-  // 🔥 SATPAM LAPIS 3 (PALING KRITIS): CEK ROLE! 🔥
-  // Kalau usernya gak ada ATAU dia Bos UMKM, tendang balik ke kandangnya!
   if (!userData || userData.role === 'UMKM') {
     console.log("Wah ada Bos UMKM nyasar ke tempat tongkrongan Siswa!");
     redirect('/dashboard-umkm');
   }
-
-  // =========================================================================
-  // KALAU DIA LOLOS SAMPAI SINI, BERARTI DIA BENERAN SISWA! AMAN BROS! 🛡️
-  // =========================================================================
 
   // 🔥 5. TARIK DATA USER 🔥
   const namaSiswa = userData?.username || "Pahlawan Tanpa Nama";
@@ -67,14 +58,10 @@ export default async function DashboardSiswaPage() {
   let levelSiswa = 1;
 
   if (userData?.studentProgress && userData.studentProgress.length > 0) {
-    // 1. Jumlahin semua currentXp dari array pake .reduce()
     xpSiswa = userData.studentProgress.reduce((total, progress) => total + progress.currentXp, 0);
-    
-    // 2. Hitung level globalnya pake rumus: (TotalXP / 1000) + 1
     levelSiswa = Math.floor(xpSiswa / 1000) + 1;
   }
 
-  // 🔥 UPDATE DI SINI: Cuma nambahin orderBy biar dapet Quest Paling Baru 🔥
   const allQuests = await prisma.quest.findMany({
     take: 6,
     orderBy: {
@@ -82,7 +69,8 @@ export default async function DashboardSiswaPage() {
     }
   });
 
-  const activeSubmission = await prisma.submission.findFirst({
+  // 🔥 UPDATE DI SINI: UBAH findFirst JADI findMany BIAR SEMUA MISI KETARIK! 🔥
+  const activeSubmissions = await prisma.submission.findMany({
     where: { 
       studentId: currentUserId || 0, 
       status: {
@@ -99,13 +87,13 @@ export default async function DashboardSiswaPage() {
     where: { 
       studentId: currentUserId || 0, 
       status: 'APPROVED',
-      rating: { not: null } // Tarik yang udah dapet bintang dari UMKM
+      rating: { not: null } 
     },
     include: { 
-      quest: true // Biar dapet nama quest-nya
+      quest: true 
     },
     orderBy: { submittedAt: 'desc' },
-    take: 2 // Tampil 2 biji aja biar rapi
+    take: 2 
   });
 
   return (
@@ -120,8 +108,6 @@ export default async function DashboardSiswaPage() {
           
           {/* KOLOM KIRI */}
           <div className="lg:col-span-1 flex flex-col gap-8">
-            
-            {/* 🔥 7. OPER DATA KE PROFILE CARD 🔥 */}
             <ProfileCard 
               nama={namaSiswa} 
               xp={xpSiswa} 
@@ -130,7 +116,6 @@ export default async function DashboardSiswaPage() {
             />
 
             <div className="bg-[#060916] rounded-2xl p-6 min-h-[300px] border-2 border-gray-400 flex items-center justify-center text-gray-500">
-              {/* 🔥 OPER DATANYA KE KOMPONEN FEEDBACK CARD 🔥 */}
               <FeedbackCard feedbackData={recentFeedback} />
             </div>
           </div>
@@ -138,11 +123,11 @@ export default async function DashboardSiswaPage() {
           {/* KOLOM KANAN */}
           <div className="lg:col-span-2 flex flex-col gap-8">
             <div className="bg-transparent min-h-[250px] flex items-center justify-center text-gray-500 rounded-2xl">
-              <ActiveQuest activeData={activeSubmission} />
+              {/* 🔥 LEMPAR ARRAY activeSubmissions KE KOMPONEN 🔥 */}
+              <ActiveQuest activeData={activeSubmissions} />
             </div>
 
             <div className="bg-transparent min-h-[400px] flex items-center justify-center text-gray-500 rounded-2xl">
-              {/* OPER KE KOMPONEN REKOMENDASI (Gak Berubah) */}
               <RecommendedQuests questsData={allQuests}/>
             </div>
           </div>

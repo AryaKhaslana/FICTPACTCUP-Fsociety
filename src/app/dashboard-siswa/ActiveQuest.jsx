@@ -5,7 +5,8 @@ import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import ActiveMissionsModal from './ActiveMissionsModal'; 
 
-export default function ActiveQuest({ activeData }) {
+// 🔥 1. KASIH DEFAULT ARRAY KOSONG BIAR GAK ERROR 🔥
+export default function ActiveQuest({ activeData = [] }) {
   const router = useRouter(); 
   
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); 
@@ -16,6 +17,11 @@ export default function ActiveQuest({ activeData }) {
   const [isSubmitting, setIsSubmitting] = useState(false); 
   const [showSuccessNotif, setShowSuccessNotif] = useState(false);
 
+  // 🔥 2. KITA AMBIL MISI PALING ATAS (INDEX 0) BUAT DITAMPILIN DI BANNER 🔥
+  // Pastiin activeData beneran array, kalo bukan jadiin array kosong
+  const safeActiveData = Array.isArray(activeData) ? activeData : [];
+  const latestMission = safeActiveData.length > 0 ? safeActiveData[0] : null;
+
   const handleSubmit = async () => {
     if (!linkQuest) return alert("Link quest-nya diisi dulu dong, Master!");
     
@@ -25,7 +31,7 @@ export default function ActiveQuest({ activeData }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          submissionId: activeData?.id, // 👈 Kasih tanda tanya biar aman
+          submissionId: latestMission?.id, // 👈 Pake latestMission!
           fileUrl: linkQuest,
           pesanUMKM: pesanUMKM
         })
@@ -59,16 +65,19 @@ export default function ActiveQuest({ activeData }) {
       <div className="flex justify-between items-end mb-4 px-2">
         <h2 className="text-xl md:text-2xl font-bold text-white tracking-wide font-poppins">Quest Aktif</h2>
         
-        <button 
-          onClick={() => setIsListModalOpen(true)}
-          className="text-xs md:text-sm text-gray-400 cursor-pointer hover:text-[#F59E0B] transition-colors border-b border-transparent hover:border-[#F59E0B]"
-        >
-          Lihat lainnya
-        </button>
+        {/* 🔥 3. TOMBOL LIHAT LAINNYA CUMA MUNCUL KALO MISI LEBIH DARI 1 🔥 */}
+        {safeActiveData.length > 1 && (
+          <button 
+            onClick={() => setIsListModalOpen(true)}
+            className="text-xs md:text-sm text-gray-400 cursor-pointer hover:text-[#F59E0B] transition-colors border-b border-transparent hover:border-[#F59E0B]"
+          >
+            Lihat lainnya ({safeActiveData.length})
+          </button>
+        )}
       </div>
 
       {/* 2. KONTEN (PENGECEKAN KOSONG ATAU ADA ISI) */}
-      {!activeData ? (
+      {!latestMission ? (
         
         // --- TAMPILAN KALAU KOSONG ---
         <div className="w-full h-full min-h-[220px] flex flex-col items-center justify-center bg-[#11131A]/50 border-2 border-dashed border-gray-700 rounded-2xl p-8">
@@ -77,8 +86,7 @@ export default function ActiveQuest({ activeData }) {
 
       ) : (
 
-        // --- TAMPILAN KALAU ADA MISI (DENGAN GIF PIXEL ART) ---
-        // Pake min-h biar kotaknya seukuran sama desain awal
+        // --- TAMPILAN KALAU ADA MISI ---
         <div className="bg-[#11131A] rounded-2xl overflow-hidden border-2 border-white-800 flex flex-col md:flex-row relative shadow-[0_0_20px_rgba(0,0,0,0.5)] min-h-[220px]">
           
           {/* Bagian Teks (Kiri) */}
@@ -87,16 +95,16 @@ export default function ActiveQuest({ activeData }) {
             {/* Logo Inisial UMKM */}
             <div className="w-10 h-10 bg-gradient-to-br from-[#FF6B00] to-[#D97706] rounded-full flex items-center justify-center mb-4 border-2 border-[#11131A] shadow-md">
               <span className="text-white font-black text-xs">
-                {activeData.quest?.title?.substring(0, 2).toUpperCase() || 'UM'}
+                {latestMission.quest?.title?.substring(0, 2).toUpperCase() || 'UM'}
               </span>
             </div>
             
             <h3 className="text-xl md:text-2xl font-bold text-white mb-2 line-clamp-2 pr-4 drop-shadow-md">
-              {activeData.quest?.title || 'Judul Misi Kosong'}
+              {latestMission.quest?.title || 'Judul Misi Kosong'}
             </h3>
             
             <p className="text-xs text-gray-400 leading-relaxed mb-6 line-clamp-2 pr-4">
-              {activeData.quest?.description || 'Deskripsi misi sedang dimuat...'}
+              {latestMission.quest?.description || 'Deskripsi misi sedang dimuat...'}
             </p>
 
             <div className="flex items-center gap-2 mb-4">
@@ -112,23 +120,15 @@ export default function ActiveQuest({ activeData }) {
             </button>
           </div>
 
-          {/* 🔥 Bagian Gambar GIF Pixel Art (Kanan) 🔥 */}
+          {/* Bagian Gambar GIF Pixel Art (Kanan) */}
           <div className="h-48 md:h-auto md:w-[45%] relative overflow-hidden bg-black">
-            
-            {/* 💡 INI GIF-NYA BROSKIE! (Tema Cyberpunk/Hacker Room Pixel Art) */}
             <img 
               src="/makan.gif" 
               alt="Cyberpunk Quest" 
               className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500 hover:scale-105"
             />
-            
-            {/* Gradient hitam dari kiri ke kanan biar teksnya gak nabrak gambar */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#11131A] via-[#11131A]/30 to-transparent hidden md:block"></div>
-            
-            {/* Gradient hitam dari bawah ke atas buat versi HP */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#11131A] via-[#11131A]/10 to-transparent md:hidden"></div>
-
-            {/* Overlay scanline tipis (efek TV jadul) */}
             <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Scanlines.png/320px-Scanlines.png')] opacity-20 pointer-events-none mix-blend-overlay"></div>
           </div>
         </div>
@@ -138,10 +138,11 @@ export default function ActiveQuest({ activeData }) {
       {/* AREA KUMPULAN MODAL & NOTIFIKASI DI BAWAH SINI             */}
       {/* ========================================================= */}
 
-      {/* MODAL 1: DAFTAR MISI BERJALAN */}
+      {/* 🔥 4. OPER ARRAY DATA KE MODAL 🔥 */}
       <ActiveMissionsModal 
         isOpen={isListModalOpen} 
         onClose={() => setIsListModalOpen(false)} 
+        semuaMisi={safeActiveData} // 👈 Modal sekarang nerima data lu!
       />
 
       {/* MODAL 2: POPUP FORM KUMPULKAN MISI */}
@@ -220,7 +221,6 @@ export default function ActiveQuest({ activeData }) {
                 Bersiaplah menunggu hasilnya, Pahlawan.
               </p>
             </div>
-            {/* Efek cahaya emas di belakang notif */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#F59E0B]/10 to-transparent"></div>
           </div>
         </div>
