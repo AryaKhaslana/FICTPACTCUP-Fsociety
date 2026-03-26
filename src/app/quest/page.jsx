@@ -10,7 +10,6 @@ import QuestListClient from './QuestListClient';
 
 export default async function QuestBoardPage() {
   
-  // 🔥 1. KITA SEDOT ID USER DARI TOKEN JWT (BIAR GAK HARDCODE ID 2 LAGI) 🔥
   const cookieStore = await cookies();
   const token = cookieStore.get('fictpact_token')?.value; 
 
@@ -29,35 +28,32 @@ export default async function QuestBoardPage() {
     redirect('/login');
   }
 
-  // 🔥 2. KITA JALANIN 2 QUERY BARENGAN BIAR NGEBUT! 🚀
   const [userData, allQuests] = await Promise.all([
     
-    // Tarik data user PAKE ID ASLI DARI TOKEN
     prisma.user.findUnique({
       where: { id: currentUserId }, 
     }),
 
-    // Tarik semua data misi
+    // 🔥 INI DIA MAGIC-NYA BIAR MISI NGILANG! 🔥
+   // Tarik data misi yang STATUSNYA MASIH OPEN
     prisma.quest.findMany({
+      where: {
+        status: 'OPEN', // <-- INI YANG BENER SESUAI SCHEMA LU!
+      },
       orderBy: { id: 'desc' } 
     })
-    
   ]);
 
-  // 🔥 3. TARIK NAMA SAMA AVATAR DARI DATABASE 🔥
   const namaSiswa = userData?.username || "Pahlawan Tanpa Nama";
-  const avatarSiswa = userData?.avatarUrl || null; // 👈 INI YANG TADI LUPUT BROSKIE!
+  const avatarSiswa = userData?.avatarUrl || null; 
 
   return (
-    // Tambahin pt-20 biar kontennya gak nyundul navbar yang fixed
     <div className="min-h-screen bg-[#000010] text-white font-poppins pb-24">
       
-      {/* 🔥 4. OPER NAMA SAMA AVATAR KE DALAM NAVBAR! 🔥 */}
       <AuthNav userName={namaSiswa} userAvatar={avatarSiswa} />
 
       <main className="max-w-6xl mx-auto px-4 md:px-6 pt-8 md:pt-16">
         
-        {/* HEADER: Judul & Subjudul */}
         <div className="text-center mb-12 px-2">
           <h1 className="text-3xl md:text-5xl font-pixel text-white mb-4 md:mb-6 tracking-widest drop-shadow-md uppercase">
             Papan misi
@@ -67,7 +63,6 @@ export default async function QuestBoardPage() {
           </p>
         </div>
 
-        {/* LEMPAR DATA KE KOMPONEN ANAK BIAR BISA DIFILTER */}
         <QuestListClient initialQuests={allQuests} />
         
       </main>
